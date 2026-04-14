@@ -1,0 +1,153 @@
+# ============================================================================
+# News Feed Aggregator — Configuration
+# ============================================================================
+# Copy config.example.toml to config.toml and fill in your API keys.
+# Do NOT commit config.toml to version control!
+# ============================================================================
+
+# --- User Persona (Drives dynamic query generation and relevance filtering) ---
+[user]
+persona = "Senior AI researcher looking for latest papers and real-world implementations"
+interests = ["Open source large language models", "Agentic workflows", "RAG architectures"]
+
+# --- Collection Limits (Used during curation to ensure diversity) ---
+[collection]
+max_per_author = 3               # Max articles per author/subreddit allowed in final digest
+
+# --- Schedule ---
+[schedule]
+cron = "0 12 * * *"              # 12:00 UTC = 8:00 AM Eastern
+timezone = "America/New_York"
+
+# --- Exa.ai (neural search — primary content discovery) ---
+[sources.exa]
+enabled = true
+api_key = ""                     # Get at: https://dashboard.exa.ai
+# If [user] persona is provided, queries will be generated automatically. Fallbacks below:
+queries = [
+    "Most popular and talked about AI and machine learning news",
+    "LLM breakthroughs and releases",
+    "artificial intelligence startup funding",
+    "AI agents and agentic AI news",
+    "trending AI and machine learning GitHub projects",
+    "popular AI and tech podcast episodes this week",
+]
+max_results = 30
+lookback_hours = 36
+exclude_domains = ["pinterest.com", "facebook.com", "instagram.com"]
+include_domains = []             # Empty = search entire web
+
+# --- HackerNews (public Firebase API — no auth needed) ---
+[sources.hackernews]
+enabled = true
+limit = 30
+min_score = 100
+
+# --- GitHub Trending Repos ---
+[sources.github]
+enabled = true
+
+# --- Reddit Public Search ---
+[sources.reddit]
+enabled = true
+subreddits = [
+    "LocalLLaMA",
+    "MachineLearning",
+    "artificial",
+    "singularity",
+    "webdev",
+    "programming"
+]
+
+# --- Bluesky Public Search ---
+[sources.bluesky]
+enabled = true
+handle = "your-handle.bsky.social"    # Your Bluesky username
+app_password = "xxxx-xxxx-xxxx-xxxx"  # Generate at Settings -> App Passwords
+
+# --- RSS Feeds ---
+[sources.rss]
+enabled = true
+feeds = [
+    "https://news.ycombinator.com/rss",
+    "https://techcrunch.com/feed/",
+    "https://arstechnica.com/feed/",
+    "https://www.theverge.com/rss/index.xml"
+]
+
+# --- ListenNotes (podcast episodes) ---
+[sources.listennotes]
+enabled = true
+api_key = ""                     # Get at: https://www.listennotes.com/api
+queries = [
+    "AI podcast", "machine learning breakthroughs", "artificial intelligence updates"
+]
+sort_by = "relevance"            # "relevance" or "date"
+max_results = 15
+language = "English"
+
+# --- YouTube (popular videos + podcast episodes) ---
+[sources.youtube]
+enabled = true
+api_key = ""                     # Get at: https://console.cloud.google.com
+queries = [
+    "AI news this week", "machine learning breakthroughs", "AI agent demonstrations"
+]
+max_results = 10
+published_after_hours = 48
+order = "viewCount"              # "viewCount", "relevance", or "date"
+min_views = 1000
+
+
+
+# --- Deduplication ---
+[dedup]
+url_normalize = true
+title_similarity_threshold = 0.82    # Jaro-Winkler (0–1)
+cache_ttl_days = 7
+db_path = "data/seen_articles.db"
+
+# --- LLM Summarizer & Evaluators ---
+[llm]
+provider = "openrouter"              # Default provider
+model = "openai/gpt-4o-mini"         # Global fallback model
+
+# Ollama settings (when provider = "ollama")
+ollama_base_url = "http://host.docker.internal:11434"
+
+# OpenRouter settings (when provider = "openrouter")
+openrouter_api_key = "YOUR_OPENROUTER_KEY"
+openrouter_base_url = "https://openrouter.ai/api/v1"
+
+max_summary_length = 280
+batch_size = 5
+fallback_truncate_length = 200
+
+# --- Role-Specific Models ---
+# The Evaluator
+[llm.roles.evaluator]
+model = "anthropic/claude-3-5-haiku-20241022" 
+
+# The Planner
+[llm.roles.query_generator]
+model = "moonshotai/kimi-k2.5"
+
+# The Writer
+[llm.roles.summarizer]
+model = "moonshotai/kimi-k2.5"
+
+# --- Web / GitHub Pages ---
+[web]
+surge_domain = "yourusername-semantic-daily.surge.sh"  # Domain to deploy to via Surge.sh
+max_articles_per_category = 25    # Keep the web digest concise
+
+# --- Telegram ---
+[telegram]
+bot_token = ""                   # From @BotFather → /newbot
+chat_id = ""                     # Your personal chat ID
+digest_header = "📰 Semantic Daily"
+
+# --- Logging ---
+[logging]
+level = "INFO"                   # DEBUG, INFO, WARNING, ERROR
+format = "console"               # "console" or "json"

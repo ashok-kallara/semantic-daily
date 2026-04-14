@@ -1,0 +1,90 @@
+# ============================================================================
+# News Feed Aggregator — Docker Compose (Security-Hardened)
+# ============================================================================
+
+services:
+  semantic-daily:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: semantic-daily-bot
+    restart: unless-stopped
+
+    # --- Security Hardening ---
+    read_only: true
+    tmpfs:
+      - /tmp:size=50M
+      - /var/run:size=10M
+      - /var/log:size=50M
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    # Note: cron needs a few capabilities to work
+    cap_add:
+      - SETGID
+      - SETUID
+
+    # --- Resource Limits ---
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+        reservations:
+          memory: 128M
+
+    # --- Volumes ---
+    volumes:
+      - ./data:/app/data                # Persist dedup cache
+      - ./config:/app/config:ro          # Config is read-only
+
+    # --- Config (config.toml is mounted read-only via volumes above) ---
+
+    # --- Networking ---
+    # No ports exposed — this service only makes outbound requests
+    networks:
+      - news-net
+
+    # --- Extra hosts ---
+    extra_hosts:
+      - "host.docker.internal:host-gateway"  # For Ollama on host
+
+  # ---- OpenClaw Gateway (Moderate Integration) ----
+  openclaw:
+    image: ghcr.io/openclaw/openclaw:latest
+    container_name: openclaw-gateway
+    restart: unless-stopped
+    
+    volumes:
+      - openclaw-data:/root/.openclaw
+      - ./openclaw/skills:/root/.openclaw/workspace/skills:ro
+      - ./data:/app/data:ro              # Read access to digest cache
+    
+
+    
+    environment:
+      - OPENCLAW_TELEGRAM_ENABLED=true
+      - OPENCLAW_WORKSPACE_DIR=/root/.openclaw/workspace
+
+    ports:
+      - "127.0.0.1:18789:18789"         # Control UI (localhost only)
+
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+    networks:
+      - news-net
+
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1G
+
+networks:
+  news-net:
+    driver: bridge
+
+volumes:
+  openclaw-data:
