@@ -37,11 +37,7 @@ body {
     background-attachment: fixed;
 }
 
-.container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
-}
+.container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
 
 header {
     border-bottom: 1px solid var(--border);
@@ -52,126 +48,92 @@ header {
     align-items: flex-end;
 }
 
-.title {
-    font-size: 2rem;
-    font-weight: 700;
-    margin: 0 0 0.25rem 0;
-}
-
-.subtitle {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-}
+.title { font-size: 2rem; font-weight: 700; margin: 0 0 0.25rem 0; }
+.subtitle { color: var(--text-muted); font-size: 0.95rem; }
 
 .stats-bar {
-    display: flex;
-    gap: 1.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    text-align: right;
+    display: flex; gap: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; text-align: right;
 }
-
-.stat {
-    display: flex;
-    flex-direction: column;
-}
+.stat { display: flex; flex-direction: column; }
 .stat span:first-child { color: var(--text-muted); font-size: 0.75rem; }
 .stat span:last-child { color: var(--accent); font-weight: 600; }
 
-.categories {
-    column-count: 2;
-    column-gap: 2rem;
+/* Tabs styling */
+.tabs-container {
+    margin-bottom: 2rem; display: flex; gap: 1rem;
+    border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;
 }
 
+.tab-btn {
+    background: transparent; border: none; color: var(--text-muted);
+    font-family: var(--font-sans); font-size: 1.1rem; font-weight: 500;
+    cursor: pointer; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s ease;
+}
+
+.tab-btn:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+.tab-btn.active { color: var(--accent); background: rgba(88, 166, 255, 0.1); font-weight: 600; }
+
+.tab-content { display: none; animation: fadeIn 0.3s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Common card styling */
 .category-group {
-    break-inside: avoid;
-    margin-bottom: 2rem;
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-    backdrop-filter: blur(8px);
+    margin-bottom: 2rem; background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden; backdrop-filter: blur(8px);
 }
 
-.category-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-main);
-    margin: 0;
-    padding: 0.75rem 1rem;
-    background: rgba(255,255,255,0.03);
-    border-bottom: 1px solid var(--border);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-family: var(--font-mono);
+/* Express View Accordion */
+.accordion-header {
+    width: 100%; display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.03); border: none; border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem; color: var(--text-main); font-size: 1.1rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+    cursor: pointer; transition: background 0.15s ease;
+}
+.accordion-header:hover { background: rgba(255, 255, 255, 0.06); }
+.accordion-header::after { content: '▼'; font-size: 0.8rem; transition: transform 0.3s ease; color: var(--text-muted); }
+.accordion-header.open::after { transform: rotate(-180deg); }
+.accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; background: transparent; }
+
+/* Category masonry */
+.categories-masonry { column-count: 2; column-gap: 2rem; }
+.masonry-item { break-inside: avoid; margin-bottom: 2rem; }
+.masonry-item .category-title {
+    font-size: 1rem; font-weight: 600; color: var(--text-main); margin: 0; padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
 }
 
-.article-list {
-    display: flex;
-    flex-direction: column;
-}
-
+.article-list { display: flex; flex-direction: column; }
 .article-item {
-    display: flex;
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid var(--border);
-    transition: background 0.15s ease;
-    text-decoration: none;
-    color: inherit;
-    gap: 1rem;
-    align-items: flex-start;
+    display: flex; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+    transition: background 0.15s ease; text-decoration: none; color: inherit; gap: 1.25rem; align-items: flex-start;
 }
+.masonry-item .article-item { padding: 0.75rem 1rem; gap: 1rem; }
 .article-item:last-child { border-bottom: none; }
 .article-item:hover { background: var(--hover-bg); }
 
-.article-item.read-article {
-    opacity: 0.5;
-}
-.article-item.read-article .headline {
-    color: var(--text-muted);
-}
+.article-item.read-article { opacity: 0.5; }
+.article-item.read-article .headline { color: var(--text-muted); }
 
 .score {
-    min-width: 40px;
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--accent);
-    background: rgba(88, 166, 255, 0.1);
-    padding: 0.2rem 0;
-    text-align: center;
-    border-radius: 4px;
-    margin-top: 0.1rem;
+    min-width: 45px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent);
+    background: rgba(88, 166, 255, 0.1); padding: 0.25rem 0; text-align: center; border-radius: 4px; margin-top: 0.15rem;
 }
-
-.content {
-    flex: 1;
-    min-width: 0; /* allows text truncation */
-}
-
-.headline {
-    font-weight: 500;
-    font-size: 0.95rem;
-    margin: 0 0 0.25rem 0;
-    color: var(--text-main);
-    display: flex;
-    align-items: baseline;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-}
-
+.content { flex: 1; min-width: 0; }
+.headline { font-weight: 500; font-size: 1.05rem; margin: 0 0 0.35rem 0; color: var(--text-main); flex-wrap: wrap; display: flex; align-items: baseline; gap: 0.5rem; }
 .summary {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin: 0;
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    font-size: 0.9rem; color: var(--text-muted); margin: 0; display: -webkit-box;
+    -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;
 }
+.view-all {
+    display: block; text-align: center; padding: 0.75rem; color: var(--accent); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: background 0.15s;
+}
+.view-all:hover { background: rgba(88, 166, 255, 0.05); }
 
-/* Responsive */
 @media (max-width: 1024px) {
-    .categories { column-count: 1; }
+    .categories-masonry { column-count: 1; }
     header { flex-direction: column; align-items: flex-start; gap: 1rem; }
     .stats-bar { text-align: left; }
 }
@@ -229,19 +191,22 @@ class HTMLPublisher:
 
     def _render_html(self, digest: Digest, date_str: str) -> str:
         """Construct the HTML document natively."""
-        sections_html = []
+        express_sections = []
+        detail_sections = []
         
         # Iterate over each AI grouping
         for category, articles in digest.by_category.items():
             if not articles:
                 continue
                 
-            cards_html = []
-            for a in articles:
+            express_cards = []
+            detail_cards = []
+            
+            for idx, a in enumerate(articles):
                 score_disp = f"↑{a.engagement_score}" if a.engagement_score > 0 else "-"
                 summary_text = a.summary or (a.raw_content[:400] + "..." if a.raw_content else "No summary available.")
                 
-                cards_html.append(f"""
+                card_html = f"""
                 <a href="{a.url}" target="_blank" class="article-item">
                     <div class="score">{score_disp}</div>
                     <div class="content">
@@ -249,13 +214,38 @@ class HTMLPublisher:
                         <p class="summary">{summary_text}</p>
                     </div>
                 </a>
-                """)
+                """
                 
-            sections_html.append(f"""
+                detail_cards.append(card_html)
+                if idx < 5:
+                    express_cards.append(card_html)
+            
+            category_title = category.replace('_', ' ')
+            
+            # Express section logic
+            view_all_link = ""
+            if len(articles) > 5:
+                # Add a link to swap tabs
+                view_all_link = f"""<a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all {len(articles)} articles in {category_title} →</a>"""
+                
+            express_sections.append(f"""
             <div class="category-group">
-                <h2 class="category-title">{category.replace('_', ' ')}</h2>
+                <button class="accordion-header" onclick="toggleAccordion(this)">{category_title}</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        {''.join(express_cards)}
+                        {view_all_link}
+                    </div>
+                </div>
+            </div>
+            """)
+            
+            # Detail section logic
+            detail_sections.append(f"""
+            <div class="category-group masonry-item">
+                <h2 class="category-title">{category_title}</h2>
                 <div class="article-list">
-                    {''.join(cards_html)}
+                    {''.join(detail_cards)}
                 </div>
             </div>
             """)
@@ -274,22 +264,67 @@ class HTMLPublisher:
 <body>
     <div class="container">
         <header>
-            <h1 class="title">AI Pulse Digest</h1>
-            <div class="subtitle">
-                <span>Curated insights for {date_str}</span>
-                <div class="stats-bar">
-                    <div class="stat"><span>Analyzed</span><span>{digest.total_collected} artifacts</span></div>
-                    <div class="stat"><span>Filtered</span><span>{digest.duplicates_removed} dupes</span></div>
-                    <div class="stat"><span>Curated</span><span>{digest.article_count} items</span></div>
-                </div>
+            <div>
+                <h1 class="title">AI Pulse Digest</h1>
+                <div class="subtitle">Curated insights for {date_str}</div>
+            </div>
+            <div class="stats-bar">
+                <div class="stat"><span>Analyzed</span><span>{digest.total_collected} artifacts</span></div>
+                <div class="stat"><span>Filtered</span><span>{digest.duplicates_removed} dupes</span></div>
+                <div class="stat"><span>Curated</span><span>{digest.article_count} items</span></div>
             </div>
         </header>
+
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchTab(event, 'express')">✨ Highlights (Top 5)</button>
+            <button class="tab-btn" onclick="switchTab(event, 'detail')">📚 Deep Dive (All)</button>
+        </div>
         
-        <main class="categories">
-            {''.join(sections_html)}
+        <main id="express" class="tab-content active">
+            {''.join(express_sections)}
+        </main>
+        
+        <main id="detail" class="tab-content categories-masonry">
+            {''.join(detail_sections)}
         </main>
     </div>
     <script>
+        // Open all accordions by default
+        document.addEventListener('DOMContentLoaded', () => {{
+            document.querySelectorAll('.accordion-header').forEach(header => {{
+                toggleAccordion(header);
+            }});
+        }});
+
+        // Tab Switching Logic
+        function switchTab(e, tabId) {{
+            if (e) e.preventDefault();
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // If triggered by a tab button, set it active, else find the tab button for that tabId
+            let tabBtn = (e && e.target && e.target.classList.contains('tab-btn')) ? e.target : document.querySelector(`.tab-btn[onclick*="${{tabId}}"]`);
+            if (tabBtn) tabBtn.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            // scroll to top if clicked view all
+            if (e && e.target && e.target.classList.contains('view-all')) {{
+                window.scrollTo(0, 0);
+            }}
+        }}
+
+        // Accordion Logic
+        function toggleAccordion(headerElement) {{
+            headerElement.classList.toggle('open');
+            const body = headerElement.nextElementSibling;
+            if (headerElement.classList.contains('open')) {{
+                body.style.maxHeight = body.scrollHeight + "px";
+            }} else {{
+                body.style.maxHeight = "0";
+            }}
+        }}
+
+        // Read article persistence
         document.addEventListener("DOMContentLoaded", () => {{
             const STORAGE_KEY = "read_articles";
             let readArticles = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
@@ -303,7 +338,9 @@ class HTMLPublisher:
                 item.addEventListener('click', () => {{
                     readArticles.add(url);
                     localStorage.setItem(STORAGE_KEY, JSON.stringify([...readArticles]));
-                    item.classList.add('read-article');
+                    
+                    // Mark all identically-linked items read
+                    document.querySelectorAll(`.article-item[href="${{url}}"]`).forEach(i => i.classList.add('read-article'));
                 }});
             }});
         }});
