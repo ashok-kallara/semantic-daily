@@ -2,7 +2,7 @@
 
 import os
 import json
-import redis
+from upstash_redis import Redis
 from pathlib import Path
 
 def migrate():
@@ -10,7 +10,7 @@ def migrate():
     
     if "UPSTASH_REDIS_URL" not in os.environ or "UPSTASH_REDIS_TOKEN" not in os.environ:
         print("❌ Error: UPSTASH_REDIS_URL and UPSTASH_REDIS_TOKEN must be set.")
-        print("Example: export UPSTASH_REDIS_URL='rediss://...upstash.io:6379'")
+        print("Example: export UPSTASH_REDIS_URL='https://...upstash.io'")
         return
 
     # 1. Read all rows from SQLite
@@ -29,10 +29,10 @@ def migrate():
 
     print(f"📦 Found {len(rows)} articles in local cache.")
 
-    # 2. Connect to Upstash
+    # 2. Connect to Upstash via REST API
     try:
-        r = redis.from_url(os.environ["UPSTASH_REDIS_URL"], password=os.environ["UPSTASH_REDIS_TOKEN"])
-        r.ping()
+        r = Redis(url=os.environ["UPSTASH_REDIS_URL"], token=os.environ["UPSTASH_REDIS_TOKEN"])
+        r.exists("ping_test") # Quick dummy query to check connection
     except Exception as e:
         print(f"❌ Failed to connect to Upstash Redis: {e}")
         return
@@ -50,7 +50,7 @@ def migrate():
                 "first_seen": row["first_seen"],
             })
             pipe.set(key, value, ex=7*86400)  # 7-day TTL
-        pipe.execute()
+        pipe.exec()
     except Exception as e:
          print(f"❌ Failed during Redis pipeline write: {e}")
          return

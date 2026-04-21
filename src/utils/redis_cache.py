@@ -5,7 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 from datetime import datetime, timezone
-import redis
+from upstash_redis import Redis
 
 from src.utils.logger import get_logger
 
@@ -21,10 +21,8 @@ class RedisArticleCache:
 
     def __init__(self, redis_url: str, redis_token: str, ttl_days: int = 7) -> None:
         self.ttl_seconds = ttl_days * 86400
-        # Use rediss:// for secure connection string often provided by Upstash
-        # If url doesn't start with redis:// or rediss://, we might need to prepend.
-        # But usually Upstash URL is complete. We pass token as password.
-        self._client = redis.from_url(redis_url, password=redis_token, decode_responses=True)
+        # Use Upstash REST client
+        self._client = Redis(url=redis_url, token=redis_token)
         log.debug("redis_cache.initialized", ttl_days=ttl_days)
 
     @staticmethod
@@ -75,7 +73,7 @@ class RedisArticleCache:
             }
             pipe.set(key, json.dumps(data), ex=self.ttl_seconds, nx=True)
             
-        pipe.execute()
+        pipe.exec()
         log.debug("redis_cache.batch_marked", count=len(articles))
 
     def prune_old(self, days: int = 7) -> int:
