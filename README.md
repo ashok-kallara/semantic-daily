@@ -177,7 +177,7 @@ It automatically deploys this directory to the web using **Surge.sh**. Provide y
 You can deploy your daily feed on a 100% free serverless architecture using GitHub Actions and an Upstash serverless Redis instance.
 1. Push this repository to GitHub. 
 2. Create a free **Upstash Redis** database at console.upstash.com, grab your REST URL and token. 
-3. (Optional) Run `export UPSTASH_REDIS_URL='...'` and `export UPSTASH_REDIS_TOKEN='...'` locally, then execute `python scripts/migrate_cache.py` to seamlessly port your local sqlite cache to the cloud so duplicate articles aren't resent.
+3. (Optional) Run `export UPSTASH_REDIS_URL='https://...upstash.io'` and `export UPSTASH_REDIS_TOKEN='...'` locally (making sure to use the **REST API** endpoint, not the TCP endpoint), then execute `uv run python scripts/migrate_cache.py` to seamlessly port your local sqlite cache to the cloud so duplicate articles aren't resent.
 4. Go to **Settings -> Secrets and variables -> Actions** in your GitHub repo and configure the following secrets:
    - `EXA_API_KEY`
    - `OPENROUTER_API_KEY`
