@@ -50,9 +50,25 @@ async def run_pipeline(
 
     # --- Initialize components ---
     dedup_cfg = config.get("dedup", {})
-    db_path = dedup_cfg.get("db_path", "data/seen_articles.db")
-    cache = ArticleCache(Path(db_path))
-    cache.prune_old(days=dedup_cfg.get("cache_ttl_days", 7))
+    
+    import os
+    redis_url = os.environ.get("UPSTASH_REDIS_URL")
+    redis_token = os.environ.get("UPSTASH_REDIS_TOKEN")
+    
+    if redis_url and redis_token:
+        from src.utils.redis_cache import RedisArticleCache
+        cache = RedisArticleCache(
+            redis_url, 
+            redis_token, 
+            ttl_days=dedup_cfg.get("cache_ttl_days", 7)
+        )
+        log.info("pipeline.cache_backend", backend="upstash-redis")
+    else:
+        from src.utils.cache import ArticleCache
+        db_path = dedup_cfg.get("db_path", "data/seen_articles.db")
+        cache = ArticleCache(Path(db_path))
+        cache.prune_old(days=dedup_cfg.get("cache_ttl_days", 7))
+        log.info("pipeline.cache_backend", backend="sqlite")
 
     # --- 0. Dynamic Configuration via Persona ---
     persona_processor = PersonaProcessor(config)

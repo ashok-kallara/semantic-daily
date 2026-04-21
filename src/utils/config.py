@@ -24,6 +24,27 @@ else:
 DEFAULT_CONFIG_PATH = Path("config/config.toml")
 
 
+def _apply_env_overrides(config: dict[str, Any]) -> dict[str, Any]:
+    """Overlay environment variables onto config for CI/CD."""
+    import os
+    env_map = [
+        # (env_var, config_path)
+        ("EXA_API_KEY",          ["sources", "exa", "api_key"]),
+        ("BLUESKY_APP_PASSWORD", ["sources", "bluesky", "app_password"]),
+        ("YOUTUBE_API_KEY",      ["sources", "youtube", "api_key"]),
+        ("OPENROUTER_API_KEY",   ["llm", "openrouter_api_key"]),
+        ("TELEGRAM_BOT_TOKEN",   ["telegram", "bot_token"]),
+        ("TELEGRAM_CHAT_ID",     ["telegram", "chat_id"]),
+    ]
+    for env_var, path in env_map:
+        val = os.environ.get(env_var)
+        if val:
+            d = config
+            for key in path[:-1]:
+                d = d.setdefault(key, {})
+            d[path[-1]] = val
+    return config
+
 def load_config(path: str | Path | None = None) -> dict[str, Any]:
     """Load configuration from a TOML file.
 
@@ -56,7 +77,7 @@ def load_config(path: str | Path | None = None) -> dict[str, Any]:
         config = tomllib.load(f)
 
     log.info("config.loaded", path=str(config_path))
-    return config
+    return _apply_env_overrides(config)
 
 
 def get_nested(config: dict[str, Any], *keys: str, default: Any = None) -> Any:

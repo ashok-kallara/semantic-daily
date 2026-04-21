@@ -1,0 +1,124 @@
+# ============================================================================
+# Semantic Daily — CI Configuration
+# ============================================================================
+# Secrets come from GitHub Secrets (env vars)
+
+[user]
+persona = "A senior AI leader looking for latest papers, bleeding edge and cutting edge AI trends and real-world implementations. Also interested in the latest in world"
+interests = ["Open source large language models", "Agentic workflows", "RAG architectures", "Agentic Harness", "Low-code/no-code AI tools", "conversational analytics", "top github projects on Agentic AI", "Claude Cowork alternatives", "News(non-tech) from around the world"]
+
+[collection]
+max_per_author = 3
+
+[schedule]
+cron = "0 12 * * *"
+timezone = "America/New_York"
+
+[sources.exa]
+enabled = true
+api_key = "" # overrridden by EXA_API_KEY
+queries = [
+    "Most popular and talked about AI and machine learning news",
+    "LLM breakthroughs and releases",
+    "AI agents and agentic AI news",
+    "popular AI and tech podcast episodes this week",
+]
+max_results = 100
+lookback_hours = 48
+exclude_domains = ["pinterest.com", "facebook.com", "instagram.com"]
+include_domains = []
+
+[sources.hackernews]
+enabled = true
+limit = 100
+min_score = 100
+fetch_content = true
+
+[sources.github]
+enabled = true
+
+[sources.reddit]
+enabled = true
+subreddits = [
+    "LocalLLaMA",
+    "MachineLearning",
+    "artificial",
+    "singularity",
+    "webdev",
+    "programming"
+]
+
+[sources.bluesky]
+enabled = true
+handle = "k-ashok.bsky.social"
+app_password = "" # overrridden by BLUESKY_APP_PASSWORD
+
+[sources.rss]
+enabled = true
+feeds = [
+    "https://news.ycombinator.com/rss",
+    "https://techcrunch.com/feed/",
+    "https://arstechnica.com/feed/",
+    "https://www.theverge.com/rss/index.xml",
+    "https://bullrich.dev/tldr-rss/ai.rss",
+    "https://bullrich.dev/tldr-rss/feed.rss",
+]
+
+[sources.listennotes]
+enabled = false
+api_key = ""
+queries = [
+    "AI podcast", "machine learning breakthroughs", "artificial intelligence updates"
+]
+sort_by = "relevance"
+max_results = 15
+language = "English"
+
+[sources.youtube]
+enabled = true
+api_key = "" # overrridden by YOUTUBE_API_KEY
+queries = [
+    "AI news this week", "machine learning breakthroughs", "AI agent demonstrations"
+]
+max_results = 20
+published_after_hours = 48
+order = "relevance"
+min_views = 10000
+
+[dedup]
+url_normalize = true
+title_similarity_threshold = 0.82
+cache_ttl_days = 7
+db_path = "data/seen_articles.db"
+
+[llm]
+provider = "openrouter"
+model = "openai/gpt-4o-mini"
+ollama_base_url = "http://host.docker.internal:11434"
+openrouter_api_key = "" # overrridden by OPENROUTER_API_KEY
+openrouter_base_url = "https://openrouter.ai/api/v1"
+max_summary_length = 280
+batch_size = 10
+fallback_truncate_length = 200
+
+[llm.roles.evaluator]
+model = "anthropic/claude-3.5-haiku"
+
+[llm.roles.query_generator]
+model = "moonshotai/kimi-k2.5"
+
+[llm.roles.summarizer]
+model = "moonshotai/kimi-k2.5"
+
+[web]
+surge_domain = "ak-semantic-daily.surge.sh"
+max_articles_per_category = 25
+
+[telegram]
+bot_token = "" # overrridden by TELEGRAM_BOT_TOKEN
+chat_id = "" # overrridden by TELEGRAM_CHAT_ID
+digest_header = "📰 Semantic Daily"
+
+[logging]
+level = "INFO"
+format = "console"

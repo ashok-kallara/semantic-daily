@@ -35,7 +35,7 @@ A **100% free** agentic news aggregator that discovers trending AI & technology 
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  ⏰ ScheduleTrigger (e.g. Cron)                             │
+│  ⏰ GitHub Actions (Daily 5PM EDT Cron)                     │
 │    │                                                        │
 │    │  [1] Persona Query Generation (Kimi-k2.5)              │
 │    ▼                                                        │
@@ -47,7 +47,7 @@ A **100% free** agentic news aggregator that discovers trending AI & technology 
 │  └──────────────────────────┬────────────────────────────┘  │
 │                             ▼                               │
 │  ┌───────────────────────────────────────────────────────┐  │
-│  │  Deduplicator (SQLite seen_articles.db + Jaro Math)   │  │
+│  │  Deduplicator (Upstash Redis + Jaro Similarity)       │  │
 │  └──────────────────────────┬────────────────────────────┘  │
 │                             ▼                               │
 │  ┌───────────────────────────────────────────────────────┐  │
@@ -71,10 +71,13 @@ A **100% free** agentic news aggregator that discovers trending AI & technology 
 
 ```
 semantic-daily/
+├── .github/workflows/
+│   └── daily-digest.yml          # GitHub Actions CI schedule configuration
 ├── pyproject.toml                # uv project manifest + dependencies
 ├── config/
 │   ├── config.example.toml       # Template — copy to config.toml
-│   └── config.toml               # ← YOUR config (git-ignored, has API keys)
+│   ├── config.ci.toml            # CI version overlaid by secure GitHub Actions Secrets
+│   └── config.toml               # ← YOUR local config (git-ignored, has API keys)
 │
 ├── src/
 │   ├── main.py                   # Pipeline orchestrator (entry point)
@@ -98,10 +101,12 @@ semantic-daily/
 │   │   └── web.py                # Ultra-dense Glassmorphism UI Builder
 │   └── utils/
 │       ├── config.py             # TOML config loader
-│       └── cache.py              # SQLite dedup cache
+│       ├── redis_cache.py        # Stateless caching via Upstash Redis (for CI)
+│       └── cache.py              # SQLite dedup cache (for local dev)
 │
 ├── public/                       # Generated Static Digest Web Output!
 └── scripts/                      # Utility runners and scratchpads
+    └── migrate_cache.py          # Port SQLite to Upstash setup 
 ```
 
 ---
@@ -168,7 +173,20 @@ model = "moonshotai/kimi-k2.5"        # Exceptional complex search reasoning
 The pipeline outputs `public/News-digest-<slug>-YYYY-MM-DD.html`.
 It automatically deploys this directory to the web using **Surge.sh**. Provide your base domain in `config.toml`, and set `SURGE_LOGIN` and `SURGE_TOKEN` environment variables so the script can smoothly deploy without prompts. The pipeline specifically creates an `index.html` file alongside the digest that auto-redirects mobile/desktop visitors to the most recently generated digest. 
 
-
+### ☁️ GitHub Actions & Upstash Redis Deployment (Recommended)
+You can deploy your daily feed on a 100% free serverless architecture using GitHub Actions and an Upstash serverless Redis instance.
+1. Push this repository to GitHub. 
+2. Create a free **Upstash Redis** database at console.upstash.com, grab your REST URL and token. 
+3. (Optional) Run `export UPSTASH_REDIS_URL='...'` and `export UPSTASH_REDIS_TOKEN='...'` locally, then execute `python scripts/migrate_cache.py` to seamlessly port your local sqlite cache to the cloud so duplicate articles aren't resent.
+4. Go to **Settings -> Secrets and variables -> Actions** in your GitHub repo and configure the following secrets:
+   - `EXA_API_KEY`
+   - `OPENROUTER_API_KEY`
+   - `BLUESKY_APP_PASSWORD`
+   - `YOUTUBE_API_KEY`
+   - `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`
+   - `SURGE_LOGIN`, `SURGE_TOKEN`
+   - `UPSTASH_REDIS_URL`, `UPSTASH_REDIS_TOKEN`
+5. Activate the `"Daily Digest"` workflow under the Actions tab. 
 
 ## 🔧 CLI Reference
 
