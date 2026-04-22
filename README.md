@@ -21,7 +21,7 @@ A **100% free** agentic news aggregator that discovers trending AI & technology 
 ## ✨ Features
 
 - **7 Native Content Sources** — Reddit API, Bluesky AT Protocol, GitHub trending repos, RSS Feeds, HackerNews, YouTube, and Exa.ai neural search. No paid scraper SaaS tools required.
-- **Agentic Multi-Model Pipeline** — Uses `kimi-k2.5` to intelligently invent deep search queries based on your Persona, and `claude-3.5-haiku` to categorize, grade, and structure the articles.
+- **Agentic Multi-Model Pipeline** — Uses `qwen3.6-plus` to intelligently invent deep search queries based on your Persona, and `claude-haiku-4.5` to categorize, grade, and structure the articles.
 - **Smart Deduplication** — 3-layer engine: URL normalization → fuzzy title matching (Jaro-Winkler) → historical SQLite cache.
 - **Dual Delivery Modes** — 
   1. **Telegram:** Rich HTML delivery natively sent to your chat.
@@ -37,7 +37,7 @@ A **100% free** agentic news aggregator that discovers trending AI & technology 
 ┌─────────────────────────────────────────────────────────────┐
 │  ⏰ GitHub Actions (Daily 5PM EDT Cron)                     │
 │    │                                                        │
-│    │  [1] Persona Query Generation (Kimi-k2.5)              │
+│    │  [1] Persona Query Generation (Qwen-3.6-Plus)          │
 │    ▼                                                        │
 │  ┌───────────────────────────────────────────────────────┐  │
 │  │                     NATIVE SCRAPERS                   │  │
@@ -51,7 +51,7 @@ A **100% free** agentic news aggregator that discovers trending AI & technology 
 │  └──────────────────────────┬────────────────────────────┘  │
 │                             ▼                               │
 │  ┌───────────────────────────────────────────────────────┐  │
-│  │  Categorizer LLM (Claude-3.5-Haiku JSON)              │  │
+│  │  Categorizer LLM (Claude-Haiku-4.5 JSON)              │  │
 │  └──────────────────────────┬────────────────────────────┘  │
 │                             ▼                               │
 │  ┌───────────────────────────────────────────────────────┐  │
@@ -163,10 +163,10 @@ provider = "openrouter"
 openrouter_api_key = "sk-or-x..."
 
 [llm.roles.evaluator]
-model = "anthropic/claude-3.5-haiku"  # Fast, flawless JSON parsing
+model = "anthropic/claude-haiku-4.5"  # Fast, flawless JSON parsing
 
 [llm.roles.query_generator]
-model = "moonshotai/kimi-k2.5"        # Exceptional complex search reasoning
+model = "qwen/qwen3.6-plus"        # Exceptional complex search reasoning
 ```
 
 ### Web Publishing Details
