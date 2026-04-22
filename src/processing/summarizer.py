@@ -55,6 +55,7 @@ class Summarizer:
         
         self._ollama_client = None
         self._openrouter_client = None
+        self.semaphore = asyncio.Semaphore(20)
 
     def _get_ollama_client(self):
         """Lazy-init the Ollama client."""
@@ -72,6 +73,7 @@ class Summarizer:
             self._openrouter_client = AsyncOpenAI(
                 base_url=self.openrouter_base,
                 api_key=self.openrouter_key,
+                timeout=15.0,  # Prevent hanging requests
                 default_headers={
                     "HTTP-Referer": "https://github.com/semantic-daily-bot",
                     "X-Title": "News Feed Aggregator",
@@ -93,11 +95,13 @@ class Summarizer:
             article_count=len(articles),
         )
 
-        # Process in batches to respect rate limits
-        for i in range(0, len(articles), self.batch_size):
-            batch = articles[i : i + self.batch_size]
-            tasks = [self._summarize_one(article) for article in batch]
-            await asyncio.gather(*tasks)
+        # Process all articles concurrently, bounded by semaphore
+        async def _bound_summarize(article: Article):
+            async with self.semaphore:
+                await self._summarize_one(article)
+                
+        tasks = [_bound_summarize(article) for article in articles]
+        await asyncio.gather(*tasks)
 
         success = sum(1 for a in articles if a.summary)
         fallback = len(articles) - success

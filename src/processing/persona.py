@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import json
 import re
 from typing import Any
@@ -127,61 +128,73 @@ class PersonaProcessor:
         
         eval_prompt_base = self._build_eval_system_prompt()
         
-        for i in range(0, len(articles), batch_size):
-            batch = articles[i:i+batch_size]
+        semaphore = asyncio.Semaphore(15)
+        
+        async def _eval_batch(batch: list[Article]) -> list[Article]:
             prompt = f"Persona: {self.persona}\nInterests: {', '.join(self.interests)}\n\nArticles to score:\n"
             for j, a in enumerate(batch):
                 prompt += f"[{j}] Title: {a.title}\nContent: {(a.raw_content or '')[:300]}\n\n"
             
-            try:
-                response = await self.llm_evaluator.generate(eval_prompt_base, prompt, max_tokens=2500)
-                if not response:
-                    log.warning("persona.evaluate_empty_response", batch_size=len(batch))
-                    evaluated.extend(batch)
-                    continue
-                
-                response_clean = response.strip()
-                
-                scores = []
+            async with semaphore:
                 try:
-                    match = re.search(r"\[.*\]", response_clean, re.DOTALL)
-                    json_str = match.group(0) if match else response_clean
-                    scores = json.loads(json_str)
-                except Exception as e:
-                    log.warning("persona.json_salvage_mode", error=str(e))
-                    # Salvage individual complete objects if the array is truncated
-                    for obj_str in re.findall(r"\{[^{}]*\}", response_clean):
-                        try:
-                            scores.append(json.loads(obj_str))
-                        except Exception:
-                            pass
-                
-                for score_data in scores:
-                    idx = score_data.get("index", -1)
-                    rel = score_data.get("relevance", 0)
-                    wit = score_data.get("wit", 0)
-                    raw_cat = score_data.get("category", "✨ General Updates")
+                    response = await self.llm_evaluator.generate(eval_prompt_base, prompt, max_tokens=2500)
+                    if not response:
+                        log.warning("persona.evaluate_empty_response", batch_size=len(batch))
+                        return batch
                     
-                    valid_cats = self.active_categories
-                    cat = raw_cat if raw_cat in valid_cats else (valid_cats[-1] if valid_cats else "✨ General Updates")
+                    response_clean = response.strip()
                     
-                    if 0 <= idx < len(batch):
-                        article = batch[idx]
-                        # Discard heavily irrelevant articles
-                        if rel >= 5:
-                            article.score = max(article.score, rel) # embed the relevance score
-                            article.category = cat
-                            
-                            # Add a custom tag if it's very witty to be used during summarization
-                            if wit >= 8:
-                                article.category = "🔥 Best Takes"
-                            
-                            evaluated.append(article)
+                    scores = []
+                    try:
+                        match = re.search(r"\[.*\]", response_clean, re.DOTALL)
+                        json_str = match.group(0) if match else response_clean
+                        scores = json.loads(json_str)
+                    except Exception as e:
+                        log.warning("persona.json_salvage_mode", error=str(e))
+                        # Salvage individual complete objects if the array is truncated
+                        for obj_str in re.findall(r"\{[^{}]*\}", response_clean):
+                            try:
+                                scores.append(json.loads(obj_str))
+                            except Exception:
+                                pass
+                    
+                    batch_evaluated = []
+                    for score_data in scores:
+                        idx = score_data.get("index", -1)
+                        rel = score_data.get("relevance", 0)
+                        wit = score_data.get("wit", 0)
+                        raw_cat = score_data.get("category", "✨ General Updates")
+                        
+                        valid_cats = self.active_categories
+                        cat = raw_cat if raw_cat in valid_cats else (valid_cats[-1] if valid_cats else "✨ General Updates")
+                        
+                        if 0 <= idx < len(batch):
+                            article = batch[idx]
+                            # Discard heavily irrelevant articles
+                            if rel >= 5:
+                                article.score = max(article.score, rel) # embed the relevance score
+                                article.category = cat
+                                
+                                # Add a custom tag if it's very witty to be used during summarization
+                                if wit >= 8:
+                                    article.category = "🔥 Best Takes"
+                                
+                                batch_evaluated.append(article)
+                    return batch_evaluated
 
-            except Exception as e:
-                log.warning("persona.evaluating_failed_for_batch", error=str(e))
-                # Fallback: keep them all if generation failed
-                evaluated.extend(batch)
+                except Exception as e:
+                    log.warning("persona.evaluating_failed_for_batch", error=str(e))
+                    # Fallback: keep them all if generation failed
+                    return batch
+
+        tasks = []
+        for i in range(0, len(articles), batch_size):
+            batch = articles[i:i+batch_size]
+            tasks.append(_eval_batch(batch))
+            
+        results = await asyncio.gather(*tasks)
+        for res in results:
+            evaluated.extend(res)
 
         log.info("persona.evaluated", original=len(articles), remaining=len(evaluated))
         return evaluated

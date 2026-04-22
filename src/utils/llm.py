@@ -44,6 +44,7 @@ class LLMClient:
             self._openrouter_client = AsyncOpenAI(
                 base_url=self.openrouter_base,
                 api_key=self.openrouter_key,
+                timeout=15.0,  # Prevent hanging requests
                 default_headers={
                     "HTTP-Referer": "https://github.com/semantic-daily-bot",
                     "X-Title": "News Feed Aggregator",
