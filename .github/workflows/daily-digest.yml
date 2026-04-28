@@ -26,7 +26,6 @@ jobs:
 
       - name: Run pipeline
         env:
-          CONFIG_PATH: config/config.ci.toml
           EXA_API_KEY: ${{ secrets.EXA_API_KEY }}
           BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
@@ -35,20 +34,18 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           UPSTASH_REDIS_URL: ${{ secrets.UPSTASH_REDIS_URL }}
           UPSTASH_REDIS_TOKEN: ${{ secrets.UPSTASH_REDIS_TOKEN }}
-        run: uv run semantic-daily
+        run: uv run semantic-daily --config config/config.ci.toml
 
       - name: Deploy to Surge
         env:
-          CONFIG_PATH: config/config.ci.toml
           SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
           SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
-        run: uv run publish-surge
+        run: uv run publish-surge --config config/config.ci.toml
 
       - name: Send Telegram notification
         env:
-          CONFIG_PATH: config/config.ci.toml
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           UPSTASH_REDIS_URL: ${{ secrets.UPSTASH_REDIS_URL }}
           UPSTASH_REDIS_TOKEN: ${{ secrets.UPSTASH_REDIS_TOKEN }}
-        run: uv run publish-telegram
+        run: uv run publish-telegram --config config/config.ci.toml
