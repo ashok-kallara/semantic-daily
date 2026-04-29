@@ -351,28 +351,4 @@ class HTMLPublisher:
         return full_html
 
 
-def deploy_surge_cli() -> None:
-    """Standalone CLI entry point to just deploy the /public folder to Surge.sh."""
-    import argparse
-    import subprocess
-    import sys
-    from src.utils.config import load_config
-    
-    parser = argparse.ArgumentParser(description="Deploy HTML to Surge")
-    parser.add_argument("--config", default="config/config.toml")
-    args = parser.parse_args()
-    
-    try:
-        config = load_config(args.config)
-    except FileNotFoundError:
-        print(f"Error: {args.config} not found.", file=sys.stderr)
-        sys.exit(1)
-        
-    surge_domain = config.get("web", {}).get("surge_domain", "semantic-daily.surge.sh")
-    print(f"🚀 Deploying ./public to {surge_domain} via Surge.sh...")
-    try:
-        subprocess.run(["npx", "--yes", "surge", "./public", surge_domain], check=True)
-        print("✅ Deploy successful!")
-    except subprocess.CalledProcessError as e:
-        print("❌ Deploy failed.", file=sys.stderr)
-        sys.exit(e.returncode)
+

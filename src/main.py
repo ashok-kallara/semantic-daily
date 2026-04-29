@@ -232,22 +232,7 @@ async def run_pipeline(
         # Publish HTML to docs/public folder
         html_path = await web_publisher.publish(digest)
         
-        # Deploy to Surge.sh
-        try:
-            log.info("pipeline.deploying_to_surge")
-            surge_domain = config.get("web", {}).get("surge_domain", "semantic-daily.surge.sh")
-            # Surge uses SURGE_LOGIN and SURGE_TOKEN from the environment
-            subprocess.run(
-                ["npx", "--yes", "surge", "./public", surge_domain],
-                check=True,
-                capture_output=True,
-                text=True
-            )
-            log.info("pipeline.surge_deploy_success", domain=surge_domain)
-        except subprocess.CalledProcessError as e:
-            log.warning("pipeline.surge_deploy_failed", error=e.stderr)
-        except Exception as e:
-            log.warning("pipeline.surge_deploy_failed", error=str(e))
+
         
         # Mark articles as seen in the database so they never appear in future digests
         cache.mark_batch_seen(
@@ -258,9 +243,7 @@ async def run_pipeline(
         telegram = _build_telegram(config)
         if telegram:
             web_cfg = config.get("web", {})
-            base_url = web_cfg.get("surge_domain", "semantic-daily.surge.sh").rstrip("/")
-            if base_url and not base_url.startswith("http"):
-                base_url = f"https://{base_url}"
+            base_url = web_cfg.get("base_url", "https://ashok-kallara.github.io/semantic-daily/public").rstrip("/")
             
             if base_url:
                 # Send just the link

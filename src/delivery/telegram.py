@@ -111,9 +111,7 @@ def send_latest_cli() -> None:
     sender = TelegramSender(token, chat_id, tg_cfg)
     
     web_cfg = config.get("web", {})
-    base_url = web_cfg.get("surge_domain", "semantic-daily.surge.sh").rstrip("/")
-    if base_url and not base_url.startswith("http"):
-        base_url = f"https://{base_url}"
+    base_url = web_cfg.get("base_url", "https://ashok-kallara.github.io/semantic-daily/public").rstrip("/")
         
     link = f"{base_url}/{latest_html.name}"
     header = tg_cfg.get("digest_header", "📰 Semantic Daily")
