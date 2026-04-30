@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News Digest | 2026-04-30</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+    
+:root {
+    --bg-color: #0d1117;
+    --card-bg: rgba(22, 27, 34, 0.4);
+    --hover-bg: rgba(46, 52, 60, 0.6);
+    --border: rgba(255, 255, 255, 0.08);
+    --text-main: #e6edf3;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-glow: rgba(88, 166, 255, 0.15);
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-mono: 'Fira Code', ui-monospace, monospace;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+    background-image: radial-gradient(circle at top right, rgba(46, 160, 67, 0.05), transparent 400px),
+                      radial-gradient(circle at bottom left, var(--accent-glow), transparent 400px);
+    background-attachment: fixed;
+}
+
+.container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
+
+header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.title { font-size: 2rem; font-weight: 700; margin: 0 0 0.25rem 0; }
+.subtitle { color: var(--text-muted); font-size: 0.95rem; }
+
+.stats-bar {
+    display: flex; gap: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; text-align: right;
+}
+.stat { display: flex; flex-direction: column; }
+.stat span:first-child { color: var(--text-muted); font-size: 0.75rem; }
+.stat span:last-child { color: var(--accent); font-weight: 600; }
+
+/* Tabs styling */
+.tabs-container {
+    margin-bottom: 2rem; display: flex; gap: 1rem;
+    border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+    background: transparent; border: none; color: var(--text-muted);
+    font-family: var(--font-sans); font-size: 1.1rem; font-weight: 500;
+    cursor: pointer; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s ease;
+}
+
+.tab-btn:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+.tab-btn.active { color: var(--accent); background: rgba(88, 166, 255, 0.1); font-weight: 600; }
+
+.tab-content { display: none; animation: fadeIn 0.3s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Common card styling */
+.category-group {
+    margin-bottom: 2rem; background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden; backdrop-filter: blur(8px);
+}
+
+/* Express View Accordion */
+.accordion-header {
+    width: 100%; display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.03); border: none; border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem; color: var(--text-main); font-size: 1.1rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+    cursor: pointer; transition: background 0.15s ease;
+}
+.accordion-header:hover { background: rgba(255, 255, 255, 0.06); }
+.accordion-header::after { content: '▼'; font-size: 0.8rem; transition: transform 0.3s ease; color: var(--text-muted); }
+.accordion-header.open::after { transform: rotate(-180deg); }
+.accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; background: transparent; }
+
+/* Category masonry */
+.categories-masonry { column-count: 2; column-gap: 2rem; }
+.masonry-item { break-inside: avoid; margin-bottom: 2rem; }
+.masonry-item .category-title {
+    font-size: 1rem; font-weight: 600; color: var(--text-main); margin: 0; padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+}
+
+.article-list { display: flex; flex-direction: column; }
+.article-item {
+    display: flex; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+    transition: background 0.15s ease; text-decoration: none; color: inherit; gap: 1.25rem; align-items: flex-start;
+}
+.masonry-item .article-item { padding: 0.75rem 1rem; gap: 1rem; }
+.article-item:last-child { border-bottom: none; }
+.article-item:hover { background: var(--hover-bg); }
+
+.article-item.read-article { opacity: 0.5; }
+.article-item.read-article .headline { color: var(--text-muted); }
+
+.score {
+    min-width: 45px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent);
+    background: rgba(88, 166, 255, 0.1); padding: 0.25rem 0; text-align: center; border-radius: 4px; margin-top: 0.15rem;
+}
+.content { flex: 1; min-width: 0; }
+.headline { font-weight: 500; font-size: 1.05rem; margin: 0 0 0.35rem 0; color: var(--text-main); flex-wrap: wrap; display: flex; align-items: baseline; gap: 0.5rem; }
+.summary {
+    font-size: 0.9rem; color: var(--text-muted); margin: 0; display: -webkit-box;
+    -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;
+}
+.view-all {
+    display: block; text-align: center; padding: 0.75rem; color: var(--accent); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: background 0.15s;
+}
+.view-all:hover { background: rgba(88, 166, 255, 0.05); }
+
+@media (max-width: 1024px) {
+    .categories-masonry { column-count: 1; }
+    header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .stats-bar { text-align: left; }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1 class="title">AI Pulse Digest</h1>
+                <div class="subtitle">Curated insights for 2026-04-30</div>
+            </div>
+            <div class="stats-bar">
+                <div class="stat"><span>Analyzed</span><span>1511 artifacts</span></div>
+                <div class="stat"><span>Filtered</span><span>920 dupes</span></div>
+                <div class="stat"><span>Curated</span><span>25 items</span></div>
+            </div>
+        </header>
+
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchTab(event, 'express')">✨ Highlights (Top 5)</button>
+            <button class="tab-btn" onclick="switchTab(event, 'detail')">📚 Deep Dive (All)</button>
+        </div>
+        
+        <main id="express" class="tab-content active">
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">uncategorized</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=7A4s1UtOYv0" target="_blank" class="article-item">
+                    <div class="score">↑11987</div>
+                    <div class="content">
+                        <h3 class="headline">Stop paying for AI NVIDIA made every top AI FREE</h3>
+                        <p class="summary">Join our WhatsApp Community Get the latest AI updates, tips, and insights straight to your inbox: https://join.switchit.app/YT Kimi.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=IxOtWhF9hyw" target="_blank" class="article-item">
+                    <div class="score">↑4919</div>
+                    <div class="content">
+                        <h3 class="headline">DYSTOPIAN: AI Surveillance Tech CAN SHUT DOWN YOUR CAR</h3>
+                        <p class="summary">Ryan and Emily discuss a new push for dystopian surveillance inside our cars. Sign up for a PREMIUM Breaking Points ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=pd1Km6bT104" target="_blank" class="article-item">
+                    <div class="score">↑3589</div>
+                    <div class="content">
+                        <h3 class="headline">Harvard Just Caught AI Lying to Every Executive in America</h3>
+                        <p class="summary">What 10000 readers from Coinbase, HP, and Johns Hopkins read every week → brendandell.com (Free to subscribe). A new ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=IPY5buIqSBY" target="_blank" class="article-item">
+                    <div class="score">↑3386</div>
+                    <div class="content">
+                        <h3 class="headline">Tim Pool Returns Fire | Tucker Drops 9/11 Bombshell | Ballroom or AI Bunker?</h3>
+                        <p class="summary">Clint Russell responds directly to Tim Pool's return fire, breaking down why legitimate criticisms of the U.S.-Israel relationship are ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=JNyuX1zoOgU" target="_blank" class="article-item">
+                    <div class="score">↑2272</div>
+                    <div class="content">
+                        <h3 class="headline">Demis Hassabis: Agents, AGI &amp; The Next Big Scientific Breakthrough</h3>
+                        <p class="summary">Demis Hassabis has had one of the most extraordinary careers in tech. He started as a chess prodigy and video game designer at ...</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 25 articles in uncategorized →</a>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+        <main id="detail" class="tab-content categories-masonry">
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">uncategorized</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=7A4s1UtOYv0" target="_blank" class="article-item">
+                    <div class="score">↑11987</div>
+                    <div class="content">
+                        <h3 class="headline">Stop paying for AI NVIDIA made every top AI FREE</h3>
+                        <p class="summary">Join our WhatsApp Community Get the latest AI updates, tips, and insights straight to your inbox: https://join.switchit.app/YT Kimi.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=IxOtWhF9hyw" target="_blank" class="article-item">
+                    <div class="score">↑4919</div>
+                    <div class="content">
+                        <h3 class="headline">DYSTOPIAN: AI Surveillance Tech CAN SHUT DOWN YOUR CAR</h3>
+                        <p class="summary">Ryan and Emily discuss a new push for dystopian surveillance inside our cars. Sign up for a PREMIUM Breaking Points ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=pd1Km6bT104" target="_blank" class="article-item">
+                    <div class="score">↑3589</div>
+                    <div class="content">
+                        <h3 class="headline">Harvard Just Caught AI Lying to Every Executive in America</h3>
+                        <p class="summary">What 10000 readers from Coinbase, HP, and Johns Hopkins read every week → brendandell.com (Free to subscribe). A new ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=IPY5buIqSBY" target="_blank" class="article-item">
+                    <div class="score">↑3386</div>
+                    <div class="content">
+                        <h3 class="headline">Tim Pool Returns Fire | Tucker Drops 9/11 Bombshell | Ballroom or AI Bunker?</h3>
+                        <p class="summary">Clint Russell responds directly to Tim Pool's return fire, breaking down why legitimate criticisms of the U.S.-Israel relationship are ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=JNyuX1zoOgU" target="_blank" class="article-item">
+                    <div class="score">↑2272</div>
+                    <div class="content">
+                        <h3 class="headline">Demis Hassabis: Agents, AGI &amp; The Next Big Scientific Breakthrough</h3>
+                        <p class="summary">Demis Hassabis has had one of the most extraordinary careers in tech. He started as a chess prodigy and video game designer at ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/cursor/cookbook" target="_blank" class="article-item">
+                    <div class="score">↑2270</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Weekly Top Repos): cursor/cookbook</h3>
+                        <p class="summary">Language: TypeScript
+Description: No description provided.</p>
+                    </div>
+                </a>
+                
+                <a href="https://zed.dev/blog/zed-1-0" target="_blank" class="article-item">
+                    <div class="score">↑1916</div>
+                    <div class="content">
+                        <h3 class="headline">Zed 1.0</h3>
+                        <p class="summary">Nathan Sobo April 29th, 2026 To create a fundamentally better editor, we had to invent a new approach to building desktop software. Our previous editor, Atom , was built as a fork of Chromium,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=gFqzzOgaFlg" target="_blank" class="article-item">
+                    <div class="score">↑1861</div>
+                    <div class="content">
+                        <h3 class="headline">Can Taylor Swift protect her voice from A.I.? | April 29, 2026</h3>
+                        <p class="summary">Today on CNN10: We'll get the latest on Elon Musk's lawsuit against ChatGPT parent company OpenAI as it heads to trial this ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=dQK_pTXrGDk" target="_blank" class="article-item">
+                    <div class="score">↑1275</div>
+                    <div class="content">
+                        <h3 class="headline">Salesforce Killed The Browser. Every Agent Runs Your CRM Now.</h3>
+                        <p class="summary">Full Story w/ Prompt Kit: ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/anthropics/claude-code/issues/53262" target="_blank" class="article-item">
+                    <div class="score">↑1161</div>
+                    <div class="content">
+                        <h3 class="headline">HERMES.md in commit messages causes requests to route to extra usage billing</h3>
+                        <p class="summary">anthropics / claude-code Public Notifications You must be signed in to change notification settings Fork 19.8k Star 119k HERMES.md in git commit messages causes requests to route to extra usage...</p>
+                    </div>
+                </a>
+                
+                <a href="https://copy.fail/" target="_blank" class="article-item">
+                    <div class="score">↑1078</div>
+                    <div class="content">
+                        <h3 class="headline">Copy Fail</h3>
+                        <p class="summary">Copy Fail — CVE-2026-31431 Copy Fail CVE-2026-31431 Exploit Mitigation FAQ Timeline Contact The demo Same script, four distributions, four root shells &mdash; in one take. The same exploit binary...</p>
+                    </div>
+                </a>
+                
+                <a href="https://neal.fun/cursor-camp/" target="_blank" class="article-item">
+                    <div class="score">↑1007</div>
+                    <div class="content">
+                        <h3 class="headline">Cursor Camp</h3>
+                        <p class="summary">Cursor Camp</p>
+                    </div>
+                </a>
+                
+                <a href="https://x.com/GlennMeder/status/2049088498163216560" target="_blank" class="article-item">
+                    <div class="score">↑902</div>
+                    <div class="content">
+                        <h3 class="headline">Online age verification is the hill to die on</h3>
+                        <p class="summary">https://xcancel.com/GlennMeder/status/2049088498163216560</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=3TIL611HgvE" target="_blank" class="article-item">
+                    <div class="score">↑900</div>
+                    <div class="content">
+                        <h3 class="headline">Gemini 4.0 Soon, GPT 5.6 Spotted, NEW Open AI Labs, Codex Model, AI Robots &amp; More! HUGE AI NEWS!</h3>
+                        <p class="summary">If you want to launch your own AI agents with zero setup and save serious money, use my link ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/ps5-linux/ps5-linux-loader" target="_blank" class="article-item">
+                    <div class="score">↑678</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Weekly Top Repos): ps5-linux/ps5-linux-loader</h3>
+                        <p class="summary">Language: C
+Description: Linux payload implementing the HV exploit and a custom bootloader</p>
+                    </div>
+                </a>
+                
+                <a href="https://jointhefreeworld.org/blog/articles/lisps/why-i-still-reach-for-scheme-instead-of-haskell/index.html" target="_blank" class="article-item">
+                    <div class="score">↑239</div>
+                    <div class="content">
+                        <h3 class="headline">Why I still reach for Lisp and Scheme instead of Haskell</h3>
+                        <p class="summary">Why I Still Reach for Scheme and Lisp Instead of Haskell - jointhefreeworld jointhefreeworld.org Why I Still Reach for Scheme and Lisp Instead of Haskell estimated reading time: 10 minutes written...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/hear-the-sirens.bsky.social/post/3mkhdgzhekc2w" target="_blank" class="article-item">
+                    <div class="score">↑150</div>
+                    <div class="content">
+                        <h3 class="headline">Post by hear-the-sirens.bsky.social</h3>
+                        <p class="summary">#nude #naked #topless #longhair #tits #titties #boobs #ai #aiart #aiCommunity #ainsfw #nsfw #aigirl #breasts #exhibitionist #flashing #nipples #sexy #nudist #naturist #smalltits #pussy #beautiful...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/dreampass1.bsky.social/post/3mklr25rqus2x" target="_blank" class="article-item">
+                    <div class="score">↑149</div>
+                    <div class="content">
+                        <h3 class="headline">Post by ゆっきー</h3>
+                        <p class="summary">おはようございます☀️
+本日もよろしくお願いします💫
+
+#AIイラスト
+#AI</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.cnbc.com/2026/04/28/openai-brings-models-to-aws-after-ending-exclusivity-with-microsoft.html" target="_blank" class="article-item">
+                    <div class="score">↑100</div>
+                    <div class="content">
+                        <h3 class="headline">OpenAI brings models to AWS after ending exclusivity with Microsoft</h3>
+                        <p class="summary">OpenAI brings models to AWS after ending exclusivity with Microsoft
+
+Key Points
+
+- OpenAI’s generative AI models are becoming available on Amazon’s cloud a day after the AI company revamped its...</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/04/28/google-expands-pentagons-access-to-its-ai-after-anthropics-refusal/" target="_blank" class="article-item">
+                    <div class="score">↑97</div>
+                    <div class="content">
+                        <h3 class="headline">Google expands Pentagon's access to its AI after Anthropic's refusal | TechCrunch</h3>
+                        <p class="summary">Google expands Pentagon's access to its AI after Anthropic's refusal | TechCrunch
+
+–:–:–:–
+
+The first StrictlyVC of 2026 hits SF on April 30. Tickets are going fast. Register now.
+
+The first...</p>
+                    </div>
+                </a>
+                
+                <a href="https://thegtmnewsletter.substack.com/p/okta-ai-agents-identity-security-crisis-jon-addison" target="_blank" class="article-item">
+                    <div class="score">↑97</div>
+                    <div class="content">
+                        <h3 class="headline">Okta for AI Agents: Identity Security Crisis</h3>
+                        <p class="summary">Okta for AI Agents: Identity Security Crisis
+
+SubscribeSign in
+
+The GTMnow Podcast
+
+GTM: What Flipped Okta from $850M in Losses to $760M Profit
+
+0:00
+
+-40:18
+
+Audio playback is not supported on your...</p>
+                    </div>
+                </a>
+                
+                <a href="https://finance.yahoo.com/sectors/technology/articles/amazon-targets-mass-hiring-agentic-160051472.html" target="_blank" class="article-item">
+                    <div class="score">↑95</div>
+                    <div class="content">
+                        <h3 class="headline">Amazon targets mass hiring with agentic software, goal to humanize AI</h3>
+                        <p class="summary">Amazon targets mass hiring with agentic software, goal to humanize AI
+
+Oops, something went wrong
+
+#### WATCH
+
+Earnings bonanza with Amazon, Microsoft, Meta, and Alphabet reporting
+
+# Amazon targets...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/judyfaylondon.bsky.social/post/3mknmyuy55k2m" target="_blank" class="article-item">
+                    <div class="score">↑60</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Judy Fay London</h3>
+                        <p class="summary">www.youtube.com/watch?v=evQa...
+
+#letstalk #IndustrialRevolution #youtubevideo #Youtubechannel #video #AI #robots #humanfuture #future</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/gamingonlinux.com/post/3mkl5lzd4522g" target="_blank" class="article-item">
+                    <div class="score">↑60</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Liam @ GamingOnLinux</h3>
+                        <p class="summary">Canonical clarify their AI plans for Ubuntu Linux - opt-in and easy to remove (fixed the title, third times the charm eh)
+
+Link: www.gamingonlinux.com/2026/04/cano...
+
+#Linux #Ubuntu #AI</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/bloomberg.com/post/3mkhonw2z572u" target="_blank" class="article-item">
+                    <div class="score">↑60</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Bloomberg News</h3>
+                        <p class="summary">China is blocking Meta’s $2 billion acquisition of agentic AI startup Manus, making a surprise move to unwind a controversial deal that’s drawn fire for the leakage of technology to the US. Read...</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+        </main>
+    </div>
+    <script>
+        // Open all accordions by default
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                toggleAccordion(header);
+            });
+        });
+
+        // Tab Switching Logic
+        function switchTab(e, tabId) {
+            if (e) e.preventDefault();
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // If triggered by a tab button, set it active, else find the tab button for that tabId
+            let tabBtn = (e && e.target && e.target.classList.contains('tab-btn')) ? e.target : document.querySelector(`.tab-btn[onclick*="${tabId}"]`);
+            if (tabBtn) tabBtn.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            // scroll to top if clicked view all
+            if (e && e.target && e.target.classList.contains('view-all')) {
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // Accordion Logic
+        function toggleAccordion(headerElement) {
+            headerElement.classList.toggle('open');
+            const body = headerElement.nextElementSibling;
+            if (headerElement.classList.contains('open')) {
+                body.style.maxHeight = body.scrollHeight + "px";
+            } else {
+                body.style.maxHeight = "0";
+            }
+        }
+
+        // Read article persistence
+        document.addEventListener("DOMContentLoaded", () => {
+            const STORAGE_KEY = "read_articles";
+            let readArticles = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+            
+            document.querySelectorAll('.article-item').forEach(item => {
+                const url = item.getAttribute('href');
+                if (readArticles.has(url)) {
+                    item.classList.add('read-article');
+                }
+                
+                item.addEventListener('click', () => {
+                    readArticles.add(url);
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify([...readArticles]));
+                    
+                    // Mark all identically-linked items read
+                    document.querySelectorAll(`.article-item[href="${url}"]`).forEach(i => i.classList.add('read-article'));
+                });
+            });
+        });
+    </script>
+</body>
+</html>
