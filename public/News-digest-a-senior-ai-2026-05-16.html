@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News Digest | 2026-05-16</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+    
+:root {
+    --bg-color: #0d1117;
+    --card-bg: rgba(22, 27, 34, 0.4);
+    --hover-bg: rgba(46, 52, 60, 0.6);
+    --border: rgba(255, 255, 255, 0.08);
+    --text-main: #e6edf3;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-glow: rgba(88, 166, 255, 0.15);
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-mono: 'Fira Code', ui-monospace, monospace;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+    background-image: radial-gradient(circle at top right, rgba(46, 160, 67, 0.05), transparent 400px),
+                      radial-gradient(circle at bottom left, var(--accent-glow), transparent 400px);
+    background-attachment: fixed;
+}
+
+.container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
+
+header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.title { font-size: 2rem; font-weight: 700; margin: 0 0 0.25rem 0; }
+.subtitle { color: var(--text-muted); font-size: 0.95rem; }
+
+.stats-bar {
+    display: flex; gap: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; text-align: right;
+}
+.stat { display: flex; flex-direction: column; }
+.stat span:first-child { color: var(--text-muted); font-size: 0.75rem; }
+.stat span:last-child { color: var(--accent); font-weight: 600; }
+
+/* Tabs styling */
+.tabs-container {
+    margin-bottom: 2rem; display: flex; gap: 1rem;
+    border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+    background: transparent; border: none; color: var(--text-muted);
+    font-family: var(--font-sans); font-size: 1.1rem; font-weight: 500;
+    cursor: pointer; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s ease;
+}
+
+.tab-btn:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+.tab-btn.active { color: var(--accent); background: rgba(88, 166, 255, 0.1); font-weight: 600; }
+
+.tab-content { display: none; animation: fadeIn 0.3s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Common card styling */
+.category-group {
+    margin-bottom: 2rem; background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden; backdrop-filter: blur(8px);
+}
+
+/* Express View Accordion */
+.accordion-header {
+    width: 100%; display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.03); border: none; border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem; color: var(--text-main); font-size: 1.1rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+    cursor: pointer; transition: background 0.15s ease;
+}
+.accordion-header:hover { background: rgba(255, 255, 255, 0.06); }
+.accordion-header::after { content: '▼'; font-size: 0.8rem; transition: transform 0.3s ease; color: var(--text-muted); }
+.accordion-header.open::after { transform: rotate(-180deg); }
+.accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; background: transparent; }
+
+/* Category masonry */
+.categories-masonry { column-count: 2; column-gap: 2rem; }
+.masonry-item { break-inside: avoid; margin-bottom: 2rem; }
+.masonry-item .category-title {
+    font-size: 1rem; font-weight: 600; color: var(--text-main); margin: 0; padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+}
+
+.article-list { display: flex; flex-direction: column; }
+.article-item {
+    display: flex; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+    transition: background 0.15s ease; text-decoration: none; color: inherit; gap: 1.25rem; align-items: flex-start;
+}
+.masonry-item .article-item { padding: 0.75rem 1rem; gap: 1rem; }
+.article-item:last-child { border-bottom: none; }
+.article-item:hover { background: var(--hover-bg); }
+
+.article-item.read-article { opacity: 0.5; }
+.article-item.read-article .headline { color: var(--text-muted); }
+
+.score {
+    min-width: 45px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent);
+    background: rgba(88, 166, 255, 0.1); padding: 0.25rem 0; text-align: center; border-radius: 4px; margin-top: 0.15rem;
+}
+.content { flex: 1; min-width: 0; }
+.headline { font-weight: 500; font-size: 1.05rem; margin: 0 0 0.35rem 0; color: var(--text-main); flex-wrap: wrap; display: flex; align-items: baseline; gap: 0.5rem; }
+.summary {
+    font-size: 0.9rem; color: var(--text-muted); margin: 0; display: -webkit-box;
+    -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;
+}
+.view-all {
+    display: block; text-align: center; padding: 0.75rem; color: var(--accent); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: background 0.15s;
+}
+.view-all:hover { background: rgba(88, 166, 255, 0.05); }
+
+@media (max-width: 1024px) {
+    .categories-masonry { column-count: 1; }
+    header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .stats-bar { text-align: left; }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1 class="title">AI Pulse Digest</h1>
+                <div class="subtitle">Curated insights for 2026-05-16</div>
+            </div>
+            <div class="stats-bar">
+                <div class="stat"><span>Analyzed</span><span>800 artifacts</span></div>
+                <div class="stat"><span>Filtered</span><span>429 dupes</span></div>
+                <div class="stat"><span>Curated</span><span>61 items</span></div>
+            </div>
+        </header>
+
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchTab(event, 'express')">✨ Highlights (Top 5)</button>
+            <button class="tab-btn" onclick="switchTab(event, 'detail')">📚 Deep Dive (All)</button>
+        </div>
+        
+        <main id="express" class="tab-content active">
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🔄 Claude Alternatives</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=PTVQoavJJqw" target="_blank" class="article-item">
+                    <div class="score">↑6412</div>
+                    <div class="content">
+                        <h3 class="headline">FREE Codex or 50% more Claude? #codex #claude #anthropic #openai #chatgpt #freeai #ainews</h3>
+                        <p class="summary">OpenAI offers free Codex access to users with a work email via application review, providing a free AI coding tool.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=2fb_N_uk_9w" target="_blank" class="article-item">
+                    <div class="score">↑3029</div>
+                    <div class="content">
+                        <h3 class="headline">I Switched From Claude to ChatGPT (the difference is insane)</h3>
+                        <p class="summary">The author switched from Claude to ChatGPT, highlighting significant performance differences, likely in AI capabilities or user experience. This matters for users choosing between leading AI models.</p>
+                    </div>
+                </a>
+                
+                <a href="https://gowers.wordpress.com/2026/05/08/a-recent-experience-with-chatgpt-5-5-pro/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">A recent experience with ChatGPT 5.5 Pro (28 minute read)</h3>
+                        <p class="summary">ChatGPT 5.5 Pro can produce PhD-level research in an hour without human math input, spotting easy arguments missed by human mathematicians, signaling a major leap in LLM research capabilities.</p>
+                    </div>
+                </a>
+                
+                <a href="https://openai.com/index/gpt-5-5-instant/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">GPT-5.5 Instant (8 minute read)</h3>
+                        <p class="summary">OpenAI released GPT-5.5 Instant, enhancing ChatGPT's accuracy and personalization. This update reduces hallucinations and improves factual reliability for all users.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🚀 Open Source LLMs</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=Oy7tzmfbl64" target="_blank" class="article-item">
+                    <div class="score">↑2414</div>
+                    <div class="content">
+                        <h3 class="headline">AI News: Impressive New Model From Unexpected Company</h3>
+                        <p class="summary">An unexpected company released a new AI model that balances performance and budget, making it a notable development in the AI landscape this week.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=8Ddjy1nlOWA" target="_blank" class="article-item">
+                    <div class="score">↑1730</div>
+                    <div class="content">
+                        <h3 class="headline">How Meta Went From Open Source Hero to AI&#39;s Biggest Villain</h3>
+                        <p class="summary">Meta released a frontier AI model for free in 2023, earning open-source praise, but two years later faces backlash as the risks of uncontrolled AI access make it a target for criticism.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=1go9zcZ0tzU" target="_blank" class="article-item">
+                    <div class="score">↑993</div>
+                    <div class="content">
+                        <h3 class="headline">This Free AI Makes Your Characters Actually Act</h3>
+                        <p class="summary">Open-source AI tools for voice and lip-syncing characters were upgraded this week, enabling more realistic character animation. This matters because it makes advanced AI accessible for creators, reducing costs and barriers in film, gaming, and virtual content.</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/chiennv2000/orthrus" target="_blank" class="article-item">
+                    <div class="score">↑111</div>
+                    <div class="content">
+                        <h3 class="headline">Orthrus-Qwen3: up to 7.8×tokens/forward on Qwen3, identical output distribution</h3>
+                        <p class="summary">Orthrus-Qwen3 is a dual-architecture framework combining autoregressive LLMs with diffusion models, achieving up to 7.8× faster token generation on Qwen3 models while preserving identical, lossless output distribution.</p>
+                    </div>
+                </a>
+                
+                <a href="https://letsdatascience.com/news/igor-babuschkin-seeks-up-to-1-billion-for-river-ai-8c36ce09?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Igor Babuschkin Seeks Up To $1 Billion For River AI (3 minute read)</h3>
+                        <p class="summary">Igor Babuschkin, an xAI cofounder, is seeking up to $1 billion for his new AI startup River AI, investing $100 million of his own money. This signals major investor confidence in the competitive AI sector.</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 8 articles in 🚀 Open Source LLMs →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🌍 Global Politics</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=wQssPiH6etE" target="_blank" class="article-item">
+                    <div class="score">↑1921</div>
+                    <div class="content">
+                        <h3 class="headline">Trump says US is beating China in AI. This expert disagrees</h3>
+                        <p class="summary">Trump claims US leads in AI, but experts disagree, citing China's rapid progress after DeepSeek's powerful model in early 2025.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=JNqdbeSUcxI" target="_blank" class="article-item">
+                    <div class="score">↑683</div>
+                    <div class="content">
+                        <h3 class="headline">US–China Deal Over Taiwan? #Taiwan #Trump #XiJinping #China #America #USChina #geopoliticsinhindi</h3>
+                        <p class="summary">Trump and Xi meet in Beijing, sparking Taiwan concern over a potential US-China deal. The outcome could reshape Taiwan's geopolitical status.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/05/15/us-orders-travelers-on-air-force-one-to-throw-away-gifts-pins-and-burner-phones-after-china-trip/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">US orders travelers on Air Force One to throw away gifts, pins, and burner phones after China trip</h3>
+                        <p class="summary">US officials on Air Force One returning from China were ordered to discard gifts, pins, and burner phones due to espionage concerns, highlighting ongoing security risks with China as an adversary.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.bloomberg.com/news/articles/2026-05-14/openai-apple-partnership-frays-setting-up-possible-legal-fight?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb3VyY2UiOiJTdWJzY3JpYmVyR2lmdGVkQXJ0aWNsZSIsImlhdCI6MTc3ODgwODQxNCwiZXhwIjoxNzc5NDEzMjE0LCJhcnRpY2xlSWQiOiJURVpMRE5UOTZPU0cwMCIsImJjb25uZWN0SWQiOiJFQTExNDNDNTM4NEE0RUY5QTg5RjJEN0IxMTg2MzcwOSJ9.Rx3cIpDtWG_sRBVrYv3CCdFlAtoG1KWjDD-YuXS47Gk&utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Apple-OpenAI Alliance Frays, Setting Up Possible Legal Fight (9 minute read)</h3>
+                        <p class="summary">OpenAI is preparing potential legal action against Apple over its two-year partnership, citing unmet expectations for user subscriptions and ecosystem integration. This matters as Apple plans to open its platform to rivals, escalating tensions.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🔥 Best Takes</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://twitter.com/mitchellh/status/2055380239711457578" target="_blank" class="article-item">
+                    <div class="score">↑1444</div>
+                    <div class="content">
+                        <h3 class="headline">I believe there are entire companies right now under AI psychosis</h3>
+                        <p class="summary">"I believe there are entire companies right now under AI psychosis"</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.astralcodexten.com/p/the-sigmoids-wont-save-you" target="_blank" class="article-item">
+                    <div class="score">↑218</div>
+                    <div class="content">
+                        <h3 class="headline">The sigmoids won't save you</h3>
+                        <p class="summary">"All exponentials eventually become sigmoids" is just a fancy way of saying 'don't worry, the robot uprising will get bored before it finishes.'</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/science/2026/05/preprint-server-arxiv-will-ban-submitters-of-ai-generated-hallucinations/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Send the arXiv AI-generated slop, get a yearlong vacation from submissions</h3>
+                        <p class="summary">"AI-generated slop has shown up everywhere, including in the peer-reviewed literature."</p>
+                    </div>
+                </a>
+                
+                <a href="https://medium.com/design-bootcamp/the-most-important-design-system-in-2026-that-designers-missed-was-built-by-a-developer-d5617753882e?utm_source=tldrdesign" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">The most important Design System in 2026 that designers missed was built by a developer (9 minute read)</h3>
+                        <p class="summary">"shadcn/ui: the design system designers didn't even see coming—because a developer built it."</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">📈 Tech Policy</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=TXGlCdG0Rww" target="_blank" class="article-item">
+                    <div class="score">↑610</div>
+                    <div class="content">
+                        <h3 class="headline">In China, artificial intelligence isn’t the future. It’s already here</h3>
+                        <p class="summary">Selina Wang reports on how artificial intelligence is already deeply integrated into daily life in China, highlighting its current impact during a presidential visit.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/gaming/2026/05/bill-to-keep-online-games-playable-clears-key-hurdle-in-california/" target="_blank" class="article-item">
+                    <div class="score">↑499</div>
+                    <div class="content">
+                        <h3 class="headline">Bill to block publishers from killing online games advances in California</h3>
+                        <p class="summary">California's Protect Our Games Act, backed by Stop Killing Games, advances to a floor vote. It would require publishers to refund or provide offline versions when ending online game support, opposing ESA lobbyists.</p>
+                    </div>
+                </a>
+                
+                <a href="https://macdailynews.com/2026/05/15/u-s-doj-demands-apple-and-google-unmask-over-100000-users-of-popular-car-tinkering-app-in-emissions-crackdown/" target="_blank" class="article-item">
+                    <div class="score">↑432</div>
+                    <div class="content">
+                        <h3 class="headline">U.S. DOJ demands Apple and Google unmask over 100k users of car-tinkering app</h3>
+                        <p class="summary">DOJ subpoenas Apple, Google, Amazon, and Walmart for personal data on over 100,000 users of EZ Lynk's car-tinkering app, allegedly used to bypass emissions controls. EZ Lynk denies wrongdoing, raising privacy concerns over the government's fishing expedition for witnesses.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.fastcompany.com/91541586/amazon-workers-pressured-to-up-ai-use-extraneous-tasks" target="_blank" class="article-item">
+                    <div class="score">↑358</div>
+                    <div class="content">
+                        <h3 class="headline">Amazon workers under pressure to up their AI usage are making up tasks</h3>
+                        <p class="summary">Amazon workers, pressured to boost AI usage, are fabricating tasks to meet quotas, raising concerns about productivity metrics and worker morale.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=_U6_GULJsXY" target="_blank" class="article-item">
+                    <div class="score">↑198</div>
+                    <div class="content">
+                        <h3 class="headline">Morning Call Sheet: AI rally masks growing cracks beneath markets</h3>
+                        <p class="summary">AI rally masks market weaknesses, with experts Peter Boockvar, Henrietta Treyz, and Jay Woods highlighting growing cracks beneath the surface, signaling potential risks for investors.</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 19 articles in 📈 Tech Policy →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">⭐ GitHub AI Projects</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://blog.zulip.com/2026/05/15/announcing-zulip-foundation/" target="_blank" class="article-item">
+                    <div class="score">↑277</div>
+                    <div class="content">
+                        <h3 class="headline">The Zulip Foundation</h3>
+                        <p class="summary">The Zulip open-source project's creator, Tim Abbott, is stepping back to join Anthropic, donating Kandra Labs to a new nonprofit Zulip Foundation to ensure Zulip's long-term stability and independence.</p>
+                    </div>
+                </a>
+                
+                <a href="https://radicle.dev/" target="_blank" class="article-item">
+                    <div class="score">↑244</div>
+                    <div class="content">
+                        <h3 class="headline">Radicle: Sovereign {code forge} built on Git</h3>
+                        <p class="summary">Radicle is an open-source, peer-to-peer code forge built on Git, offering decentralized, censorship-resistant collaboration where users control their data and workflow.</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/neilsonnn/image-blaster" target="_blank" class="article-item">
+                    <div class="score">↑165</div>
+                    <div class="content">
+                        <h3 class="headline">Image-blaster: Creates 3D environments, SFX, and meshes from a single image</h3>
+                        <p class="summary">Image-blaster is a new tool that creates 3D environments, sound effects, and meshes from a single image in under 5 minutes using Claude, World Labs, and FAL, enabling rapid 3D workflow jumpstarts for game engines and design software.</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/nkzw-tech/fate?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">fate (GitHub Repo)</h3>
+                        <p class="summary">Fate is a new React data client that combines normalized caching, view composition, and type-safe fetching to eliminate overfetching and boilerplate. It matters because it offers a minimal, declarative alternative to existing data management solutions.</p>
+                    </div>
+                </a>
+                
+                <a href="https://antirez.com/news/165?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">A few words on DS4 (3 minute read)</h3>
+                        <p class="summary">DwarfStar 4 aims to improve quality benchmarks, add a coding agent, and enable local CI testing with distributed inference for long-term project stability.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🤖 Agentic AI Systems</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://bsky.app/profile/dandekadt.bsky.social/post/3mlqug5t2m22v" target="_blank" class="article-item">
+                    <div class="score">↑27</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Dan de Kadt</h3>
+                        <p class="summary">Dan de Kadt suggests using agentic AI to track deviations from a project plan (PAP) from the start, packaging them as a table in the appendix to improve workflow efficiency.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/05/14/what-happens-when-ai-starts-building-itself/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">What happens when AI starts building itself?</h3>
+                        <p class="summary">Richard Socher launched a $650 million startup to create an AI that self-improves indefinitely, aiming to ship real products. This matters as it pushes autonomous AI development, raising stakes for safety and competition.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theverge.com/ai-artificial-intelligence/931544/openai-keeps-shuffling-its-executives-in-bid-to-win-ai-agent-battle" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">OpenAI keeps shuffling its executives in bid to win AI agent battle</h3>
+                        <p class="summary">OpenAI reorganized again, making Greg Brockman product lead to go all-in on AI agents, merging ChatGPT and Codex into a unified platform.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theverge.com/ai-artificial-intelligence/931479/andon-labs-ai-radio-companies" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">AI radio hosts demonstrate why AI can’t be trusted alone</h3>
+                        <p class="summary">Andon Labs' experiment with AI-run radio stations failed as all four models burned through $20 seed money and developed volatile personalities, demonstrating AI's unreliability in autonomous business operations.</p>
+                    </div>
+                </a>
+                
+                <a href="https://blog.sentry.io/introducing-seer-agent/?utm_source=tldr&amp;utm_medium=paid-community&amp;utm_campaign=seer-fy27q2-seeragent&amp;utm_content=newsletter-primary-launch-blog-learnmore" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">It would have taken at least 30 minutes to find root cause. Seer Agent had it in seconds (Sponsor)</h3>
+                        <p class="summary">Sentry's AI debugger Seer failed due to an upstream outage, but its new Seer Agent diagnosed the root cause in seconds—a task that would have taken 30 minutes manually.</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 7 articles in 🤖 Agentic AI Systems →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🧠 AI Research Frontiers</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://arxiv.org/abs/2605.12357" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Δ-Mem: Efficient Online Memory for Large Language Models</h3>
+                        <p class="summary">Δ-Mem introduces an efficient online memory mechanism for large language models, improving context retention without excessive computational cost.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theverge.com/science/931766/arxiv-ai-slop-ban-researchers" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">ArXiv will ban researchers who upload papers full of AI slop</h3>
+                        <p class="summary">ArXiv will ban authors for one year if papers contain obvious AI-generated errors like hallucinated references. This policy aims to reduce low-quality AI slop and requires future submissions to be accepted at reputable venues.</p>
+                    </div>
+                </a>
+                
+                <a href="https://huggingface.co/blog/continuous_async?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Unlocking asynchronicity in continuous batching (20 minute read)</h3>
+                        <p class="summary">Asynchronous batching using CUDA streams eliminates idle gaps between CPU and GPU cycles, improving GPU utilization by 22% for inference without changing kernels or models, enhancing generation speed.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.cnbc.com/2026/05/13/google-deepmind-alumni-startup-partners-nvidia-superintelligence.html?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Nvidia's Jensen Huang bets on this British startup to build 'next frontier' of AI (3 minute read)</h3>
+                        <p class="summary">Nvidia partners with Ineffable Intelligence, a startup founded by ex-DeepMind lead David Silver, to pursue superintelligence, betting on this as the next frontier of AI.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🛠️ Low-Code AI Tools</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://techcrunch.com/2026/05/15/openai-launches-chatgpt-for-personal-finance-will-let-you-connect-bank-accounts/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">OpenAI launches ChatGPT for personal finance, will let you connect bank accounts</h3>
+                        <p class="summary">OpenAI launched a ChatGPT feature that connects to users' bank accounts to display a financial dashboard, including spending and subscriptions. This expands AI into personal finance management, raising privacy and security considerations.</p>
+                    </div>
+                </a>
+                
+                <a href="https://hs.playerzero.ai/ai-code-review?utm_campaign=44330137-Q2-2026-TLDR-Newsletter&amp;utm_source=email&amp;utm_medium=email&amp;utm_content=TLDR-5-15-26" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Beyond AI Code Review: Why You Need Code Simulation at Scale (Sponsor)</h3>
+                        <p class="summary">AI code review tools miss system-wide risks like configurations and dependencies under load. Code simulation offers a better way to predict production failures before deployment.</p>
+                    </div>
+                </a>
+                
+                <a href="https://threadreaderapp.com/thread/2055032115964870838.html?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Codex is getting easier to automate and customize around your code (1 minute read)</h3>
+                        <p class="summary">Codex introduced hooks and programmatic tokens for easier code automation and customization. Hooks run scripts at key task points; scoped credentials are available for Business and Enterprise teams.</p>
+                    </div>
+                </a>
+                
+                <a href="https://openai.com/index/work-with-codex-from-anywhere/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Work with Codex from anywhere (6 minute read)</h3>
+                        <p class="summary">Codex is now accessible via the ChatGPT mobile app, enabling developers to remotely continue coding work from laptops or devboxes, enhancing flexibility and productivity.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🔍 RAG Architectures</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.glean.com/blog/cowork-mcp-eval?utm_source=3rd-party&utm_medium=email&utm_campaign=mcp-eval-benchmark&utm_partner=tldr" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Glean preferred 2.5x as often as off-the-shelf MCP. Here's why (Sponsor)</h3>
+                        <p class="summary">Glean’s context layer is preferred 2.5x more than off-the-shelf MCP, which uses 30% more tokens and fails to handle knowledge—MCP only defines tool communication, not what tools know.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">💬 Conversational Analytics</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.datadoghq.com/resources/state-of-ai-engineering/?utm_source=tldrnewsletter&amp;utm_medium=newsletter&amp;utm_campaign=dg-coreplatform-ww-stateofai-tldr" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">What LLM telemetry from 1,000+ orgs reveals about how teams use AI at scale (Sponsor)</h3>
+                        <p class="summary">Datadog's report on LLM telemetry from 1,000+ organizations reveals teams are shifting to multi-model setups, compounding tech debt, and doubling agent framework adoption, while prompt caching remains underused—key insights for scaling AI observability.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+        <main id="detail" class="tab-content categories-masonry">
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🔄 Claude Alternatives</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=PTVQoavJJqw" target="_blank" class="article-item">
+                    <div class="score">↑6412</div>
+                    <div class="content">
+                        <h3 class="headline">FREE Codex or 50% more Claude? #codex #claude #anthropic #openai #chatgpt #freeai #ainews</h3>
+                        <p class="summary">OpenAI offers free Codex access to users with a work email via application review, providing a free AI coding tool.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=2fb_N_uk_9w" target="_blank" class="article-item">
+                    <div class="score">↑3029</div>
+                    <div class="content">
+                        <h3 class="headline">I Switched From Claude to ChatGPT (the difference is insane)</h3>
+                        <p class="summary">The author switched from Claude to ChatGPT, highlighting significant performance differences, likely in AI capabilities or user experience. This matters for users choosing between leading AI models.</p>
+                    </div>
+                </a>
+                
+                <a href="https://gowers.wordpress.com/2026/05/08/a-recent-experience-with-chatgpt-5-5-pro/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">A recent experience with ChatGPT 5.5 Pro (28 minute read)</h3>
+                        <p class="summary">ChatGPT 5.5 Pro can produce PhD-level research in an hour without human math input, spotting easy arguments missed by human mathematicians, signaling a major leap in LLM research capabilities.</p>
+                    </div>
+                </a>
+                
+                <a href="https://openai.com/index/gpt-5-5-instant/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">GPT-5.5 Instant (8 minute read)</h3>
+                        <p class="summary">OpenAI released GPT-5.5 Instant, enhancing ChatGPT's accuracy and personalization. This update reduces hallucinations and improves factual reliability for all users.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🚀 Open Source LLMs</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=Oy7tzmfbl64" target="_blank" class="article-item">
+                    <div class="score">↑2414</div>
+                    <div class="content">
+                        <h3 class="headline">AI News: Impressive New Model From Unexpected Company</h3>
+                        <p class="summary">An unexpected company released a new AI model that balances performance and budget, making it a notable development in the AI landscape this week.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=8Ddjy1nlOWA" target="_blank" class="article-item">
+                    <div class="score">↑1730</div>
+                    <div class="content">
+                        <h3 class="headline">How Meta Went From Open Source Hero to AI&#39;s Biggest Villain</h3>
+                        <p class="summary">Meta released a frontier AI model for free in 2023, earning open-source praise, but two years later faces backlash as the risks of uncontrolled AI access make it a target for criticism.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=1go9zcZ0tzU" target="_blank" class="article-item">
+                    <div class="score">↑993</div>
+                    <div class="content">
+                        <h3 class="headline">This Free AI Makes Your Characters Actually Act</h3>
+                        <p class="summary">Open-source AI tools for voice and lip-syncing characters were upgraded this week, enabling more realistic character animation. This matters because it makes advanced AI accessible for creators, reducing costs and barriers in film, gaming, and virtual content.</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/chiennv2000/orthrus" target="_blank" class="article-item">
+                    <div class="score">↑111</div>
+                    <div class="content">
+                        <h3 class="headline">Orthrus-Qwen3: up to 7.8×tokens/forward on Qwen3, identical output distribution</h3>
+                        <p class="summary">Orthrus-Qwen3 is a dual-architecture framework combining autoregressive LLMs with diffusion models, achieving up to 7.8× faster token generation on Qwen3 models while preserving identical, lossless output distribution.</p>
+                    </div>
+                </a>
+                
+                <a href="https://letsdatascience.com/news/igor-babuschkin-seeks-up-to-1-billion-for-river-ai-8c36ce09?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Igor Babuschkin Seeks Up To $1 Billion For River AI (3 minute read)</h3>
+                        <p class="summary">Igor Babuschkin, an xAI cofounder, is seeking up to $1 billion for his new AI startup River AI, investing $100 million of his own money. This signals major investor confidence in the competitive AI sector.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.datadoghq.com/blog/ai/toto-2/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Toto 2.0: Time series forecasting enters the scaling era (13 minute read)</h3>
+                        <p class="summary">Datadog released Toto 2.0, a scalable time series forecasting model family, on Hugging Face, marking a shift toward scaling in time series AI.</p>
+                    </div>
+                </a>
+                
+                <a href="https://blog.google/innovation-and-ai/technology/developers-tools/multi-token-prediction-gemma-4/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Accelerating Gemma 4: faster inference with multi-token prediction drafters (4 minute read)</h3>
+                        <p class="summary">Gemma 4 models use Multi-Token Prediction drafters to achieve up to 3x faster inference without quality loss, improving responsiveness for developers through speculative decoding.</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/knowledgezone.bsky.social/post/3mlvihnem422k" target="_blank" class="article-item">
+                    <div class="score">↑6</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Knowledge Zone</h3>
+                        <p class="summary">Model compression is critical for making large machine learning models practical and efficient, enabling wider deployment across diverse applications and hardware platforms.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🌍 Global Politics</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=wQssPiH6etE" target="_blank" class="article-item">
+                    <div class="score">↑1921</div>
+                    <div class="content">
+                        <h3 class="headline">Trump says US is beating China in AI. This expert disagrees</h3>
+                        <p class="summary">Trump claims US leads in AI, but experts disagree, citing China's rapid progress after DeepSeek's powerful model in early 2025.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=JNqdbeSUcxI" target="_blank" class="article-item">
+                    <div class="score">↑683</div>
+                    <div class="content">
+                        <h3 class="headline">US–China Deal Over Taiwan? #Taiwan #Trump #XiJinping #China #America #USChina #geopoliticsinhindi</h3>
+                        <p class="summary">Trump and Xi meet in Beijing, sparking Taiwan concern over a potential US-China deal. The outcome could reshape Taiwan's geopolitical status.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/05/15/us-orders-travelers-on-air-force-one-to-throw-away-gifts-pins-and-burner-phones-after-china-trip/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">US orders travelers on Air Force One to throw away gifts, pins, and burner phones after China trip</h3>
+                        <p class="summary">US officials on Air Force One returning from China were ordered to discard gifts, pins, and burner phones due to espionage concerns, highlighting ongoing security risks with China as an adversary.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.bloomberg.com/news/articles/2026-05-14/openai-apple-partnership-frays-setting-up-possible-legal-fight?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb3VyY2UiOiJTdWJzY3JpYmVyR2lmdGVkQXJ0aWNsZSIsImlhdCI6MTc3ODgwODQxNCwiZXhwIjoxNzc5NDEzMjE0LCJhcnRpY2xlSWQiOiJURVpMRE5UOTZPU0cwMCIsImJjb25uZWN0SWQiOiJFQTExNDNDNTM4NEE0RUY5QTg5RjJEN0IxMTg2MzcwOSJ9.Rx3cIpDtWG_sRBVrYv3CCdFlAtoG1KWjDD-YuXS47Gk&utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Apple-OpenAI Alliance Frays, Setting Up Possible Legal Fight (9 minute read)</h3>
+                        <p class="summary">OpenAI is preparing potential legal action against Apple over its two-year partnership, citing unmet expectations for user subscriptions and ecosystem integration. This matters as Apple plans to open its platform to rivals, escalating tensions.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🔥 Best Takes</h2>
+                <div class="article-list">
+                    
+                <a href="https://twitter.com/mitchellh/status/2055380239711457578" target="_blank" class="article-item">
+                    <div class="score">↑1444</div>
+                    <div class="content">
+                        <h3 class="headline">I believe there are entire companies right now under AI psychosis</h3>
+                        <p class="summary">"I believe there are entire companies right now under AI psychosis"</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.astralcodexten.com/p/the-sigmoids-wont-save-you" target="_blank" class="article-item">
+                    <div class="score">↑218</div>
+                    <div class="content">
+                        <h3 class="headline">The sigmoids won't save you</h3>
+                        <p class="summary">"All exponentials eventually become sigmoids" is just a fancy way of saying 'don't worry, the robot uprising will get bored before it finishes.'</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/science/2026/05/preprint-server-arxiv-will-ban-submitters-of-ai-generated-hallucinations/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Send the arXiv AI-generated slop, get a yearlong vacation from submissions</h3>
+                        <p class="summary">"AI-generated slop has shown up everywhere, including in the peer-reviewed literature."</p>
+                    </div>
+                </a>
+                
+                <a href="https://medium.com/design-bootcamp/the-most-important-design-system-in-2026-that-designers-missed-was-built-by-a-developer-d5617753882e?utm_source=tldrdesign" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">The most important Design System in 2026 that designers missed was built by a developer (9 minute read)</h3>
+                        <p class="summary">"shadcn/ui: the design system designers didn't even see coming—because a developer built it."</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">📈 Tech Policy</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=TXGlCdG0Rww" target="_blank" class="article-item">
+                    <div class="score">↑610</div>
+                    <div class="content">
+                        <h3 class="headline">In China, artificial intelligence isn’t the future. It’s already here</h3>
+                        <p class="summary">Selina Wang reports on how artificial intelligence is already deeply integrated into daily life in China, highlighting its current impact during a presidential visit.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/gaming/2026/05/bill-to-keep-online-games-playable-clears-key-hurdle-in-california/" target="_blank" class="article-item">
+                    <div class="score">↑499</div>
+                    <div class="content">
+                        <h3 class="headline">Bill to block publishers from killing online games advances in California</h3>
+                        <p class="summary">California's Protect Our Games Act, backed by Stop Killing Games, advances to a floor vote. It would require publishers to refund or provide offline versions when ending online game support, opposing ESA lobbyists.</p>
+                    </div>
+                </a>
+                
+                <a href="https://macdailynews.com/2026/05/15/u-s-doj-demands-apple-and-google-unmask-over-100000-users-of-popular-car-tinkering-app-in-emissions-crackdown/" target="_blank" class="article-item">
+                    <div class="score">↑432</div>
+                    <div class="content">
+                        <h3 class="headline">U.S. DOJ demands Apple and Google unmask over 100k users of car-tinkering app</h3>
+                        <p class="summary">DOJ subpoenas Apple, Google, Amazon, and Walmart for personal data on over 100,000 users of EZ Lynk's car-tinkering app, allegedly used to bypass emissions controls. EZ Lynk denies wrongdoing, raising privacy concerns over the government's fishing expedition for witnesses.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.fastcompany.com/91541586/amazon-workers-pressured-to-up-ai-use-extraneous-tasks" target="_blank" class="article-item">
+                    <div class="score">↑358</div>
+                    <div class="content">
+                        <h3 class="headline">Amazon workers under pressure to up their AI usage are making up tasks</h3>
+                        <p class="summary">Amazon workers, pressured to boost AI usage, are fabricating tasks to meet quotas, raising concerns about productivity metrics and worker morale.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=_U6_GULJsXY" target="_blank" class="article-item">
+                    <div class="score">↑198</div>
+                    <div class="content">
+                        <h3 class="headline">Morning Call Sheet: AI rally masks growing cracks beneath markets</h3>
+                        <p class="summary">AI rally masks market weaknesses, with experts Peter Boockvar, Henrietta Treyz, and Jay Woods highlighting growing cracks beneath the surface, signaling potential risks for investors.</p>
+                    </div>
+                </a>
+                
+                <a href="https://reclaimthenet.org/london-police-deploy-facial-recognition-at-protest-for-first-time" target="_blank" class="article-item">
+                    <div class="score">↑149</div>
+                    <div class="content">
+                        <h3 class="headline">London Police Deploy Facial Recognition at Protest for First Time</h3>
+                        <p class="summary">Google attempted to restrict open web access in 2023, was rejected, then implemented it as a product update without approval, splitting users into approved and unapproved categories, undermining open web principles.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.metabase.com/blog/strip-mining-era-of-open-source-security" target="_blank" class="article-item">
+                    <div class="score">↑119</div>
+                    <div class="content">
+                        <h3 class="headline">Welcome to the Strip Mining Era of OSS Security</h3>
+                        <p class="summary">Open source maintainers face a surge in LLM-powered security vulnerability scans, with reports jumping from 10/month to 10/week. This flood of mostly minor issues signals a new "strip mining" era for OSS security.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/05/15/general-catalyst-posted-vc-rage-bait-and-it-worked-especially-on-a16z/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">General Catalyst posted VC rage bait and it worked, especially on a16z</h3>
+                        <p class="summary">General Catalyst posted provocative VC rage bait, successfully provoking Marc Andreessen of a16z into multiple responses, highlighting the tactic's effectiveness in the venture capital community.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/05/15/silicon-valleys-vacationland-needs-a-new-energy-provider-just-as-ai-is-driving-prices-up/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Silicon Valley’s vacationland needs a new energy provider just as AI is driving prices up</h3>
+                        <p class="summary">Lake Tahoe, a Silicon Valley vacation hub, needs a new energy provider just as AI-driven electricity demand spikes prices.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/05/15/power-prices-are-up-76-on-americas-biggest-grid-and-a-watchdog-is-pointing-fingers/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Power prices are up 76% on America’s biggest grid, and a watchdog is pointing fingers</h3>
+                        <p class="summary">Power prices on America's largest grid have surged 76%, with a watchdog blaming the grid's inability to meet AI-driven electricity demands, highlighting a widening gap between supply and industry needs.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/05/15/runway-started-by-helping-filmmakers-now-it-wants-to-beat-google-at-ai/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Runway started by helping filmmakers — now it wants to beat Google at AI</h3>
+                        <p class="summary">AI video startup Runway, originally for filmmakers, now aims to beat Google by betting video generation leads to world models, seeing its outsider status as an advantage.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/tech-policy/2026/05/the-us-is-betting-on-ai-to-catch-insider-trading-in-prediction-markets/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">The US is betting on AI to catch insider trading in prediction markets</h3>
+                        <p class="summary">The CFTC is using AI to detect and prosecute US traders using VPNs to access offshore prediction markets like Polymarket, with chairman Michael Selig vowing to catch and penalize manipulative behavior.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/tech-policy/2026/05/authors-fight-for-higher-payouts-from-anthropics-1-5b-copyright-settlement/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Anthropic’s $1.5B copyright settlement is getting messy as judge delays approval</h3>
+                        <p class="summary">A federal judge delayed approval of Anthropic's $1.5B copyright settlement over book piracy for AI training after authors objected to high lawyer fees and low class payments, threatening the largest copyright deal in US history.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/tech-policy/2026/05/openai-feels-burned-by-apples-crappy-chatgpt-integration-insiders-say/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">OpenAI feels “burned” by Apple’s crappy ChatGPT integration, insiders say</h3>
+                        <p class="summary">OpenAI is reportedly exploring legal action against Apple over a lackluster ChatGPT integration, alleging Apple intentionally failed to promote the feature and may have damaged the ChatGPT brand.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theverge.com/news/931884/youtube-likeness-detection-ai-deepfake-expansion-all-adults" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">YouTube is expanding its AI deepfake detection tool to all adult users</h3>
+                        <p class="summary">YouTube is expanding its AI deepfake detection tool to all adult users, allowing them to scan for and request removal of unauthorized likenesses. This matters as it gives broader protection against AI-generated impersonation.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theverge.com/tech/931416/google-ai-search-spam-policy" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Google updates its spam rules to include attempts to ‘manipulate’ AI</h3>
+                        <p class="summary">Google updated its spam policy to include attempts to manipulate its AI search responses, targeting tactics like biased listicles and recommendation poisoning.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.anthropic.com/research/2028-ai-leadership?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">2028: Two scenarios for global AI leadership (28 minute read)</h3>
+                        <p class="summary">Anthropic outlines two 2028 AI leadership scenarios: US maintains lead via export controls and chip tech, or China catches up due to US policy inaction. Closing loopholes on compute access and distillation attacks is critical for democratic governance of AI.</p>
+                    </div>
+                </a>
+                
+                <a href="https://thenextweb.com/news/microsoft-startup-deals-life-after-openai?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Microsoft is quietly shopping for an OpenAI replacement (4 minute read)</h3>
+                        <p class="summary">Microsoft amended its OpenAI deal to free it for other clouds and removed the AGI clause, while reportedly seeking to buy Inception—a move that signals Microsoft is hedging its massive investment by quietly preparing a replacement.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.citriniresearch.com/p/semis-memo-supply-chain-inheritance?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Semis Memo: Supply Chain Inheritance (4 minute read)</h3>
+                        <p class="summary">AI infrastructure boom boosts demand for analog/power semiconductors and MLCCs. Companies like Texas Instruments and NXP focus on price hikes over capacity expansion, repurposing EV/solar supply chains for AI growth.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">⭐ GitHub AI Projects</h2>
+                <div class="article-list">
+                    
+                <a href="https://blog.zulip.com/2026/05/15/announcing-zulip-foundation/" target="_blank" class="article-item">
+                    <div class="score">↑277</div>
+                    <div class="content">
+                        <h3 class="headline">The Zulip Foundation</h3>
+                        <p class="summary">The Zulip open-source project's creator, Tim Abbott, is stepping back to join Anthropic, donating Kandra Labs to a new nonprofit Zulip Foundation to ensure Zulip's long-term stability and independence.</p>
+                    </div>
+                </a>
+                
+                <a href="https://radicle.dev/" target="_blank" class="article-item">
+                    <div class="score">↑244</div>
+                    <div class="content">
+                        <h3 class="headline">Radicle: Sovereign {code forge} built on Git</h3>
+                        <p class="summary">Radicle is an open-source, peer-to-peer code forge built on Git, offering decentralized, censorship-resistant collaboration where users control their data and workflow.</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/neilsonnn/image-blaster" target="_blank" class="article-item">
+                    <div class="score">↑165</div>
+                    <div class="content">
+                        <h3 class="headline">Image-blaster: Creates 3D environments, SFX, and meshes from a single image</h3>
+                        <p class="summary">Image-blaster is a new tool that creates 3D environments, sound effects, and meshes from a single image in under 5 minutes using Claude, World Labs, and FAL, enabling rapid 3D workflow jumpstarts for game engines and design software.</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/nkzw-tech/fate?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">fate (GitHub Repo)</h3>
+                        <p class="summary">Fate is a new React data client that combines normalized caching, view composition, and type-safe fetching to eliminate overfetching and boilerplate. It matters because it offers a minimal, declarative alternative to existing data management solutions.</p>
+                    </div>
+                </a>
+                
+                <a href="https://antirez.com/news/165?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">A few words on DS4 (3 minute read)</h3>
+                        <p class="summary">DwarfStar 4 aims to improve quality benchmarks, add a coding agent, and enable local CI testing with distributed inference for long-term project stability.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🤖 Agentic AI Systems</h2>
+                <div class="article-list">
+                    
+                <a href="https://bsky.app/profile/dandekadt.bsky.social/post/3mlqug5t2m22v" target="_blank" class="article-item">
+                    <div class="score">↑27</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Dan de Kadt</h3>
+                        <p class="summary">Dan de Kadt suggests using agentic AI to track deviations from a project plan (PAP) from the start, packaging them as a table in the appendix to improve workflow efficiency.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/05/14/what-happens-when-ai-starts-building-itself/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">What happens when AI starts building itself?</h3>
+                        <p class="summary">Richard Socher launched a $650 million startup to create an AI that self-improves indefinitely, aiming to ship real products. This matters as it pushes autonomous AI development, raising stakes for safety and competition.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theverge.com/ai-artificial-intelligence/931544/openai-keeps-shuffling-its-executives-in-bid-to-win-ai-agent-battle" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">OpenAI keeps shuffling its executives in bid to win AI agent battle</h3>
+                        <p class="summary">OpenAI reorganized again, making Greg Brockman product lead to go all-in on AI agents, merging ChatGPT and Codex into a unified platform.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theverge.com/ai-artificial-intelligence/931479/andon-labs-ai-radio-companies" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">AI radio hosts demonstrate why AI can’t be trusted alone</h3>
+                        <p class="summary">Andon Labs' experiment with AI-run radio stations failed as all four models burned through $20 seed money and developed volatile personalities, demonstrating AI's unreliability in autonomous business operations.</p>
+                    </div>
+                </a>
+                
+                <a href="https://blog.sentry.io/introducing-seer-agent/?utm_source=tldr&amp;utm_medium=paid-community&amp;utm_campaign=seer-fy27q2-seeragent&amp;utm_content=newsletter-primary-launch-blog-learnmore" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">It would have taken at least 30 minutes to find root cause. Seer Agent had it in seconds (Sponsor)</h3>
+                        <p class="summary">Sentry's AI debugger Seer failed due to an upstream outage, but its new Seer Agent diagnosed the root cause in seconds—a task that would have taken 30 minutes manually.</p>
+                    </div>
+                </a>
+                
+                <a href="https://x.ai/news/grok-build-cli?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Introducing Grok Build (2 minute read)</h3>
+                        <p class="summary">Grok Build, a terminal-based coding agent, is now in early beta for SuperGrok Heavy subscribers. It features subagents, worktree integrations, and headless mode, marking a significant tool for automated coding tasks.</p>
+                    </div>
+                </a>
+                
+                <a href="https://cursor.com/blog/cloud-agent-development-environments?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Cloud Agent Development Environments (6 minute read)</h3>
+                        <p class="summary">Cursor introduced cloud-based development environments for autonomous coding agents, featuring multi-repo support, configuration as code, and governance for parallel agents, enabling scalable automated workflows.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🧠 AI Research Frontiers</h2>
+                <div class="article-list">
+                    
+                <a href="https://arxiv.org/abs/2605.12357" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Δ-Mem: Efficient Online Memory for Large Language Models</h3>
+                        <p class="summary">Δ-Mem introduces an efficient online memory mechanism for large language models, improving context retention without excessive computational cost.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theverge.com/science/931766/arxiv-ai-slop-ban-researchers" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">ArXiv will ban researchers who upload papers full of AI slop</h3>
+                        <p class="summary">ArXiv will ban authors for one year if papers contain obvious AI-generated errors like hallucinated references. This policy aims to reduce low-quality AI slop and requires future submissions to be accepted at reputable venues.</p>
+                    </div>
+                </a>
+                
+                <a href="https://huggingface.co/blog/continuous_async?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Unlocking asynchronicity in continuous batching (20 minute read)</h3>
+                        <p class="summary">Asynchronous batching using CUDA streams eliminates idle gaps between CPU and GPU cycles, improving GPU utilization by 22% for inference without changing kernels or models, enhancing generation speed.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.cnbc.com/2026/05/13/google-deepmind-alumni-startup-partners-nvidia-superintelligence.html?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Nvidia's Jensen Huang bets on this British startup to build 'next frontier' of AI (3 minute read)</h3>
+                        <p class="summary">Nvidia partners with Ineffable Intelligence, a startup founded by ex-DeepMind lead David Silver, to pursue superintelligence, betting on this as the next frontier of AI.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🛠️ Low-Code AI Tools</h2>
+                <div class="article-list">
+                    
+                <a href="https://techcrunch.com/2026/05/15/openai-launches-chatgpt-for-personal-finance-will-let-you-connect-bank-accounts/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">OpenAI launches ChatGPT for personal finance, will let you connect bank accounts</h3>
+                        <p class="summary">OpenAI launched a ChatGPT feature that connects to users' bank accounts to display a financial dashboard, including spending and subscriptions. This expands AI into personal finance management, raising privacy and security considerations.</p>
+                    </div>
+                </a>
+                
+                <a href="https://hs.playerzero.ai/ai-code-review?utm_campaign=44330137-Q2-2026-TLDR-Newsletter&amp;utm_source=email&amp;utm_medium=email&amp;utm_content=TLDR-5-15-26" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Beyond AI Code Review: Why You Need Code Simulation at Scale (Sponsor)</h3>
+                        <p class="summary">AI code review tools miss system-wide risks like configurations and dependencies under load. Code simulation offers a better way to predict production failures before deployment.</p>
+                    </div>
+                </a>
+                
+                <a href="https://threadreaderapp.com/thread/2055032115964870838.html?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Codex is getting easier to automate and customize around your code (1 minute read)</h3>
+                        <p class="summary">Codex introduced hooks and programmatic tokens for easier code automation and customization. Hooks run scripts at key task points; scoped credentials are available for Business and Enterprise teams.</p>
+                    </div>
+                </a>
+                
+                <a href="https://openai.com/index/work-with-codex-from-anywhere/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Work with Codex from anywhere (6 minute read)</h3>
+                        <p class="summary">Codex is now accessible via the ChatGPT mobile app, enabling developers to remotely continue coding work from laptops or devboxes, enhancing flexibility and productivity.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🔍 RAG Architectures</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.glean.com/blog/cowork-mcp-eval?utm_source=3rd-party&utm_medium=email&utm_campaign=mcp-eval-benchmark&utm_partner=tldr" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Glean preferred 2.5x as often as off-the-shelf MCP. Here's why (Sponsor)</h3>
+                        <p class="summary">Glean’s context layer is preferred 2.5x more than off-the-shelf MCP, which uses 30% more tokens and fails to handle knowledge—MCP only defines tool communication, not what tools know.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">💬 Conversational Analytics</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.datadoghq.com/resources/state-of-ai-engineering/?utm_source=tldrnewsletter&amp;utm_medium=newsletter&amp;utm_campaign=dg-coreplatform-ww-stateofai-tldr" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">What LLM telemetry from 1,000+ orgs reveals about how teams use AI at scale (Sponsor)</h3>
+                        <p class="summary">Datadog's report on LLM telemetry from 1,000+ organizations reveals teams are shifting to multi-model setups, compounding tech debt, and doubling agent framework adoption, while prompt caching remains underused—key insights for scaling AI observability.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+        </main>
+    </div>
+    <script>
+        // Open all accordions by default
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                toggleAccordion(header);
+            });
+        });
+
+        // Tab Switching Logic
+        function switchTab(e, tabId) {
+            if (e) e.preventDefault();
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // If triggered by a tab button, set it active, else find the tab button for that tabId
+            let tabBtn = (e && e.target && e.target.classList.contains('tab-btn')) ? e.target : document.querySelector(`.tab-btn[onclick*="${tabId}"]`);
+            if (tabBtn) tabBtn.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            // scroll to top if clicked view all
+            if (e && e.target && e.target.classList.contains('view-all')) {
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // Accordion Logic
+        function toggleAccordion(headerElement) {
+            headerElement.classList.toggle('open');
+            const body = headerElement.nextElementSibling;
+            if (headerElement.classList.contains('open')) {
+                body.style.maxHeight = body.scrollHeight + "px";
+            } else {
+                body.style.maxHeight = "0";
+            }
+        }
+
+        // Read article persistence
+        document.addEventListener("DOMContentLoaded", () => {
+            const STORAGE_KEY = "read_articles";
+            let readArticles = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+            
+            document.querySelectorAll('.article-item').forEach(item => {
+                const url = item.getAttribute('href');
+                if (readArticles.has(url)) {
+                    item.classList.add('read-article');
+                }
+                
+                item.addEventListener('click', () => {
+                    readArticles.add(url);
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify([...readArticles]));
+                    
+                    // Mark all identically-linked items read
+                    document.querySelectorAll(`.article-item[href="${url}"]`).forEach(i => i.classList.add('read-article'));
+                });
+            });
+        });
+    </script>
+</body>
+</html>
