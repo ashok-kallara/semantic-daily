@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News Digest | 2026-06-05</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+    
+:root {
+    --bg-color: #0d1117;
+    --card-bg: rgba(22, 27, 34, 0.4);
+    --hover-bg: rgba(46, 52, 60, 0.6);
+    --border: rgba(255, 255, 255, 0.08);
+    --text-main: #e6edf3;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-glow: rgba(88, 166, 255, 0.15);
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-mono: 'Fira Code', ui-monospace, monospace;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+    background-image: radial-gradient(circle at top right, rgba(46, 160, 67, 0.05), transparent 400px),
+                      radial-gradient(circle at bottom left, var(--accent-glow), transparent 400px);
+    background-attachment: fixed;
+}
+
+.container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
+
+header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.title { font-size: 2rem; font-weight: 700; margin: 0 0 0.25rem 0; }
+.subtitle { color: var(--text-muted); font-size: 0.95rem; }
+
+.stats-bar {
+    display: flex; gap: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; text-align: right;
+}
+.stat { display: flex; flex-direction: column; }
+.stat span:first-child { color: var(--text-muted); font-size: 0.75rem; }
+.stat span:last-child { color: var(--accent); font-weight: 600; }
+
+/* Tabs styling */
+.tabs-container {
+    margin-bottom: 2rem; display: flex; gap: 1rem;
+    border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+    background: transparent; border: none; color: var(--text-muted);
+    font-family: var(--font-sans); font-size: 1.1rem; font-weight: 500;
+    cursor: pointer; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s ease;
+}
+
+.tab-btn:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+.tab-btn.active { color: var(--accent); background: rgba(88, 166, 255, 0.1); font-weight: 600; }
+
+.tab-content { display: none; animation: fadeIn 0.3s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Common card styling */
+.category-group {
+    margin-bottom: 2rem; background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden; backdrop-filter: blur(8px);
+}
+
+/* Express View Accordion */
+.accordion-header {
+    width: 100%; display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.03); border: none; border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem; color: var(--text-main); font-size: 1.1rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+    cursor: pointer; transition: background 0.15s ease;
+}
+.accordion-header:hover { background: rgba(255, 255, 255, 0.06); }
+.accordion-header::after { content: '▼'; font-size: 0.8rem; transition: transform 0.3s ease; color: var(--text-muted); }
+.accordion-header.open::after { transform: rotate(-180deg); }
+.accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; background: transparent; }
+
+/* Category masonry */
+.categories-masonry { column-count: 2; column-gap: 2rem; }
+.masonry-item { break-inside: avoid; margin-bottom: 2rem; }
+.masonry-item .category-title {
+    font-size: 1rem; font-weight: 600; color: var(--text-main); margin: 0; padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+}
+
+.article-list { display: flex; flex-direction: column; }
+.article-item {
+    display: flex; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+    transition: background 0.15s ease; text-decoration: none; color: inherit; gap: 1.25rem; align-items: flex-start;
+}
+.masonry-item .article-item { padding: 0.75rem 1rem; gap: 1rem; }
+.article-item:last-child { border-bottom: none; }
+.article-item:hover { background: var(--hover-bg); }
+
+.article-item.read-article { opacity: 0.5; }
+.article-item.read-article .headline { color: var(--text-muted); }
+
+.score {
+    min-width: 45px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent);
+    background: rgba(88, 166, 255, 0.1); padding: 0.25rem 0; text-align: center; border-radius: 4px; margin-top: 0.15rem;
+}
+.content { flex: 1; min-width: 0; }
+.headline { font-weight: 500; font-size: 1.05rem; margin: 0 0 0.35rem 0; color: var(--text-main); flex-wrap: wrap; display: flex; align-items: baseline; gap: 0.5rem; }
+.summary {
+    font-size: 0.9rem; color: var(--text-muted); margin: 0; display: -webkit-box;
+    -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;
+}
+.view-all {
+    display: block; text-align: center; padding: 0.75rem; color: var(--accent); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: background 0.15s;
+}
+.view-all:hover { background: rgba(88, 166, 255, 0.05); }
+
+@media (max-width: 1024px) {
+    .categories-masonry { column-count: 1; }
+    header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .stats-bar { text-align: left; }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1 class="title">AI Pulse Digest</h1>
+                <div class="subtitle">Curated insights for 2026-06-05</div>
+            </div>
+            <div class="stats-bar">
+                <div class="stat"><span>Analyzed</span><span>859 artifacts</span></div>
+                <div class="stat"><span>Filtered</span><span>474 dupes</span></div>
+                <div class="stat"><span>Curated</span><span>61 items</span></div>
+            </div>
+        </header>
+
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchTab(event, 'express')">✨ Highlights (Top 5)</button>
+            <button class="tab-btn" onclick="switchTab(event, 'detail')">📚 Deep Dive (All)</button>
+        </div>
+        
+        <main id="express" class="tab-content active">
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🤖 Agentic Workflows</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=7qZH3D7u-z8" target="_blank" class="article-item">
+                    <div class="score">↑611</div>
+                    <div class="content">
+                        <h3 class="headline">OpenClaw Security Risks: 6 Dangers of Autonomous AI Agents</h3>
+                        <p class="summary">OpenClaw highlights six security risks of autonomous AI agents, exposing vulnerabilities in agentic AI systems that could lead to misuse or harm. This matters as organizations deploy such agents, requiring robust safeguards.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=m5eCj4nQKNc" target="_blank" class="article-item">
+                    <div class="score">↑600</div>
+                    <div class="content">
+                        <h3 class="headline">This AI Agent Works For You 24/7 (And Controls Your PC!)</h3>
+                        <p class="summary">An AI agent that works 24/7 and controls your PC has been introduced, marking a new era of autonomous task automation that could revolutionize productivity.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.anthropic.com/institute/recursive-self-improvement" target="_blank" class="article-item">
+                    <div class="score">↑479</div>
+                    <div class="content">
+                        <h3 class="headline">When AI Builds Itself: Our progress toward recursive self-improvement</h3>
+                        <p class="summary">Anthropic reports that AI systems are increasingly automating AI development, with engineers shipping 8x more code per quarter. This trend toward recursive self-improvement could bring enormous benefits but also risks of humans losing control.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=xDXnWL-Mmz0" target="_blank" class="article-item">
+                    <div class="score">↑406</div>
+                    <div class="content">
+                        <h3 class="headline">Microsoft Build 2026 Day 2 LIVE | GitHub Copilot, VS Code, and more</h3>
+                        <p class="summary">Microsoft Build 2026 Day 2 highlighted new GitHub Copilot and VS Code features with live demos, offering developers key updates to these essential tools.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=uQulSf5Mci0" target="_blank" class="article-item">
+                    <div class="score">↑120</div>
+                    <div class="content">
+                        <h3 class="headline">Best AI Video Agents in 2026 (Most Realistic)</h3>
+                        <p class="summary">The article compares top AI video agents of 2026, highlighting the most realistic options like Higgsfield Agent. This matters as realistic AI video advances transform content creation.</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 11 articles in 🤖 Agentic Workflows →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">⚙️ Agentic Harness</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://github.com/anthropics/defending-code-reference-harness" target="_blank" class="article-item">
+                    <div class="score">↑472</div>
+                    <div class="content">
+                        <h3 class="headline">Anthropic's open-source framework for AI-powered vulnerability discovery</h3>
+                        <p class="summary">Anthropic released an open-source reference implementation for autonomous vulnerability discovery using Claude, based on security team partnerships. It enables custom pipelines for finding, triaging, and patching code vulnerabilities.</p>
+                    </div>
+                </a>
+                
+                <a href="https://vercel.com/blog/protecting-against-token-theft?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Preventing AI Inference Theft at Scale (5 minute read)</h3>
+                        <p class="summary">Vercel highlighted that attackers exploit exposed endpoints to steal and resell AI inference, and proposes BotID analysis to verify requests, as traditional rate limits are often insufficient.</p>
+                    </div>
+                </a>
+                
+                <a href="https://workos.com/blog/ai-agent-credentials?utm_source=tldrfounders&amp;utm_medium=newsletter&amp;utm_campaign=q22026&amp;utm_content=header_securing_agentic_apps" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Securing agentic apps: Give your AI agents their own credentials. (Sponsor)</h3>
+                        <p class="summary">WorkOS solves the security risk of AI agents inheriting full user OAuth tokens by giving agents their own scoped credentials, RBAC, and audit logs to limit permissions and prevent unauthorized actions.</p>
+                    </div>
+                </a>
+                
+                <a href="https://strandsagents.com/?trk=a4da53aa-717f-4a44-830e-8f3b61d43501&amp;sc_channel=display+ads" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Strands Agents: open source agent harness SDK - run your agents with any model, anywhere (Sponsor)</h3>
+                        <p class="summary">Strands Agents is an open source SDK that lets you build, monitor, and control agent harnesses end-to-end with any model or cloud, using hooks and guardrails from Amazon-prod systems to prevent lock-in.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🌟 GitHub AI Projects</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://github.com/tastyeffectco/sandboxes" target="_blank" class="article-item">
+                    <div class="score">↑418</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Weekly Top Repos): tastyeffectco/sandboxes</h3>
+                        <p class="summary">GitHub's trending repo "tastyeffectco/sandboxes" offers a Go-based tool for self-hosted dev sandboxes with preview URLs, requiring no Kubernetes. It matters for developers and SaaS factories seeking simple, agent-friendly coding environments.</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/ideogram-oss/ideogram4?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Ideogram 4 (GitHub Repo)</h3>
+                        <p class="summary">Ideogram 4, an open-weight text-to-image model trained from scratch, introduces structured JSON prompting, multilingual text rendering, and precise layout/color controls with native 2k resolution, advancing AI image generation capabilities.</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/NMM-Roadmap/Awesome-NMM-List?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Native Multimodal Models (GitHub Repo)</h3>
+                        <p class="summary">GitHub repository tracks the shift from modular to native multimodal AI models, integrating text, image, and other data within a unified transformer backbone. This matters for advancing more efficient, cohesive AI systems.</p>
+                    </div>
+                </a>
+                
+                <a href="https://lakeops.dev/blog/routing-multiple-query-engines-with-iceberg?utm_source=tldrdata" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Routing Multiple Query Engines with Iceberg (18 minute read)</h3>
+                        <p class="summary">QueryFlux, an open-source Rust proxy, intelligently routes SQL queries across multiple engines (Trino, Spark, DuckDB) sharing Iceberg tables, handling protocol translation and cost-aware routing. This enables flexible, efficient multi-engine analytics without data duplication.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🔄 Claude Alternatives</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=4wL1kxNn6N4" target="_blank" class="article-item">
+                    <div class="score">↑397</div>
+                    <div class="content">
+                        <h3 class="headline">Claude Code Setup</h3>
+                        <p class="summary">Setting up Claude Code locally is straightforward but requires careful understanding, making it accessible for developers to run the AI coding assistant on their own machines.</p>
+                    </div>
+                </a>
+                
+                <a href="https://blog.plover.com/2026/03/09/#documentation-wins-2" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Programmers will document for Claude, but not for each other</h3>
+                        <p class="summary">Programmers are more willing to document code for AI assistants like Claude than for human colleagues, highlighting a shift in motivation and collaboration dynamics.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.wsj.com/tech/ai/meta-keeps-delaying-the-release-of-its-new-ai-model-to-developers-f8569c8c?st=q9zW6D&reflink=desktopwebshare_permalink&utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Meta Keeps Delaying the Release of Its New AI Model to Developers (7 minute read)</h3>
+                        <p class="summary">Meta is delaying the release of its Muse Spark AI model to developers, with no set date, raising concerns about its ability to monetize massive AI investments against competitors like OpenAI and Anthropic.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.wsj.com/cio-journal/anthropic-bulks-up-its-enterprise-partner-program-amid-ipo-plans-560a9b82?st=SkNT6W&reflink=desktopwebshare_permalink&mod=tldr&utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Anthropic Bulks Up Its Enterprise Partner Program Amid IPO Plans (4 minute read)</h3>
+                        <p class="summary">Anthropic expanded its Claude Partner Network to boost enterprise AI sales, signaling business maturity as it confidentially filed for an IPO. This move enhances credibility for third-party sellers and demonstrates scale to investors.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">📈 AI Industry Trends</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=4UW16coIloM" target="_blank" class="article-item">
+                    <div class="score">↑388</div>
+                    <div class="content">
+                        <h3 class="headline">Microsoft&#39;s plan to catch up in AI | The Vergecast</h3>
+                        <p class="summary">Microsoft detailed its AI strategy at Build developer conference, emphasizing Copilot integration to catch up in the competitive AI landscape.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/06/05/airtrunk-commits-30b-to-build-5gw-of-ai-data-centers-in-india/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">AirTrunk commits $30B to build 5GW of AI data centers in India</h3>
+                        <p class="summary">Australian operator AirTrunk commits $30B to build 5GW of AI data centers in India, a major investment boosting the country's AI infrastructure capacity.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/06/04/ahead-of-its-ipo-anthropics-daniela-amodei-shrugs-off-doubts-about-ais-returns/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Ahead of its IPO, Anthropic’s Daniela Amodei shrugs off doubts about AI’s returns</h3>
+                        <p class="summary">Anthropic president Daniela Amodei defended AI’s returns ahead of the company's IPO, as annualized revenue surged from $9B to $47B, despite investor doubts about profitability.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/06/04/airbnbs-brian-chesky-plans-to-launch-a-new-ai-lab/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Airbnb’s Brian Chesky plans to launch a new AI lab</h3>
+                        <p class="summary">Airbnb CEO Brian Chesky plans to launch an AI lab, signaling a major push into artificial intelligence after declining large language model partnerships he deemed unready. This could reshape how the travel platform integrates AI into its services.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/06/04/defense-tech-ai-and-fundraising-take-center-stage-at-strictlyvc-los-angeles-on-june-18/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Defense tech, AI, and fundraising take center stage at StrictlyVC Los Angeles on June 18</h3>
+                        <p class="summary">Investors, founders, and tech leaders will gather at StrictlyVC Los Angeles on June 18 to discuss shifts in venture capital, defense technology, and AI, highlighting the growing intersection of national security and cutting-edge innovation.</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 8 articles in 📈 AI Industry Trends →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🚀 Open Source LLMs</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://github.com/alibaba/open-code-review" target="_blank" class="article-item">
+                    <div class="score">↑217</div>
+                    <div class="content">
+                        <h3 class="headline">Open Code Review – An AI-powered code review CLI tool</h3>
+                        <p class="summary">Alibaba has open-sourced Open Code Review, an AI CLI tool that analyzes Git diffs to detect code defects with line-level precision, serving tens of thousands of developers internally. It matters because it combines deterministic engineering with an LLM agent to overcome...</p>
+                    </div>
+                </a>
+                
+                <a href="https://arxiv.org/abs/2606.04032" target="_blank" class="article-item">
+                    <div class="score">↑190</div>
+                    <div class="content">
+                        <h3 class="headline">Do transformers need three projections? Systematic study of QKV variants</h3>
+                        <p class="summary">Researchers systematically tested transformer attention by sharing query, key, and value projections, finding that sharing key-value (Q-K=V) performs on par with standard QKV, cutting KV cache by 50% with only 3.1% perplexity loss. Combined with Grouped-Query Attention, this...</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/huawei-csl/KVarN" target="_blank" class="article-item">
+                    <div class="score">↑141</div>
+                    <div class="content">
+                        <h3 class="headline">KVarN: Native vLLM backend for KV-cache quantization by Huawei</h3>
+                        <p class="summary">Huawei released KVarN, a native vLLM backend for KV-cache quantization. It delivers 3-5x more capacity and up to ~1.3x FP16 throughput with FP16-level accuracy, enabling longer contexts and more concurrent requests without calibration or model changes.</p>
+                    </div>
+                </a>
+                
+                <a href="https://passo.uno/fine-tuning-docs-llm/" target="_blank" class="article-item">
+                    <div class="score">↑115</div>
+                    <div class="content">
+                        <h3 class="headline">Fine-tuning an LLM to write docs like it's 1995</h3>
+                        <p class="summary">A tech writer fine-tuned a local LLM on 37 million words from 1977-2005 Microsoft manuals (via Bitsavers) to mimic 90s technical writing style. It demonstrates the feasibility of specialized, locally-run models for domain-specific documentation.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/google/2026/06/googles-new-gemma-4-open-ai-model-is-sized-for-your-laptop/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Google's new Gemma 4 12B model is designed to run on any laptop with 16GB of RAM</h3>
+                        <p class="summary">Google released Gemma 4 12B, an AI model designed to run on laptops with 16GB RAM. It fills a gap between mobile and high-end models, making capable local AI more accessible to average consumers.</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 9 articles in 🚀 Open Source LLMs →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🌍 Tech-Politics World News</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://discuss.privacyguides.net/t/south-korean-online-communities-will-need-to-scan-every-images-with-ai-censorship-tools/38341" target="_blank" class="article-item">
+                    <div class="score">↑145</div>
+                    <div class="content">
+                        <h3 class="headline">South Korean Forums Will Need to Scan Every Images with AI Censorship Tools</h3>
+                        <p class="summary">South Korea will require online forums to use AI to pre-screen all uploaded images under the "nth Room Prevention Act," sparking debate between public safety and free speech concerns.</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/eff.org/post/3mnhsl44rk22b" target="_blank" class="article-item">
+                    <div class="score">↑67</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Electronic Frontier Foundation</h3>
+                        <p class="summary">EFF’s Matt Guariglia testified before a House Homeland Security Subcommittee on how frontier models, agentic AI, and AI coding tools are reshaping critical infrastructure cybersecurity and resilience, highlighting growing national security concerns.</p>
+                    </div>
+                </a>
+                
+                <a href="https://digital-strategy.ec.europa.eu/en/library/communication-european-tech-sovereignty-accompanied-eu-open-source-strategy" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Communication on European Tech Sovereignty, and an EU Open-Source Strategy</h3>
+                        <p class="summary">EU issued a communication on European tech sovereignty and an EU open-source strategy, outlining plans to boost digital independence and leverage open-source software. This matters for reducing reliance on non-European technology providers.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/06/04/mira-murati-steps-back-into-the-spotlight-carefully/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Mira Murati steps back into the spotlight, carefully</h3>
+                        <p class="summary">Mira Murati is cautiously re-engaging with the public, recognizing that staying quiet no longer benefits her in today's market.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/06/04/helion-the-sam-altman-backed-fusion-startup-raises-465m-to-build-a-power-plant-for-microsoft/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Helion, the Sam Altman-backed fusion startup, raises $465M to build a power plant for Microsoft</h3>
+                        <p class="summary">Helion, a fusion startup backed by Sam Altman, raised $465 million to build a power plant for Microsoft by 2028, aiming to deliver commercial fusion energy.</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 14 articles in 🌍 Tech-Politics World News →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">👷 Low-Code/No-Code AI</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://github.com/zdk/lowfat" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Show HN: Lowfat – pluggable CLI filter that saved 91.8% of my LLM tokens</h3>
+                        <p class="summary">Lowfat is a new open-source CLI tool that reduces LLM tokens by ~92% by filtering out repetitive or low-value content before processing, helping developers cut API costs significantly.</p>
+                    </div>
+                </a>
+                
+                <a href="https://scribe.com/optimize?utm_source=sponsored&amp;utm_medium=organic&amp;utm_term=newsletter_ent&amp;utm_campaign=tldrai&amp;utm_content=ql_5_26_2026" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">⚡The reason most AI transformations fail? 71% of workflows are invisible to leadership. 🔍 (Sponsor)</h3>
+                        <p class="summary">Scribe Optimize detects 71% of invisible workflows causing AI transformation failures, surfacing inefficiencies so leaders can base investments on real data.</p>
+                    </div>
+                </a>
+                
+                <a href="https://fandf.co/4uokHqN?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Migrate without the manual rework with Azure Copilot Migration Agent (Sponsor)</h3>
+                        <p class="summary">Azure's Copilot Migration Agent uses natural language prompts to simplify cloud migration decisions by evaluating readiness, risk, and ROI, eliminating manual rework.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🔍 RAG Architectures</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://manticoresearch.com/blog/vector-search-deep-dive/?utm_source=tldrdata" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Vector Search in Manticore Search: A Deep Dive (28 minute read)</h3>
+                        <p class="summary">Manticore Search advocates for production-level tuning of vector search—aligning metrics with models, optimizing HNSW parameters, and using batching for consistency—rather than treating it as a default embedding feature. This matters for developers seeking efficient, scalable...</p>
+                    </div>
+                </a>
+                
+                <a href="https://dlthub.com/blog/dq-toolkit-preview?utm_source=tldrdata" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">dltHub AI Workbench data quality toolkit: schema-aware checks that route their own fixes (4 minute read)</h3>
+                        <p class="summary">dltHub previews a data quality toolkit for AI Workbench, adding schema-aware decorators that auto-detect and route fixes in dlt pipelines, improving data reliability.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.tigerdata.com/blog/the-postgres-developers-guide-to-vector-index-tradeoffs?utm_source=tldrdata" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">The Postgres Developer's Guide to Vector Index Tradeoffs (11 minute read)</h3>
+                        <p class="summary">The Postgres developer guide outlines vector index tradeoffs (HNSW, IVFFlat, StreamingDiskANN) for large-scale, filtered vector search, helping developers optimize recall, latency, and memory usage.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">💬 Conversational Analytics</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://blogs.halodoc.io/enabling-data-intelligence-data-profiling-framework-at-halodoc/?utm_source=tldrdata" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Enabling Data Intelligence: Data Profiling Framework at Halodoc (10 minute read)</h3>
+                        <p class="summary">Halodoc built an Airflow-native data profiling framework to automate ad hoc SQL profiling across hundreds of tables, providing a self-serve view of data quality and relationships using Redshift/Athena and Kubernetes.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+        <main id="detail" class="tab-content categories-masonry">
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🤖 Agentic Workflows</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=7qZH3D7u-z8" target="_blank" class="article-item">
+                    <div class="score">↑611</div>
+                    <div class="content">
+                        <h3 class="headline">OpenClaw Security Risks: 6 Dangers of Autonomous AI Agents</h3>
+                        <p class="summary">OpenClaw highlights six security risks of autonomous AI agents, exposing vulnerabilities in agentic AI systems that could lead to misuse or harm. This matters as organizations deploy such agents, requiring robust safeguards.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=m5eCj4nQKNc" target="_blank" class="article-item">
+                    <div class="score">↑600</div>
+                    <div class="content">
+                        <h3 class="headline">This AI Agent Works For You 24/7 (And Controls Your PC!)</h3>
+                        <p class="summary">An AI agent that works 24/7 and controls your PC has been introduced, marking a new era of autonomous task automation that could revolutionize productivity.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.anthropic.com/institute/recursive-self-improvement" target="_blank" class="article-item">
+                    <div class="score">↑479</div>
+                    <div class="content">
+                        <h3 class="headline">When AI Builds Itself: Our progress toward recursive self-improvement</h3>
+                        <p class="summary">Anthropic reports that AI systems are increasingly automating AI development, with engineers shipping 8x more code per quarter. This trend toward recursive self-improvement could bring enormous benefits but also risks of humans losing control.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=xDXnWL-Mmz0" target="_blank" class="article-item">
+                    <div class="score">↑406</div>
+                    <div class="content">
+                        <h3 class="headline">Microsoft Build 2026 Day 2 LIVE | GitHub Copilot, VS Code, and more</h3>
+                        <p class="summary">Microsoft Build 2026 Day 2 highlighted new GitHub Copilot and VS Code features with live demos, offering developers key updates to these essential tools.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=uQulSf5Mci0" target="_blank" class="article-item">
+                    <div class="score">↑120</div>
+                    <div class="content">
+                        <h3 class="headline">Best AI Video Agents in 2026 (Most Realistic)</h3>
+                        <p class="summary">The article compares top AI video agents of 2026, highlighting the most realistic options like Higgsfield Agent. This matters as realistic AI video advances transform content creation.</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/coreyryung.bsky.social/post/3mnfjedonx22j" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Corey Rayburn Yung</h3>
+                        <p class="summary">Corey Rayburn Yung considers using agentic AI to write his emails, joking about potential consequences, highlighting casual trust in AI for personal communication.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/06/04/apple-approves-poke-as-the-first-ai-agent-on-its-messages-for-business-platform/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Apple approves Poke as the first AI agent on its Messages for Business platform</h3>
+                        <p class="summary">Apple approved Poke as the first AI agent on its Messages for Business platform, allowing businesses to offer AI-powered customer interactions via text messages.</p>
+                    </div>
+                </a>
+                
+                <a href="https://sentry.io/cookbook/create-dashboards-with-ai-agent/?utm_source=tldr&amp;utm_medium=paid-community&amp;utm_campaign=ai-fy27q2-cookbook&amp;utm_content=newsletter-ai-primary-dashboard-agents-learnmore_header" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Your AI coding agent can create Sentry dashboards in 10 minutes (Sponsor)</h3>
+                        <p class="summary">AI coding agents can now use Sentry CLI to automatically build custom dashboards in minutes, eliminating manual widget configuration. This saves developers time by automating monitoring setup.</p>
+                    </div>
+                </a>
+                
+                <a href="https://interrupt.langchain.com/recordings?utm_medium=paid-email&amp;utm_source=tldr&amp;utm_campaign=q2-2026_interrupt-on-demand_co" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">See how Etsy, LinkedIn, and Cisco are building prod-ready agents (Sponsor)</h3>
+                        <p class="summary">Leading companies like Etsy, LinkedIn, and Cisco shared production-ready agent strategies at Langchain's Interrupt conference, with sessions now free to watch online, highlighting real-world agentic AI deployment.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.cnbc.com/2026/06/03/ai-agents-morgan-stanley-wealth-management-funnel.html?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Morgan Stanley will soon open its trillion-dollar wealth management funnel to AI agents (4 minute read)</h3>
+                        <p class="summary">Morgan Stanley will let AI agents from thousands of corporations access its wealth management platforms, opening its trillion-dollar client base to automated financial services. This marks a major shift in how wealth management interacts with AI, potentially transforming...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/odsc.bsky.social/post/3mncfqzhb6c2o" target="_blank" class="article-item">
+                    <div class="score">↑9</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Open Data Science Conference</h3>
+                        <p class="summary">Agentic AI ROI hinges on production engineering, governance, identity, cost control, and workflow redesign—not just demos—according to the Open Data Science Conference. This matters for businesses seeking measurable value from AI agents.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">⚙️ Agentic Harness</h2>
+                <div class="article-list">
+                    
+                <a href="https://github.com/anthropics/defending-code-reference-harness" target="_blank" class="article-item">
+                    <div class="score">↑472</div>
+                    <div class="content">
+                        <h3 class="headline">Anthropic's open-source framework for AI-powered vulnerability discovery</h3>
+                        <p class="summary">Anthropic released an open-source reference implementation for autonomous vulnerability discovery using Claude, based on security team partnerships. It enables custom pipelines for finding, triaging, and patching code vulnerabilities.</p>
+                    </div>
+                </a>
+                
+                <a href="https://vercel.com/blog/protecting-against-token-theft?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Preventing AI Inference Theft at Scale (5 minute read)</h3>
+                        <p class="summary">Vercel highlighted that attackers exploit exposed endpoints to steal and resell AI inference, and proposes BotID analysis to verify requests, as traditional rate limits are often insufficient.</p>
+                    </div>
+                </a>
+                
+                <a href="https://workos.com/blog/ai-agent-credentials?utm_source=tldrfounders&amp;utm_medium=newsletter&amp;utm_campaign=q22026&amp;utm_content=header_securing_agentic_apps" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Securing agentic apps: Give your AI agents their own credentials. (Sponsor)</h3>
+                        <p class="summary">WorkOS solves the security risk of AI agents inheriting full user OAuth tokens by giving agents their own scoped credentials, RBAC, and audit logs to limit permissions and prevent unauthorized actions.</p>
+                    </div>
+                </a>
+                
+                <a href="https://strandsagents.com/?trk=a4da53aa-717f-4a44-830e-8f3b61d43501&amp;sc_channel=display+ads" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Strands Agents: open source agent harness SDK - run your agents with any model, anywhere (Sponsor)</h3>
+                        <p class="summary">Strands Agents is an open source SDK that lets you build, monitor, and control agent harnesses end-to-end with any model or cloud, using hooks and guardrails from Amazon-prod systems to prevent lock-in.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🌟 GitHub AI Projects</h2>
+                <div class="article-list">
+                    
+                <a href="https://github.com/tastyeffectco/sandboxes" target="_blank" class="article-item">
+                    <div class="score">↑418</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Weekly Top Repos): tastyeffectco/sandboxes</h3>
+                        <p class="summary">GitHub's trending repo "tastyeffectco/sandboxes" offers a Go-based tool for self-hosted dev sandboxes with preview URLs, requiring no Kubernetes. It matters for developers and SaaS factories seeking simple, agent-friendly coding environments.</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/ideogram-oss/ideogram4?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Ideogram 4 (GitHub Repo)</h3>
+                        <p class="summary">Ideogram 4, an open-weight text-to-image model trained from scratch, introduces structured JSON prompting, multilingual text rendering, and precise layout/color controls with native 2k resolution, advancing AI image generation capabilities.</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/NMM-Roadmap/Awesome-NMM-List?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Native Multimodal Models (GitHub Repo)</h3>
+                        <p class="summary">GitHub repository tracks the shift from modular to native multimodal AI models, integrating text, image, and other data within a unified transformer backbone. This matters for advancing more efficient, cohesive AI systems.</p>
+                    </div>
+                </a>
+                
+                <a href="https://lakeops.dev/blog/routing-multiple-query-engines-with-iceberg?utm_source=tldrdata" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Routing Multiple Query Engines with Iceberg (18 minute read)</h3>
+                        <p class="summary">QueryFlux, an open-source Rust proxy, intelligently routes SQL queries across multiple engines (Trino, Spark, DuckDB) sharing Iceberg tables, handling protocol translation and cost-aware routing. This enables flexible, efficient multi-engine analytics without data duplication.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🔄 Claude Alternatives</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=4wL1kxNn6N4" target="_blank" class="article-item">
+                    <div class="score">↑397</div>
+                    <div class="content">
+                        <h3 class="headline">Claude Code Setup</h3>
+                        <p class="summary">Setting up Claude Code locally is straightforward but requires careful understanding, making it accessible for developers to run the AI coding assistant on their own machines.</p>
+                    </div>
+                </a>
+                
+                <a href="https://blog.plover.com/2026/03/09/#documentation-wins-2" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Programmers will document for Claude, but not for each other</h3>
+                        <p class="summary">Programmers are more willing to document code for AI assistants like Claude than for human colleagues, highlighting a shift in motivation and collaboration dynamics.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.wsj.com/tech/ai/meta-keeps-delaying-the-release-of-its-new-ai-model-to-developers-f8569c8c?st=q9zW6D&reflink=desktopwebshare_permalink&utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Meta Keeps Delaying the Release of Its New AI Model to Developers (7 minute read)</h3>
+                        <p class="summary">Meta is delaying the release of its Muse Spark AI model to developers, with no set date, raising concerns about its ability to monetize massive AI investments against competitors like OpenAI and Anthropic.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.wsj.com/cio-journal/anthropic-bulks-up-its-enterprise-partner-program-amid-ipo-plans-560a9b82?st=SkNT6W&reflink=desktopwebshare_permalink&mod=tldr&utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Anthropic Bulks Up Its Enterprise Partner Program Amid IPO Plans (4 minute read)</h3>
+                        <p class="summary">Anthropic expanded its Claude Partner Network to boost enterprise AI sales, signaling business maturity as it confidentially filed for an IPO. This move enhances credibility for third-party sellers and demonstrates scale to investors.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">📈 AI Industry Trends</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=4UW16coIloM" target="_blank" class="article-item">
+                    <div class="score">↑388</div>
+                    <div class="content">
+                        <h3 class="headline">Microsoft&#39;s plan to catch up in AI | The Vergecast</h3>
+                        <p class="summary">Microsoft detailed its AI strategy at Build developer conference, emphasizing Copilot integration to catch up in the competitive AI landscape.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/06/05/airtrunk-commits-30b-to-build-5gw-of-ai-data-centers-in-india/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">AirTrunk commits $30B to build 5GW of AI data centers in India</h3>
+                        <p class="summary">Australian operator AirTrunk commits $30B to build 5GW of AI data centers in India, a major investment boosting the country's AI infrastructure capacity.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/06/04/ahead-of-its-ipo-anthropics-daniela-amodei-shrugs-off-doubts-about-ais-returns/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Ahead of its IPO, Anthropic’s Daniela Amodei shrugs off doubts about AI’s returns</h3>
+                        <p class="summary">Anthropic president Daniela Amodei defended AI’s returns ahead of the company's IPO, as annualized revenue surged from $9B to $47B, despite investor doubts about profitability.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/06/04/airbnbs-brian-chesky-plans-to-launch-a-new-ai-lab/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Airbnb’s Brian Chesky plans to launch a new AI lab</h3>
+                        <p class="summary">Airbnb CEO Brian Chesky plans to launch an AI lab, signaling a major push into artificial intelligence after declining large language model partnerships he deemed unready. This could reshape how the travel platform integrates AI into its services.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/06/04/defense-tech-ai-and-fundraising-take-center-stage-at-strictlyvc-los-angeles-on-june-18/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Defense tech, AI, and fundraising take center stage at StrictlyVC Los Angeles on June 18</h3>
+                        <p class="summary">Investors, founders, and tech leaders will gather at StrictlyVC Los Angeles on June 18 to discuss shifts in venture capital, defense technology, and AI, highlighting the growing intersection of national security and cutting-edge innovation.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/06/04/ramp-raises-750m-at-44b-valuation-as-investors-hunger-for-fintechs-with-an-ai-story/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Ramp raises $750M at $44B valuation as investors hunger for fintechs with an AI story</h3>
+                        <p class="summary">Ramp raised $750M at a $44B valuation, nearly tripling its value in a year, driven by investor demand for fintechs with an AI focus.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arxiv.org/abs/2606.03979?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Sleep for Continual Learning (24 minute read)</h3>
+                        <p class="summary">Google researchers propose a "Sleep" method for AI models to consolidate short-term knowledge into long-term parameters via distillation and replay, plus a "Dreaming" stage for self-improvement. This could enable more efficient, continual learning without forgetting.</p>
+                    </div>
+                </a>
+                
+                <a href="https://tomtunguz.com/tokens-per-result/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Intelligence Per Dollar (2 minute read)</h3>
+                        <p class="summary">Microsoft introduced "average token usage" on model release cards to benchmark AI performance per dollar, forcing companies to compete on efficiency and align pricing with tangible outcomes like completed support cases.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🚀 Open Source LLMs</h2>
+                <div class="article-list">
+                    
+                <a href="https://github.com/alibaba/open-code-review" target="_blank" class="article-item">
+                    <div class="score">↑217</div>
+                    <div class="content">
+                        <h3 class="headline">Open Code Review – An AI-powered code review CLI tool</h3>
+                        <p class="summary">Alibaba has open-sourced Open Code Review, an AI CLI tool that analyzes Git diffs to detect code defects with line-level precision, serving tens of thousands of developers internally. It matters because it combines deterministic engineering with an LLM agent to overcome...</p>
+                    </div>
+                </a>
+                
+                <a href="https://arxiv.org/abs/2606.04032" target="_blank" class="article-item">
+                    <div class="score">↑190</div>
+                    <div class="content">
+                        <h3 class="headline">Do transformers need three projections? Systematic study of QKV variants</h3>
+                        <p class="summary">Researchers systematically tested transformer attention by sharing query, key, and value projections, finding that sharing key-value (Q-K=V) performs on par with standard QKV, cutting KV cache by 50% with only 3.1% perplexity loss. Combined with Grouped-Query Attention, this...</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/huawei-csl/KVarN" target="_blank" class="article-item">
+                    <div class="score">↑141</div>
+                    <div class="content">
+                        <h3 class="headline">KVarN: Native vLLM backend for KV-cache quantization by Huawei</h3>
+                        <p class="summary">Huawei released KVarN, a native vLLM backend for KV-cache quantization. It delivers 3-5x more capacity and up to ~1.3x FP16 throughput with FP16-level accuracy, enabling longer contexts and more concurrent requests without calibration or model changes.</p>
+                    </div>
+                </a>
+                
+                <a href="https://passo.uno/fine-tuning-docs-llm/" target="_blank" class="article-item">
+                    <div class="score">↑115</div>
+                    <div class="content">
+                        <h3 class="headline">Fine-tuning an LLM to write docs like it's 1995</h3>
+                        <p class="summary">A tech writer fine-tuned a local LLM on 37 million words from 1977-2005 Microsoft manuals (via Bitsavers) to mimic 90s technical writing style. It demonstrates the feasibility of specialized, locally-run models for domain-specific documentation.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/google/2026/06/googles-new-gemma-4-open-ai-model-is-sized-for-your-laptop/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Google's new Gemma 4 12B model is designed to run on any laptop with 16GB of RAM</h3>
+                        <p class="summary">Google released Gemma 4 12B, an AI model designed to run on laptops with 16GB RAM. It fills a gap between mobile and high-end models, making capable local AI more accessible to average consumers.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.testingcatalog.com/tinyfish-bigset-turns-text-prompts-into-live-datasets-from-web/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">TinyFish Bigset turns text prompts into live datasets (3 minute read)</h3>
+                        <p class="summary">TinyFish released Bigset, an open-source system that converts text prompts into live web datasets. This matters by enabling rapid, AI-driven data collection for developers and researchers.</p>
+                    </div>
+                </a>
+                
+                <a href="https://nvidianews.nvidia.com/news/nvidia-launches-cosmos-3-the-open-frontier-foundation-model-for-physical-ai?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">NVIDIA Launches Cosmos 3, the Open Frontier Foundation Model for Physical AI (5 minute read)</h3>
+                        <p class="summary">NVIDIA launched Cosmos 3, an open physical AI foundation model that tops leaderboards with native vision reasoning and multimodal generation, enabling developers to build physical AI systems with less data and lower costs.</p>
+                    </div>
+                </a>
+                
+                <a href="https://maxleiter.com/blog/weights?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">They're Made Out of Weights (5 minute read)</h3>
+                        <p class="summary">AI models are just layers of floating-point numbers, not magic. This demystification matters because it reveals the simple math behind seemingly complex AI, helping the public understand the technology's true nature.</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/cibered.com/post/3mni6xm7oz22p" target="_blank" class="article-item">
+                    <div class="score">↑6</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Pablo Álvarez Corredera (técnico informático, redactor CIBERED)</h3>
+                        <p class="summary">Canonical is adding offline voice dictation as Ubuntu's first AI feature, prioritizing privacy and open-source speech-to-text technology.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🌍 Tech-Politics World News</h2>
+                <div class="article-list">
+                    
+                <a href="https://discuss.privacyguides.net/t/south-korean-online-communities-will-need-to-scan-every-images-with-ai-censorship-tools/38341" target="_blank" class="article-item">
+                    <div class="score">↑145</div>
+                    <div class="content">
+                        <h3 class="headline">South Korean Forums Will Need to Scan Every Images with AI Censorship Tools</h3>
+                        <p class="summary">South Korea will require online forums to use AI to pre-screen all uploaded images under the "nth Room Prevention Act," sparking debate between public safety and free speech concerns.</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/eff.org/post/3mnhsl44rk22b" target="_blank" class="article-item">
+                    <div class="score">↑67</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Electronic Frontier Foundation</h3>
+                        <p class="summary">EFF’s Matt Guariglia testified before a House Homeland Security Subcommittee on how frontier models, agentic AI, and AI coding tools are reshaping critical infrastructure cybersecurity and resilience, highlighting growing national security concerns.</p>
+                    </div>
+                </a>
+                
+                <a href="https://digital-strategy.ec.europa.eu/en/library/communication-european-tech-sovereignty-accompanied-eu-open-source-strategy" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Communication on European Tech Sovereignty, and an EU Open-Source Strategy</h3>
+                        <p class="summary">EU issued a communication on European tech sovereignty and an EU open-source strategy, outlining plans to boost digital independence and leverage open-source software. This matters for reducing reliance on non-European technology providers.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/06/04/mira-murati-steps-back-into-the-spotlight-carefully/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Mira Murati steps back into the spotlight, carefully</h3>
+                        <p class="summary">Mira Murati is cautiously re-engaging with the public, recognizing that staying quiet no longer benefits her in today's market.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/06/04/helion-the-sam-altman-backed-fusion-startup-raises-465m-to-build-a-power-plant-for-microsoft/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Helion, the Sam Altman-backed fusion startup, raises $465M to build a power plant for Microsoft</h3>
+                        <p class="summary">Helion, a fusion startup backed by Sam Altman, raised $465 million to build a power plant for Microsoft by 2028, aiming to deliver commercial fusion energy.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/06/04/metas-oversight-board-says-account-bans-lack-due-process-transparency/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Meta’s Oversight Board says account bans lack due process, transparency</h3>
+                        <p class="summary">Meta's Oversight Board criticized account bans for lacking due process and transparency, urging clearer violation details and AI use disclosure.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/06/04/chinese-spies-are-using-linkedin-to-lure-westerners-into-sharing-sensitive-information/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Chinese spies are using LinkedIn to lure Westerners into sharing sensitive information</h3>
+                        <p class="summary">Chinese spies are using LinkedIn to recruit Westerners with access to non-public information, posing a security risk to sensitive data.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/tech-policy/2026/06/att-and-verizon-lose-supreme-court-case-over-fines-for-selling-location-data/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">AT&T and Verizon lose Supreme Court case over fines for selling location data</h3>
+                        <p class="summary">The Supreme Court ruled 8-1 that FCC fines for selling location data without consent do not violate the right to a jury trial, upholding $104 million in penalties against AT&T and Verizon.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/ai/2026/06/these-llms-are-the-best-at-resisting-russian-propaganda/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">These LLMs are the best at resisting Russian propaganda</h3>
+                        <p class="summary">The Estonian Language Institute released a "Propaganda Resistance" benchmark ranking LLMs on avoiding Russian strategic narratives, as governments worry about AI spreading foreign disinformation.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/tech-policy/2026/06/elon-musk-tries-again-to-escape-ftc-audits-of-x-data-handling/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Elon Musk tries again to escape FTC audits of X data handling</h3>
+                        <p class="summary">Elon Musk is attempting to escape FTC-ordered audits of X's data handling, imposed after Twitter's 2019 privacy violation settlement. The audits, meant to protect user privacy for 20 years, are critical to ensuring compliance.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/tech-policy/2026/06/cable-lobby-warns-of-chaos-if-fcc-doesnt-relax-ban-on-foreign-routers/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Cable lobby warns of chaos if FCC doesn't relax ban on foreign routers</h3>
+                        <p class="summary">The cable lobby (NCTA) petitioned the FCC to relax its ban on foreign-made routers, warning of chaos if ISPs cannot substitute components. The ban, affecting virtually all consumer routers, was imposed in March over national security concerns.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/tech-policy/2026/06/google-ordered-to-put-clearer-links-in-ai-search-and-let-uk-publishers-opt-out/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Google ordered to put clearer links in AI search and let UK publishers opt out</h3>
+                        <p class="summary">UK regulators ordered Google to add clearer links in AI search results and let publishers opt out, boosting publisher control and negotiation power while preventing penalization for opting out.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.cnbc.com/2026/06/01/alphabet-to-raise-80-billion-from-stock-sales-to-fund-ai-buildout.html?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Alphabet plans to raise $80 billion from stock sales to fund AI buildout (4 minute read)</h3>
+                        <p class="summary">Alphabet plans to raise $80 billion via stock sales, including $10 billion from Berkshire Hathaway, to fund AI compute infrastructure due to surging customer demand. Goldman Sachs, JPMorgan, and Morgan Stanley are managing the offering.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.bloomberg.com/news/articles/2026-05-26/china-expands-travel-curbs-to-top-ai-talent-at-private-firms?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb3VyY2UiOiJTdWJzY3JpYmVyR2lmdGVkQXJ0aWNsZSIsImlhdCI6MTc3OTgwMDQwMCwiZXhwIjoxNzgwNDA1MjAwLCJhcnRpY2xlSWQiOiJURjBEMzhLSzNOWUEwMCIsImJjb25uZWN0SWQiOiJDODcyMDJCNUE5RkU0Q0NBOTBFMTgzMDUxNkYxNTlGRSJ9.HzM3tbnW8AlvQEje6EVlRrl7NLsqCcxkVWRx1-zpTqI&utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">China Expands Travel Curbs to Top AI Talent at Private Firms (4 minute read)</h3>
+                        <p class="summary">China expanded overseas travel restrictions to top AI talent at private firms, requiring government approval for trips. This unusual move extends controls from state firms and nuclear scientists to startup founders and researchers, signaling tighter oversight of critical AI...</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">👷 Low-Code/No-Code AI</h2>
+                <div class="article-list">
+                    
+                <a href="https://github.com/zdk/lowfat" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Show HN: Lowfat – pluggable CLI filter that saved 91.8% of my LLM tokens</h3>
+                        <p class="summary">Lowfat is a new open-source CLI tool that reduces LLM tokens by ~92% by filtering out repetitive or low-value content before processing, helping developers cut API costs significantly.</p>
+                    </div>
+                </a>
+                
+                <a href="https://scribe.com/optimize?utm_source=sponsored&amp;utm_medium=organic&amp;utm_term=newsletter_ent&amp;utm_campaign=tldrai&amp;utm_content=ql_5_26_2026" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">⚡The reason most AI transformations fail? 71% of workflows are invisible to leadership. 🔍 (Sponsor)</h3>
+                        <p class="summary">Scribe Optimize detects 71% of invisible workflows causing AI transformation failures, surfacing inefficiencies so leaders can base investments on real data.</p>
+                    </div>
+                </a>
+                
+                <a href="https://fandf.co/4uokHqN?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Migrate without the manual rework with Azure Copilot Migration Agent (Sponsor)</h3>
+                        <p class="summary">Azure's Copilot Migration Agent uses natural language prompts to simplify cloud migration decisions by evaluating readiness, risk, and ROI, eliminating manual rework.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🔍 RAG Architectures</h2>
+                <div class="article-list">
+                    
+                <a href="https://manticoresearch.com/blog/vector-search-deep-dive/?utm_source=tldrdata" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Vector Search in Manticore Search: A Deep Dive (28 minute read)</h3>
+                        <p class="summary">Manticore Search advocates for production-level tuning of vector search—aligning metrics with models, optimizing HNSW parameters, and using batching for consistency—rather than treating it as a default embedding feature. This matters for developers seeking efficient, scalable...</p>
+                    </div>
+                </a>
+                
+                <a href="https://dlthub.com/blog/dq-toolkit-preview?utm_source=tldrdata" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">dltHub AI Workbench data quality toolkit: schema-aware checks that route their own fixes (4 minute read)</h3>
+                        <p class="summary">dltHub previews a data quality toolkit for AI Workbench, adding schema-aware decorators that auto-detect and route fixes in dlt pipelines, improving data reliability.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.tigerdata.com/blog/the-postgres-developers-guide-to-vector-index-tradeoffs?utm_source=tldrdata" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">The Postgres Developer's Guide to Vector Index Tradeoffs (11 minute read)</h3>
+                        <p class="summary">The Postgres developer guide outlines vector index tradeoffs (HNSW, IVFFlat, StreamingDiskANN) for large-scale, filtered vector search, helping developers optimize recall, latency, and memory usage.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">💬 Conversational Analytics</h2>
+                <div class="article-list">
+                    
+                <a href="https://blogs.halodoc.io/enabling-data-intelligence-data-profiling-framework-at-halodoc/?utm_source=tldrdata" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Enabling Data Intelligence: Data Profiling Framework at Halodoc (10 minute read)</h3>
+                        <p class="summary">Halodoc built an Airflow-native data profiling framework to automate ad hoc SQL profiling across hundreds of tables, providing a self-serve view of data quality and relationships using Redshift/Athena and Kubernetes.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+        </main>
+    </div>
+    <script>
+        // Open all accordions by default
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                toggleAccordion(header);
+            });
+        });
+
+        // Tab Switching Logic
+        function switchTab(e, tabId) {
+            if (e) e.preventDefault();
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // If triggered by a tab button, set it active, else find the tab button for that tabId
+            let tabBtn = (e && e.target && e.target.classList.contains('tab-btn')) ? e.target : document.querySelector(`.tab-btn[onclick*="${tabId}"]`);
+            if (tabBtn) tabBtn.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            // scroll to top if clicked view all
+            if (e && e.target && e.target.classList.contains('view-all')) {
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // Accordion Logic
+        function toggleAccordion(headerElement) {
+            headerElement.classList.toggle('open');
+            const body = headerElement.nextElementSibling;
+            if (headerElement.classList.contains('open')) {
+                body.style.maxHeight = body.scrollHeight + "px";
+            } else {
+                body.style.maxHeight = "0";
+            }
+        }
+
+        // Read article persistence
+        document.addEventListener("DOMContentLoaded", () => {
+            const STORAGE_KEY = "read_articles";
+            let readArticles = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+            
+            document.querySelectorAll('.article-item').forEach(item => {
+                const url = item.getAttribute('href');
+                if (readArticles.has(url)) {
+                    item.classList.add('read-article');
+                }
+                
+                item.addEventListener('click', () => {
+                    readArticles.add(url);
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify([...readArticles]));
+                    
+                    // Mark all identically-linked items read
+                    document.querySelectorAll(`.article-item[href="${url}"]`).forEach(i => i.classList.add('read-article'));
+                });
+            });
+        });
+    </script>
+</body>
+</html>
