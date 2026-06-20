@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News Digest | 2026-06-20</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+    
+:root {
+    --bg-color: #0d1117;
+    --card-bg: rgba(22, 27, 34, 0.4);
+    --hover-bg: rgba(46, 52, 60, 0.6);
+    --border: rgba(255, 255, 255, 0.08);
+    --text-main: #e6edf3;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-glow: rgba(88, 166, 255, 0.15);
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-mono: 'Fira Code', ui-monospace, monospace;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+    background-image: radial-gradient(circle at top right, rgba(46, 160, 67, 0.05), transparent 400px),
+                      radial-gradient(circle at bottom left, var(--accent-glow), transparent 400px);
+    background-attachment: fixed;
+}
+
+.container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
+
+header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.title { font-size: 2rem; font-weight: 700; margin: 0 0 0.25rem 0; }
+.subtitle { color: var(--text-muted); font-size: 0.95rem; }
+
+.stats-bar {
+    display: flex; gap: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; text-align: right;
+}
+.stat { display: flex; flex-direction: column; }
+.stat span:first-child { color: var(--text-muted); font-size: 0.75rem; }
+.stat span:last-child { color: var(--accent); font-weight: 600; }
+
+/* Tabs styling */
+.tabs-container {
+    margin-bottom: 2rem; display: flex; gap: 1rem;
+    border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+    background: transparent; border: none; color: var(--text-muted);
+    font-family: var(--font-sans); font-size: 1.1rem; font-weight: 500;
+    cursor: pointer; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s ease;
+}
+
+.tab-btn:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+.tab-btn.active { color: var(--accent); background: rgba(88, 166, 255, 0.1); font-weight: 600; }
+
+.tab-content { display: none; animation: fadeIn 0.3s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Common card styling */
+.category-group {
+    margin-bottom: 2rem; background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden; backdrop-filter: blur(8px);
+}
+
+/* Express View Accordion */
+.accordion-header {
+    width: 100%; display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.03); border: none; border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem; color: var(--text-main); font-size: 1.1rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+    cursor: pointer; transition: background 0.15s ease;
+}
+.accordion-header:hover { background: rgba(255, 255, 255, 0.06); }
+.accordion-header::after { content: '▼'; font-size: 0.8rem; transition: transform 0.3s ease; color: var(--text-muted); }
+.accordion-header.open::after { transform: rotate(-180deg); }
+.accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; background: transparent; }
+
+/* Category masonry */
+.categories-masonry { column-count: 2; column-gap: 2rem; }
+.masonry-item { break-inside: avoid; margin-bottom: 2rem; }
+.masonry-item .category-title {
+    font-size: 1rem; font-weight: 600; color: var(--text-main); margin: 0; padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+}
+
+.article-list { display: flex; flex-direction: column; }
+.article-item {
+    display: flex; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+    transition: background 0.15s ease; text-decoration: none; color: inherit; gap: 1.25rem; align-items: flex-start;
+}
+.masonry-item .article-item { padding: 0.75rem 1rem; gap: 1rem; }
+.article-item:last-child { border-bottom: none; }
+.article-item:hover { background: var(--hover-bg); }
+
+.article-item.read-article { opacity: 0.5; }
+.article-item.read-article .headline { color: var(--text-muted); }
+
+.score {
+    min-width: 45px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent);
+    background: rgba(88, 166, 255, 0.1); padding: 0.25rem 0; text-align: center; border-radius: 4px; margin-top: 0.15rem;
+}
+.content { flex: 1; min-width: 0; }
+.headline { font-weight: 500; font-size: 1.05rem; margin: 0 0 0.35rem 0; color: var(--text-main); flex-wrap: wrap; display: flex; align-items: baseline; gap: 0.5rem; }
+.summary {
+    font-size: 0.9rem; color: var(--text-muted); margin: 0; display: -webkit-box;
+    -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;
+}
+.view-all {
+    display: block; text-align: center; padding: 0.75rem; color: var(--accent); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: background 0.15s;
+}
+.view-all:hover { background: rgba(88, 166, 255, 0.05); }
+
+@media (max-width: 1024px) {
+    .categories-masonry { column-count: 1; }
+    header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .stats-bar { text-align: left; }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1 class="title">AI Pulse Digest</h1>
+                <div class="subtitle">Curated insights for 2026-06-20</div>
+            </div>
+            <div class="stats-bar">
+                <div class="stat"><span>Analyzed</span><span>903 artifacts</span></div>
+                <div class="stat"><span>Filtered</span><span>486 dupes</span></div>
+                <div class="stat"><span>Curated</span><span>46 items</span></div>
+            </div>
+        </header>
+
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchTab(event, 'express')">✨ Highlights (Top 5)</button>
+            <button class="tab-btn" onclick="switchTab(event, 'detail')">📚 Deep Dive (All)</button>
+        </div>
+        
+        <main id="express" class="tab-content active">
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🤖 Agentic Systems</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=HljiF6Q4adI" target="_blank" class="article-item">
+                    <div class="score">↑4766</div>
+                    <div class="content">
+                        <h3 class="headline">This Free AI Replaced 5 Tools Overnight | #TheAIGuy</h3>
+                        <p class="summary">AChinese lab launched Kimi Work, a free desktop AI that runs 300 agents simultaneously on a laptop, potentially replacing multiple tools and boosting productivity.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=KKA6WR5nmNE" target="_blank" class="article-item">
+                    <div class="score">↑3962</div>
+                    <div class="content">
+                        <h3 class="headline">What it&#39;s like building an AI agent</h3>
+                        <p class="summary">The article examines the challenges of building an AI agent, featuring a sponsored mention of Albertatech's AgentCore harness. It offers insights relevant to AI developers.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=RzLV8sfFdMM" target="_blank" class="article-item">
+                    <div class="score">↑1042</div>
+                    <div class="content">
+                        <h3 class="headline">How to Build Effective Claude Code Agents in 2026</h3>
+                        <p class="summary">A guide on building Claude Code agents in 2026 promotes ClickUp and a free AI OS course, offering developers practical strategies for AI automation.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.perplexity.ai/hub/blog/self-improving-memory-for-agents?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Self-Improving Memory for Agents (6 minute read)</h3>
+                        <p class="summary">Perplexity Brain introduces a persistent memory system for AI agents that builds a context graph across tasks and sources, enabling agents to start with relevant context rather than from scratch. It continuously updates knowledge, links memories to original sources, and...</p>
+                    </div>
+                </a>
+                
+                <a href="https://deepmind.google/blog/securing-the-future-of-ai-agents/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Securing the future of AI agents (7 minute read)</h3>
+                        <p class="summary">Google's AI Control Roadmap adds system-level security for AI agents, using safeguards like sandboxing and prompt injection resistance to protect even if alignment fails. This matters for safely managing advanced AI within Google.</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 6 articles in 🤖 Agentic Systems →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🌐 AI Industry News</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=vu_-NTR_Pr4" target="_blank" class="article-item">
+                    <div class="score">↑3860</div>
+                    <div class="content">
+                        <h3 class="headline">Anthropic Wants AI to Stop</h3>
+                        <p class="summary">AI company Anthropic warns that AI is becoming too powerful and may need to be halted, highlighting growing concerns about unchecked AI development.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=Db260rUuKJg" target="_blank" class="article-item">
+                    <div class="score">↑2202</div>
+                    <div class="content">
+                        <h3 class="headline">AI News: Fable Banned, New Open-Source Leader, Midjourney Shocker</h3>
+                        <p class="summary">Fable's AI-generated show was banned for unethical use of actors' likenesses, new open-source AI models challenge proprietary leaders, and Midjourney faced backlash for deleting user accounts, raising concerns about AI regulation, copyright, and platform transparency.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=LDj9Tp590bk" target="_blank" class="article-item">
+                    <div class="score">↑961</div>
+                    <div class="content">
+                        <h3 class="headline">L’Europe peut-elle encore gagner la guerre de l’IA ?</h3>
+                        <p class="summary">Europe debates its AI competitiveness amid distractions like a joke and a fake Mistral model, questioning if it can catch up in the global AI race.</p>
+                    </div>
+                </a>
+                
+                <a href="https://startupfortune.com/hyundai-takes-full-control-of-boston-dynamics-as-softbank-exits-for-325-million/" target="_blank" class="article-item">
+                    <div class="score">↑860</div>
+                    <div class="content">
+                        <h3 class="headline">Hyundai buys Boston Dynamics</h3>
+                        <p class="summary">Hyundai is acquiring full control of Boston Dynamics by buying SoftBank's remaining 9.65% stake for $325 million, making the robotics company a wholly owned subsidiary. This matters because it positions Hyundai to deploy Boston Dynamics' humanoid Atlas robot at its Georgia EV...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=J1BK7s0sKGY" target="_blank" class="article-item">
+                    <div class="score">↑605</div>
+                    <div class="content">
+                        <h3 class="headline">Jensen Huang: AI’s impact will be ‘largely wonderful’</h3>
+                        <p class="summary">Nvidia CEO Jensen Huang predicted AI’s impact will be “largely wonderful,” praising its accessibility and positive workplace effects on a recent show.</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 12 articles in 🌐 AI Industry News →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🚀 Cutting-Edge AI Research</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=4pG3SJQPAwk" target="_blank" class="article-item">
+                    <div class="score">↑2332</div>
+                    <div class="content">
+                        <h3 class="headline">The data black hole at the center of AI</h3>
+                        <p class="summary">AI models are trained on vast datasets far exceeding human lifetime exposure, creating a "data black hole" that raises concerns about data sourcing, scale, and transparency.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arrowtsx.dev/bigger-models/" target="_blank" class="article-item">
+                    <div class="score">↑246</div>
+                    <div class="content">
+                        <h3 class="headline">GPT-5.5 hallucinates 3x more than MIT-licensed GLM-5.2</h3>
+                        <p class="summary">Z.ai's MIT-licensed GLM-5.2 (753B params) rivals GPT-5.5 and Claude Fable 5 on intelligence scores while hallucinating far less (28% vs 86% for GPT-5.5 and 48% for Fable 5), challenging the industry's scaling paradigm. This matters as major AI labs face skepticism over...</p>
+                    </div>
+                </a>
+                
+                <a href="https://ianbarber.blog/2026/06/19/llms-are-complicated-now/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">LLMs Are Complicated Now</h3>
+                        <p class="summary">LLMs have evolved beyond simple text generation, now integrating complex reasoning, multimodal inputs, and tool use. This matters because it expands AI capabilities but also introduces new challenges in reliability, safety, and evaluation.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/science/2026/06/amazon-quera-promise-useful-quantum-error-correction-by-2028/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Sooner than expected? Useful quantum error correction promised for 2028.</h3>
+                        <p class="summary">A quantum computing company has promised useful error-corrected quantum computers by 2028, much sooner than the typical 5–10 year industry estimate, signaling accelerated progress in the field.</p>
+                    </div>
+                </a>
+                
+                <a href="https://buildkite.com/pricing/?bk_pid=20260521-TAI-PRI-primary-trial&amp;utm_source=tldr-ai&amp;utm_medium=newsletter&amp;utm_campaign=tldr-ai-2026-05-21&amp;utm_content=primary-trial_header_models_headlines_pipelines&amp;utm_id=20260521-TAI-PRI-primary-trial" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Models get the headlines, pipelines hit the deadlines (Sponsor)</h3>
+                        <p class="summary">Buildkite, a CI platform, is used by AI leaders like Meta, OpenAI, and NVIDIA for scalable, secure pipeline orchestration, allowing control without compromise at massive scale.</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 6 articles in 🚀 Cutting-Edge AI Research →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🛠️ Low-Code AI Tools</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=bXVkS7cff00" target="_blank" class="article-item">
+                    <div class="score">↑1413</div>
+                    <div class="content">
+                        <h3 class="headline">The Canva AI Side Hustle That&#39;s Making People RICH</h3>
+                        <p class="summary">Peopleare using Canva and Claude AI to create and sell products on Amazon KDP, turning it into a lucrative side hustle by leveraging AI for design and content.</p>
+                    </div>
+                </a>
+                
+                <a href="https://claude.com/blog/artifacts-in-claude-code?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Claude Code now supports artifacts (5 minute read)</h3>
+                        <p class="summary">Claude Code now supports artifacts, turning work sessions into live, shareable visual pages for tasks like PR walkthroughs. Available in beta for Team and Enterprise users, it improves collaboration with automatic updates, version history, and privacy controls.</p>
+                    </div>
+                </a>
+                
+                <a href="https://scribe.com/optimize?utm_source=sponsored&amp;utm_medium=organic&amp;utm_term=newsletter_ent&amp;utm_campaign=tldrai&amp;utm_content=ql_6_19_2026" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Your AI strategy is only as good as the workflow data underneath it. (Sponsor)</h3>
+                        <p class="summary">Scribe Optimize surfaces real workflow data across organizations, identifying inefficiencies without surveys or guesswork, so AI initiatives are built on accurate ground truth rather than intuition.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🗳️ Tech Policy & Politics</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.reuters.com/technology/norway-imposes-near-ban-ai-elementary-school-2026-06-19/" target="_blank" class="article-item">
+                    <div class="score">↑719</div>
+                    <div class="content">
+                        <h3 class="headline">Norway imposes near ban on AI in elementary school</h3>
+                        <p class="summary">Norway has effectively banned AI tools in elementary schools, citing concerns over privacy and child development, affecting students and educators nationwide.</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/christianstoecker.de/post/3mokfmvdy2m2e" target="_blank" class="article-item">
+                    <div class="score">↑460</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Christian Stöcker</h3>
+                        <p class="summary">Christian Stöcker criticizes companies admitting they prioritize their loss-making gas business over the planet, dismissing climate risks as heat escalates. It highlights the stark conflict between corporate profit and climate action.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/video/is-the-us-governments-anthropic-ban-accidentally-helping-the-brand/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Is the US government’s Anthropic ban accidentally helping the brand?</h3>
+                        <p class="summary">The US government forced Anthropic to withdraw its Fable 5 and Mythos 5 AI models after Amazon researchers exposed security flaws, sparking criticism from cybersecurity experts who warn the ban may inadvertently boost the brand.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/tech-policy/2026/06/the-uk-will-scan-asylum-seekers-faces-for-age-checks-despite-knowing-the-tech-is-flawed/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">The UK will scan asylum-seekers’ faces for age checks—despite knowing the tech is flawed</h3>
+                        <p class="summary">The UK will use facial age estimation AI on asylum seekers from next year, despite an internal report showing it mistakes children for adults and has serious bias, risking misclassification that strips child protections.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.hyperdimensional.co/p/that-untravelld-world?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">That Untravell'd World (6 minute read)</h3>
+                        <p class="summary">A higher-stakes, more political phase of the AI governance race has begun, involving global policymakers and tech leaders navigating increased complexity.</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 7 articles in 🗳️ Tech Policy & Politics →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🧠 Open Source LLMs</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=KAnDbJhNJ4E" target="_blank" class="article-item">
+                    <div class="score">↑629</div>
+                    <div class="content">
+                        <h3 class="headline">GLM-5.2 is Basically Opus (For 1/5 the Price)</h3>
+                        <p class="summary">GLM-5.2, a new AI model from Zhipu AI, matches OpenAI's GPT-4 Opus performance at one-fifth the cost, making advanced AI more accessible and challenging market pricing.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/06/19/he-made-your-free-video-player-run-smoothly-now-hes-doing-that-for-robots/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">He made your free video player run smoothly. Now he’s doing that for robots.</h3>
+                        <p class="summary">Jean-Baptiste Kempf, open-source legend behind smooth video playback, now builds Kyber: a real-time infrastructure for remote device control, aiming to improve robot operations.</p>
+                    </div>
+                </a>
+                
+                <a href="https://crlf.link/log/entries/260525-1/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Making a vintage LLM from scratch (50 minute read)</h3>
+                        <p class="summary">A developer built a vintage LLM from scratch using custom scripts and a dataset for about $80, demonstrating that low-cost, personal LLM creation is feasible.</p>
+                    </div>
+                </a>
+                
+                <a href="https://venturebeat.com/technology/xiaomis-new-open-source-agentic-ai-coding-harness-mimo-code-beats-claude-code-at-ultra-long-200-step-tasks?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Xiaomi's new open source, agentic AI coding harness MiMo Code beats Claude Code at ultra-long, 200+ step tasks (14 minute read)</h3>
+                        <p class="summary">Xiaomi released MiMo Code, an open-source AI coding assistant that outperforms Claude Code on complex, multi-step tasks. Its cross-session memory system enables handling 200+ step workflows, potentially advancing autonomous software development.</p>
+                    </div>
+                </a>
+                
+                <a href="https://spateder.com/projects/20260611/openweightmodels?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Mythos-class models will diffuse throughout the world by 2029 (7 minute read)</h3>
+                        <p class="summary">Open-weight AI models are catching up to frontier models, with predictions that a Claude Fable 5-level open model capable of running on 16GB RAM will be feasible by early 2029, signaling widespread diffusion of advanced AI.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🔥 Best Takes</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://bsky.app/profile/amutepiggy.bsky.social/post/3momnq4xu3k2w" target="_blank" class="article-item">
+                    <div class="score">↑134</div>
+                    <div class="content">
+                        <h3 class="headline">Post by alexis simpson</h3>
+                        <p class="summary">"tom clancy wiggum"</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/06/19/encryption-spyware-and-now-mythos-history-shows-why-cyber-export-control-doesnt-work/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">From PGP to Mythos: a brief history of export controls that didn’t stop anyone</h3>
+                        <p class="summary">"It's unclear why it would work now with Anthropic’s cybersecurity model Mythos."</p>
+                    </div>
+                </a>
+                
+                <a href="https://huggingface.co/blog/ServiceNow/mosaicleaks?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">MosaicLeaks: Can your research agent keep a secret? (10 minute read)</h3>
+                        <p class="summary">"Your research agent is a gossip – it leaks your secrets 34% of the time. PA-DR? Only 9.9%. Still, don't trust it with your diary."</p>
+                    </div>
+                </a>
+                
+                <a href="https://x.com/addyosmani/status/2066595308629594363?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Agentic Code Review (15 minute read)</h3>
+                        <p class="summary">"4x raw output for ~12% delivered-value gain — the gap being the review problem in one line."</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.cnbc.com/2026/06/10/palantir-karp-enterprise-ai.html?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Palantir's Karp says businesses are ‘unhappy' with the frontier AI labs (5 minute read)</h3>
+                        <p class="summary">"These labs only care about burning through AI tokens to signal productivity."</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🔍 RAG Architectures</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://go.predicthq.com/tldr+predicthq?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">The 4 layers of real-world context (Sponsor)</h3>
+                        <p class="summary">Uber and Domino's are using a four-layer approach to ground AI in real-world context, ensuring accuracy in critical business decisions. This matters because it solves the problem of sophisticated models failing when applied to practical scenarios.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🌍 Global Affairs</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://thenextweb.com/news/brain-implants-bci-china-neuralink-commercial-race?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">China just approved the world's first commercial brain implant (5 minute read)</h3>
+                        <p class="summary">China approved the first commercial brain implant NEO, a coin-sized device by NeuraMatrix and Tsinghua, allowing thought-controlled glove use, outpacing Neuralink's commercial clearance.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+        <main id="detail" class="tab-content categories-masonry">
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🤖 Agentic Systems</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=HljiF6Q4adI" target="_blank" class="article-item">
+                    <div class="score">↑4766</div>
+                    <div class="content">
+                        <h3 class="headline">This Free AI Replaced 5 Tools Overnight | #TheAIGuy</h3>
+                        <p class="summary">AChinese lab launched Kimi Work, a free desktop AI that runs 300 agents simultaneously on a laptop, potentially replacing multiple tools and boosting productivity.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=KKA6WR5nmNE" target="_blank" class="article-item">
+                    <div class="score">↑3962</div>
+                    <div class="content">
+                        <h3 class="headline">What it&#39;s like building an AI agent</h3>
+                        <p class="summary">The article examines the challenges of building an AI agent, featuring a sponsored mention of Albertatech's AgentCore harness. It offers insights relevant to AI developers.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=RzLV8sfFdMM" target="_blank" class="article-item">
+                    <div class="score">↑1042</div>
+                    <div class="content">
+                        <h3 class="headline">How to Build Effective Claude Code Agents in 2026</h3>
+                        <p class="summary">A guide on building Claude Code agents in 2026 promotes ClickUp and a free AI OS course, offering developers practical strategies for AI automation.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.perplexity.ai/hub/blog/self-improving-memory-for-agents?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Self-Improving Memory for Agents (6 minute read)</h3>
+                        <p class="summary">Perplexity Brain introduces a persistent memory system for AI agents that builds a context graph across tasks and sources, enabling agents to start with relevant context rather than from scratch. It continuously updates knowledge, links memories to original sources, and...</p>
+                    </div>
+                </a>
+                
+                <a href="https://deepmind.google/blog/securing-the-future-of-ai-agents/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Securing the future of AI agents (7 minute read)</h3>
+                        <p class="summary">Google's AI Control Roadmap adds system-level security for AI agents, using safeguards like sandboxing and prompt injection resistance to protect even if alignment fails. This matters for safely managing advanced AI within Google.</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/radiology-ai.bsky.social/post/3moim57j4eq2r" target="_blank" class="article-item">
+                    <div class="score">↑7</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Radiology: Artificial Intelligence</h3>
+                        <p class="summary">Dr. Tianyu Zhang discusses safe applications for AI agents in radiology, highlighting the need for cautious deployment to avoid risks in clinical settings.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🌐 AI Industry News</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=vu_-NTR_Pr4" target="_blank" class="article-item">
+                    <div class="score">↑3860</div>
+                    <div class="content">
+                        <h3 class="headline">Anthropic Wants AI to Stop</h3>
+                        <p class="summary">AI company Anthropic warns that AI is becoming too powerful and may need to be halted, highlighting growing concerns about unchecked AI development.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=Db260rUuKJg" target="_blank" class="article-item">
+                    <div class="score">↑2202</div>
+                    <div class="content">
+                        <h3 class="headline">AI News: Fable Banned, New Open-Source Leader, Midjourney Shocker</h3>
+                        <p class="summary">Fable's AI-generated show was banned for unethical use of actors' likenesses, new open-source AI models challenge proprietary leaders, and Midjourney faced backlash for deleting user accounts, raising concerns about AI regulation, copyright, and platform transparency.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=LDj9Tp590bk" target="_blank" class="article-item">
+                    <div class="score">↑961</div>
+                    <div class="content">
+                        <h3 class="headline">L’Europe peut-elle encore gagner la guerre de l’IA ?</h3>
+                        <p class="summary">Europe debates its AI competitiveness amid distractions like a joke and a fake Mistral model, questioning if it can catch up in the global AI race.</p>
+                    </div>
+                </a>
+                
+                <a href="https://startupfortune.com/hyundai-takes-full-control-of-boston-dynamics-as-softbank-exits-for-325-million/" target="_blank" class="article-item">
+                    <div class="score">↑860</div>
+                    <div class="content">
+                        <h3 class="headline">Hyundai buys Boston Dynamics</h3>
+                        <p class="summary">Hyundai is acquiring full control of Boston Dynamics by buying SoftBank's remaining 9.65% stake for $325 million, making the robotics company a wholly owned subsidiary. This matters because it positions Hyundai to deploy Boston Dynamics' humanoid Atlas robot at its Georgia EV...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=J1BK7s0sKGY" target="_blank" class="article-item">
+                    <div class="score">↑605</div>
+                    <div class="content">
+                        <h3 class="headline">Jensen Huang: AI’s impact will be ‘largely wonderful’</h3>
+                        <p class="summary">Nvidia CEO Jensen Huang predicted AI’s impact will be “largely wonderful,” praising its accessibility and positive workplace effects on a recent show.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=TfW5pWpsHAo" target="_blank" class="article-item">
+                    <div class="score">↑524</div>
+                    <div class="content">
+                        <h3 class="headline">Inside Google&#39;s AI data centers</h3>
+                        <p class="summary">GMA gained exclusive access inside a Google AI data center, highlighting tensions as communities nationwide struggle with the rapid expansion of such facilities.</p>
+                    </div>
+                </a>
+                
+                <a href="https://twitter.com/JohnJumperSci/status/2068001285173834106" target="_blank" class="article-item">
+                    <div class="score">↑144</div>
+                    <div class="content">
+                        <h3 class="headline">John Jumper to join Anthropic</h3>
+                        <p class="summary">John Jumper, co-creator of AlphaFold, is joining AI company Anthropic to lead its new health team, aiming to develop AI tools for drug discovery and disease understanding.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.ft.com/content/1d37cc08-e0aa-45a4-a45d-4ad282529314" target="_blank" class="article-item">
+                    <div class="score">↑114</div>
+                    <div class="content">
+                        <h3 class="headline">Companies rein in AI usage as costs strain budgets</h3>
+                        <p class="summary">Companies are scaling back AI adoption due to high costs and unclear returns, straining budgets and slowing deployment. This matters as it signals a potential cooling of the AI boom, affecting tech providers and corporate investment strategies.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/06/19/billionaire-ambani-wants-ai-in-every-call-app-and-home/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Billionaire Ambani wants AI in every call, app, and home</h3>
+                        <p class="summary">Reliance is embedding AI into its telecom services for over 500 million users, aiming to integrate the technology into every call, app, and home, which could reshape digital access across India.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.wsj.com/tech/ai/google-is-using-nvidias-playbook-to-build-a-rival-ai-chip-business-1eac86f9?st=Z1ygZm&reflink=desktopwebshare_permalink&utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Google Is Using Nvidia's Playbook to Build a Rival AI Chip Business (11 minute read)</h3>
+                        <p class="summary">Google is renting its custom TPU chips to Anthropic at a New York data center, leveraging Nvidia's strategy to build a rival AI chip business. This move helps data centers secure cheaper debt and signals Google's intensified focus on commercializing its AI hardware.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.cnbc.com/2026/06/18/yann-lecun-elon-musk-xai-failure-ai-labs-bubble-risk.html?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Godfather of AI blasts Musk's xAI as 'failure,' says labs are risking a 'big bubble explosion' (4 minute read)</h3>
+                        <p class="summary">Yann LeCun criticized Elon Musk's xAI as a failure unable to compete with OpenAI and Anthropic, warning that high costs risk a "big bubble explosion" if AI labs don't raise prices or cut spending.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.wsj.com/tech/ai/the-13-billion-ai-startup-betting-on-cheaper-alternatives-to-openai-anthropic-b9679603?st=o3AdMT&reflink=desktopwebshare_permalink&utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">The $13 Billion AI Startup Betting on Cheaper Alternatives to OpenAI, Anthropic (4 minute read)</h3>
+                        <p class="summary">Baseten, a $13 billion startup, offers software and computing for cheaper AI models, challenging expensive leaders like OpenAI and Anthropic by enabling cost-effective AI adoption.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🚀 Cutting-Edge AI Research</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=4pG3SJQPAwk" target="_blank" class="article-item">
+                    <div class="score">↑2332</div>
+                    <div class="content">
+                        <h3 class="headline">The data black hole at the center of AI</h3>
+                        <p class="summary">AI models are trained on vast datasets far exceeding human lifetime exposure, creating a "data black hole" that raises concerns about data sourcing, scale, and transparency.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arrowtsx.dev/bigger-models/" target="_blank" class="article-item">
+                    <div class="score">↑246</div>
+                    <div class="content">
+                        <h3 class="headline">GPT-5.5 hallucinates 3x more than MIT-licensed GLM-5.2</h3>
+                        <p class="summary">Z.ai's MIT-licensed GLM-5.2 (753B params) rivals GPT-5.5 and Claude Fable 5 on intelligence scores while hallucinating far less (28% vs 86% for GPT-5.5 and 48% for Fable 5), challenging the industry's scaling paradigm. This matters as major AI labs face skepticism over...</p>
+                    </div>
+                </a>
+                
+                <a href="https://ianbarber.blog/2026/06/19/llms-are-complicated-now/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">LLMs Are Complicated Now</h3>
+                        <p class="summary">LLMs have evolved beyond simple text generation, now integrating complex reasoning, multimodal inputs, and tool use. This matters because it expands AI capabilities but also introduces new challenges in reliability, safety, and evaluation.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/science/2026/06/amazon-quera-promise-useful-quantum-error-correction-by-2028/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Sooner than expected? Useful quantum error correction promised for 2028.</h3>
+                        <p class="summary">A quantum computing company has promised useful error-corrected quantum computers by 2028, much sooner than the typical 5–10 year industry estimate, signaling accelerated progress in the field.</p>
+                    </div>
+                </a>
+                
+                <a href="https://buildkite.com/pricing/?bk_pid=20260521-TAI-PRI-primary-trial&amp;utm_source=tldr-ai&amp;utm_medium=newsletter&amp;utm_campaign=tldr-ai-2026-05-21&amp;utm_content=primary-trial_header_models_headlines_pipelines&amp;utm_id=20260521-TAI-PRI-primary-trial" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Models get the headlines, pipelines hit the deadlines (Sponsor)</h3>
+                        <p class="summary">Buildkite, a CI platform, is used by AI leaders like Meta, OpenAI, and NVIDIA for scalable, secure pipeline orchestration, allowing control without compromise at massive scale.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.testingcatalog.com/openai-prepares-gpt-5-6-models-for-the-upcoming-release/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">OpenAI prepares GPT-5.6 models for the upcoming release (2 minute read)</h3>
+                        <p class="summary">OpenAI will launch GPT-5.6 models next week with a larger context window and improved coding, pricing to undercut Anthropic amid US regulatory issues affecting its rival.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🛠️ Low-Code AI Tools</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=bXVkS7cff00" target="_blank" class="article-item">
+                    <div class="score">↑1413</div>
+                    <div class="content">
+                        <h3 class="headline">The Canva AI Side Hustle That&#39;s Making People RICH</h3>
+                        <p class="summary">Peopleare using Canva and Claude AI to create and sell products on Amazon KDP, turning it into a lucrative side hustle by leveraging AI for design and content.</p>
+                    </div>
+                </a>
+                
+                <a href="https://claude.com/blog/artifacts-in-claude-code?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Claude Code now supports artifacts (5 minute read)</h3>
+                        <p class="summary">Claude Code now supports artifacts, turning work sessions into live, shareable visual pages for tasks like PR walkthroughs. Available in beta for Team and Enterprise users, it improves collaboration with automatic updates, version history, and privacy controls.</p>
+                    </div>
+                </a>
+                
+                <a href="https://scribe.com/optimize?utm_source=sponsored&amp;utm_medium=organic&amp;utm_term=newsletter_ent&amp;utm_campaign=tldrai&amp;utm_content=ql_6_19_2026" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Your AI strategy is only as good as the workflow data underneath it. (Sponsor)</h3>
+                        <p class="summary">Scribe Optimize surfaces real workflow data across organizations, identifying inefficiencies without surveys or guesswork, so AI initiatives are built on accurate ground truth rather than intuition.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🗳️ Tech Policy & Politics</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.reuters.com/technology/norway-imposes-near-ban-ai-elementary-school-2026-06-19/" target="_blank" class="article-item">
+                    <div class="score">↑719</div>
+                    <div class="content">
+                        <h3 class="headline">Norway imposes near ban on AI in elementary school</h3>
+                        <p class="summary">Norway has effectively banned AI tools in elementary schools, citing concerns over privacy and child development, affecting students and educators nationwide.</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/christianstoecker.de/post/3mokfmvdy2m2e" target="_blank" class="article-item">
+                    <div class="score">↑460</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Christian Stöcker</h3>
+                        <p class="summary">Christian Stöcker criticizes companies admitting they prioritize their loss-making gas business over the planet, dismissing climate risks as heat escalates. It highlights the stark conflict between corporate profit and climate action.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/video/is-the-us-governments-anthropic-ban-accidentally-helping-the-brand/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Is the US government’s Anthropic ban accidentally helping the brand?</h3>
+                        <p class="summary">The US government forced Anthropic to withdraw its Fable 5 and Mythos 5 AI models after Amazon researchers exposed security flaws, sparking criticism from cybersecurity experts who warn the ban may inadvertently boost the brand.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/tech-policy/2026/06/the-uk-will-scan-asylum-seekers-faces-for-age-checks-despite-knowing-the-tech-is-flawed/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">The UK will scan asylum-seekers’ faces for age checks—despite knowing the tech is flawed</h3>
+                        <p class="summary">The UK will use facial age estimation AI on asylum seekers from next year, despite an internal report showing it mistakes children for adults and has serious bias, risking misclassification that strips child protections.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.hyperdimensional.co/p/that-untravelld-world?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">That Untravell'd World (6 minute read)</h3>
+                        <p class="summary">A higher-stakes, more political phase of the AI governance race has begun, involving global policymakers and tech leaders navigating increased complexity.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.engadget.com/2191213/eu-orders-meta-to-stop-blocking-rival-ai-chatbots-on-whatsapp/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">EU Orders Meta To Stop Blocking Rival AI Chatbots On WhatsApp (2 minute read)</h3>
+                        <p class="summary">EU ordered Meta to stop blocking rival AI chatbots on WhatsApp, citing abuse of its dominant position. Meta plans to appeal, calling it regulatory overreach.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.wsj.com/tech/intel-shares-bounce-premarket-after-trump-announces-apple-partnership-19e5123d?st=21si97&reflink=desktopwebshare_permalink&utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Intel Shares Surge After Trump Announces Apple Partnership (3 minute read)</h3>
+                        <p class="summary">Intel shares surged after Trump and Apple announced a partnership to design and build chips in the US, boosting Intel's turnaround under CEO Lip-Bu Tan.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🧠 Open Source LLMs</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=KAnDbJhNJ4E" target="_blank" class="article-item">
+                    <div class="score">↑629</div>
+                    <div class="content">
+                        <h3 class="headline">GLM-5.2 is Basically Opus (For 1/5 the Price)</h3>
+                        <p class="summary">GLM-5.2, a new AI model from Zhipu AI, matches OpenAI's GPT-4 Opus performance at one-fifth the cost, making advanced AI more accessible and challenging market pricing.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/06/19/he-made-your-free-video-player-run-smoothly-now-hes-doing-that-for-robots/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">He made your free video player run smoothly. Now he’s doing that for robots.</h3>
+                        <p class="summary">Jean-Baptiste Kempf, open-source legend behind smooth video playback, now builds Kyber: a real-time infrastructure for remote device control, aiming to improve robot operations.</p>
+                    </div>
+                </a>
+                
+                <a href="https://crlf.link/log/entries/260525-1/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Making a vintage LLM from scratch (50 minute read)</h3>
+                        <p class="summary">A developer built a vintage LLM from scratch using custom scripts and a dataset for about $80, demonstrating that low-cost, personal LLM creation is feasible.</p>
+                    </div>
+                </a>
+                
+                <a href="https://venturebeat.com/technology/xiaomis-new-open-source-agentic-ai-coding-harness-mimo-code-beats-claude-code-at-ultra-long-200-step-tasks?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Xiaomi's new open source, agentic AI coding harness MiMo Code beats Claude Code at ultra-long, 200+ step tasks (14 minute read)</h3>
+                        <p class="summary">Xiaomi released MiMo Code, an open-source AI coding assistant that outperforms Claude Code on complex, multi-step tasks. Its cross-session memory system enables handling 200+ step workflows, potentially advancing autonomous software development.</p>
+                    </div>
+                </a>
+                
+                <a href="https://spateder.com/projects/20260611/openweightmodels?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Mythos-class models will diffuse throughout the world by 2029 (7 minute read)</h3>
+                        <p class="summary">Open-weight AI models are catching up to frontier models, with predictions that a Claude Fable 5-level open model capable of running on 16GB RAM will be feasible by early 2029, signaling widespread diffusion of advanced AI.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🔥 Best Takes</h2>
+                <div class="article-list">
+                    
+                <a href="https://bsky.app/profile/amutepiggy.bsky.social/post/3momnq4xu3k2w" target="_blank" class="article-item">
+                    <div class="score">↑134</div>
+                    <div class="content">
+                        <h3 class="headline">Post by alexis simpson</h3>
+                        <p class="summary">"tom clancy wiggum"</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/06/19/encryption-spyware-and-now-mythos-history-shows-why-cyber-export-control-doesnt-work/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">From PGP to Mythos: a brief history of export controls that didn’t stop anyone</h3>
+                        <p class="summary">"It's unclear why it would work now with Anthropic’s cybersecurity model Mythos."</p>
+                    </div>
+                </a>
+                
+                <a href="https://huggingface.co/blog/ServiceNow/mosaicleaks?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">MosaicLeaks: Can your research agent keep a secret? (10 minute read)</h3>
+                        <p class="summary">"Your research agent is a gossip – it leaks your secrets 34% of the time. PA-DR? Only 9.9%. Still, don't trust it with your diary."</p>
+                    </div>
+                </a>
+                
+                <a href="https://x.com/addyosmani/status/2066595308629594363?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Agentic Code Review (15 minute read)</h3>
+                        <p class="summary">"4x raw output for ~12% delivered-value gain — the gap being the review problem in one line."</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.cnbc.com/2026/06/10/palantir-karp-enterprise-ai.html?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Palantir's Karp says businesses are ‘unhappy' with the frontier AI labs (5 minute read)</h3>
+                        <p class="summary">"These labs only care about burning through AI tokens to signal productivity."</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🔍 RAG Architectures</h2>
+                <div class="article-list">
+                    
+                <a href="https://go.predicthq.com/tldr+predicthq?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">The 4 layers of real-world context (Sponsor)</h3>
+                        <p class="summary">Uber and Domino's are using a four-layer approach to ground AI in real-world context, ensuring accuracy in critical business decisions. This matters because it solves the problem of sophisticated models failing when applied to practical scenarios.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🌍 Global Affairs</h2>
+                <div class="article-list">
+                    
+                <a href="https://thenextweb.com/news/brain-implants-bci-china-neuralink-commercial-race?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">China just approved the world's first commercial brain implant (5 minute read)</h3>
+                        <p class="summary">China approved the first commercial brain implant NEO, a coin-sized device by NeuraMatrix and Tsinghua, allowing thought-controlled glove use, outpacing Neuralink's commercial clearance.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+        </main>
+    </div>
+    <script>
+        // Open all accordions by default
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                toggleAccordion(header);
+            });
+        });
+
+        // Tab Switching Logic
+        function switchTab(e, tabId) {
+            if (e) e.preventDefault();
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // If triggered by a tab button, set it active, else find the tab button for that tabId
+            let tabBtn = (e && e.target && e.target.classList.contains('tab-btn')) ? e.target : document.querySelector(`.tab-btn[onclick*="${tabId}"]`);
+            if (tabBtn) tabBtn.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            // scroll to top if clicked view all
+            if (e && e.target && e.target.classList.contains('view-all')) {
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // Accordion Logic
+        function toggleAccordion(headerElement) {
+            headerElement.classList.toggle('open');
+            const body = headerElement.nextElementSibling;
+            if (headerElement.classList.contains('open')) {
+                body.style.maxHeight = body.scrollHeight + "px";
+            } else {
+                body.style.maxHeight = "0";
+            }
+        }
+
+        // Read article persistence
+        document.addEventListener("DOMContentLoaded", () => {
+            const STORAGE_KEY = "read_articles";
+            let readArticles = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+            
+            document.querySelectorAll('.article-item').forEach(item => {
+                const url = item.getAttribute('href');
+                if (readArticles.has(url)) {
+                    item.classList.add('read-article');
+                }
+                
+                item.addEventListener('click', () => {
+                    readArticles.add(url);
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify([...readArticles]));
+                    
+                    // Mark all identically-linked items read
+                    document.querySelectorAll(`.article-item[href="${url}"]`).forEach(i => i.classList.add('read-article'));
+                });
+            });
+        });
+    </script>
+</body>
+</html>
