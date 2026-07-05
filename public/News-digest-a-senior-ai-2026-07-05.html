@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News Digest | 2026-07-05</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+    
+:root {
+    --bg-color: #0d1117;
+    --card-bg: rgba(22, 27, 34, 0.4);
+    --hover-bg: rgba(46, 52, 60, 0.6);
+    --border: rgba(255, 255, 255, 0.08);
+    --text-main: #e6edf3;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-glow: rgba(88, 166, 255, 0.15);
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-mono: 'Fira Code', ui-monospace, monospace;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+    background-image: radial-gradient(circle at top right, rgba(46, 160, 67, 0.05), transparent 400px),
+                      radial-gradient(circle at bottom left, var(--accent-glow), transparent 400px);
+    background-attachment: fixed;
+}
+
+.container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
+
+header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.title { font-size: 2rem; font-weight: 700; margin: 0 0 0.25rem 0; }
+.subtitle { color: var(--text-muted); font-size: 0.95rem; }
+
+.stats-bar {
+    display: flex; gap: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; text-align: right;
+}
+.stat { display: flex; flex-direction: column; }
+.stat span:first-child { color: var(--text-muted); font-size: 0.75rem; }
+.stat span:last-child { color: var(--accent); font-weight: 600; }
+
+/* Tabs styling */
+.tabs-container {
+    margin-bottom: 2rem; display: flex; gap: 1rem;
+    border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+    background: transparent; border: none; color: var(--text-muted);
+    font-family: var(--font-sans); font-size: 1.1rem; font-weight: 500;
+    cursor: pointer; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s ease;
+}
+
+.tab-btn:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+.tab-btn.active { color: var(--accent); background: rgba(88, 166, 255, 0.1); font-weight: 600; }
+
+.tab-content { display: none; animation: fadeIn 0.3s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Common card styling */
+.category-group {
+    margin-bottom: 2rem; background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden; backdrop-filter: blur(8px);
+}
+
+/* Express View Accordion */
+.accordion-header {
+    width: 100%; display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.03); border: none; border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem; color: var(--text-main); font-size: 1.1rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+    cursor: pointer; transition: background 0.15s ease;
+}
+.accordion-header:hover { background: rgba(255, 255, 255, 0.06); }
+.accordion-header::after { content: '▼'; font-size: 0.8rem; transition: transform 0.3s ease; color: var(--text-muted); }
+.accordion-header.open::after { transform: rotate(-180deg); }
+.accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; background: transparent; }
+
+/* Category masonry */
+.categories-masonry { column-count: 2; column-gap: 2rem; }
+.masonry-item { break-inside: avoid; margin-bottom: 2rem; }
+.masonry-item .category-title {
+    font-size: 1rem; font-weight: 600; color: var(--text-main); margin: 0; padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+}
+
+.article-list { display: flex; flex-direction: column; }
+.article-item {
+    display: flex; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+    transition: background 0.15s ease; text-decoration: none; color: inherit; gap: 1.25rem; align-items: flex-start;
+}
+.masonry-item .article-item { padding: 0.75rem 1rem; gap: 1rem; }
+.article-item:last-child { border-bottom: none; }
+.article-item:hover { background: var(--hover-bg); }
+
+.article-item.read-article { opacity: 0.5; }
+.article-item.read-article .headline { color: var(--text-muted); }
+
+.score {
+    min-width: 45px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent);
+    background: rgba(88, 166, 255, 0.1); padding: 0.25rem 0; text-align: center; border-radius: 4px; margin-top: 0.15rem;
+}
+.content { flex: 1; min-width: 0; }
+.headline { font-weight: 500; font-size: 1.05rem; margin: 0 0 0.35rem 0; color: var(--text-main); flex-wrap: wrap; display: flex; align-items: baseline; gap: 0.5rem; }
+.summary {
+    font-size: 0.9rem; color: var(--text-muted); margin: 0; display: -webkit-box;
+    -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;
+}
+.view-all {
+    display: block; text-align: center; padding: 0.75rem; color: var(--accent); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: background 0.15s;
+}
+.view-all:hover { background: rgba(88, 166, 255, 0.05); }
+
+@media (max-width: 1024px) {
+    .categories-masonry { column-count: 1; }
+    header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .stats-bar { text-align: left; }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1 class="title">AI Pulse Digest</h1>
+                <div class="subtitle">Curated insights for 2026-07-05</div>
+            </div>
+            <div class="stats-bar">
+                <div class="stat"><span>Analyzed</span><span>1068 artifacts</span></div>
+                <div class="stat"><span>Filtered</span><span>624 dupes</span></div>
+                <div class="stat"><span>Curated</span><span>40 items</span></div>
+            </div>
+        </header>
+
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchTab(event, 'express')">✨ Highlights (Top 5)</button>
+            <button class="tab-btn" onclick="switchTab(event, 'detail')">📚 Deep Dive (All)</button>
+        </div>
+        
+        <main id="express" class="tab-content active">
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🛡️ Safety & Policy</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=EGAqQXVbqAc" target="_blank" class="article-item">
+                    <div class="score">↑1983</div>
+                    <div class="content">
+                        <h3 class="headline">Jackie DeAngelis: This is a &#39;MASSIVE GROIN PUNCH&#39; in US&#39; AI race against China</h3>
+                        <p class="summary">China's AI advancements pose a significant threat to the US, with commentator Jackie DeAngelis calling it a "massive groin punch" in the AI race. This matters as it underscores the urgency for America to maintain technological leadership.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=iT_yv_nEdIo" target="_blank" class="article-item">
+                    <div class="score">↑912</div>
+                    <div class="content">
+                        <h3 class="headline">China&#39;s Free AI Just Came For ChatGPT And Claude (+18 Updates)</h3>
+                        <p class="summary">China released a free AI model that directly competes with ChatGPT and Claude, offering users the ability to merge both services. This threatens the dominance of Western AI leaders.</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/anthropics/claude-code/issues/74066" target="_blank" class="article-item">
+                    <div class="score">↑305</div>
+                    <div class="content">
+                        <h3 class="headline">Potential session/cache leakage between workspace instances or consumer accounts</h3>
+                        <p class="summary">Bug report: Claude Code user experienced session leakage where the AI referenced a Minecraft temple from another workspace or consumer account, raising serious security concerns about data isolation in Enterprise ZDR.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/04/midjourney-wants-hollywood-studios-to-reveal-the-details-of-their-ai-usage/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Midjourney wants Hollywood studios to reveal the details of their AI usage</h3>
+                        <p class="summary">Midjourney is demanding that three Hollywood studios disclose their own AI usage in a legal dispute, aiming to expose potential hypocrisy as the studios sue over AI copyright issues.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/02/boeing-owned-wisk-aero-accused-of-firing-manager-who-raised-safety-concerns/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Boeing-owned Wisk Aero accused of firing manager who raised safety concerns</h3>
+                        <p class="summary">A former software manager at Boeing-owned Wisk Aero alleges he was fired after raising safety concerns about rushed software testing ahead of a key 2025 flight test, highlighting potential risks in autonomous aviation development.</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 9 articles in 🛡️ Safety & Policy →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">✨ General Updates</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=1u0vKWeP9HI" target="_blank" class="article-item">
+                    <div class="score">↑914</div>
+                    <div class="content">
+                        <h3 class="headline">Huge AI News Week: Fable 5 Returns; NotebookLM Shorts; Gemini Spark Updates; Nano Banana 2 Lite 🤯</h3>
+                        <p class="summary">Anthropic's Fable 5 returns with new restrictions, while NotebookLM Shorts, Gemini Spark updates, and Nano Banana 2 Lite launch, marking a major week for AI tool releases.</p>
+                    </div>
+                </a>
+                
+                <a href="https://the-decoder.com/openai-reportedly-cut-response-costs-for-guest-chatgpt-users-by-more-than-half/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">OpenAI reportedly cut response costs for guest ChatGPT users by more than half (1 minute read)</h3>
+                        <p class="summary">OpenAI cut response costs for guest ChatGPT users by over half, but it's unclear if the performance gains will extend to the full product for paid users.</p>
+                    </div>
+                </a>
+                
+                <a href="https://kubernetes.io/blog/2026/06/26/open-source-maintainership-in-the-age-of-ai/?utm_source=tldrdevops" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Open source maintainership in the age of AI (4 minute read)</h3>
+                        <p class="summary">Kubernetes introduced AI contribution policies requiring disclosure and accountability, while expanding tools like GitHub Copilot and CodeRabbit to improve code quality and reduce maintainer workload.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.creativeboom.com/tips/design-roles-are-changing-so-how-do-you-stay-a-maker-when-your-job-becomes-a-mender/?utm_source=tldrdesign" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Design roles are changing… so how do you stay a maker when your job becomes a mender? (6 minute read)</h3>
+                        <p class="summary">Designers fear losing creative skills as their roles shift from original ideation to refining AI output. Experts advise maintaining personal projects and using AI as a limited tool to preserve strategic creativity.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🚀 Product Launches</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=w9PZRPQwz90" target="_blank" class="article-item">
+                    <div class="score">↑350</div>
+                    <div class="content">
+                        <h3 class="headline">NEW NotebookLM Video AI Agent Update!</h3>
+                        <p class="summary">Google's NotebookLM gets a new Video AI Agent update, enhancing multimedia analysis capabilities. This matters for users seeking advanced AI-powered note-taking and content processing.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.testingcatalog.com/meituan-launches-longcat-2-0-1-6t-parameter-model-on-apis/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Meituan launches LongCat-2.0 1.6T parameter model on APIs (2 minute read)</h3>
+                        <p class="summary">Meituan launched LongCat-2.0, a 1.6 trillion-parameter MoE model for agentic coding and long-context tasks. It was revealed as the engine behind the popular "Owl Alpha" stealth model, which recently ranked top three globally on OpenRouter.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.testingcatalog.com/google-tests-notebook-collections-for-notebooklm/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Google tests notebook collections for NotebookLM (2 minute read)</h3>
+                        <p class="summary">Google is testing a collections feature for NotebookLM, allowing users to organize multiple notebooks under one heading. This addresses a key limitation for managing large libraries, improving user organization.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.liquid.ai/blog/lfm2-5-230m?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Liquid AI Releases Liquid Foundation Models 2.5 230M (3 minute read)</h3>
+                        <p class="summary">Liquid AI released LFM 2.5, a 230M-parameter non-transformer model that matches the performance of models three times larger on edge tasks, enabling more efficient on-device AI without sacrificing capability.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🧠 Research & Papers</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://github.com/openai/codex/issues/30364" target="_blank" class="article-item">
+                    <div class="score">↑303</div>
+                    <div class="content">
+                        <h3 class="headline">GPT-5.5 Codex reasoning-token clustering may be leading to degraded performance</h3>
+                        <p class="summary">A GPT-5.5 Codex bug causes reasoning tokens to cluster at fixed values (516, 1034, 1552), likely degrading complex task performance. This affects OpenAI's Codex model and was reported in a GitHub issue with aggregate evidence.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arxiv.org/abs/2605.21997" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">The Log Is the Agent</h3>
+                        <p class="summary">The article argues that logs should act as autonomous agents in system monitoring, automating detection and response. This shifts logging from passive record-keeping to active problem-solving, impacting DevOps and infrastructure management.</p>
+                    </div>
+                </a>
+                
+                <a href="https://gilkalai.wordpress.com/2026/07/02/the-ramanujan-challenge-for-ai/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">The Ramanujan Challenge for AI (1 minute read)</h3>
+                        <p class="summary">The Ramanujan Challenge tests if AI can derive proofs from formulas, assessing its ability to perform symbolic reasoning beyond pattern recognition.</p>
+                    </div>
+                </a>
+                
+                <a href="https://openai.com/index/introducing-genebench-pro/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">GeneBench-Pro: Scientific Judgment in AI Agents (9 minute read)</h3>
+                        <p class="summary">OpenAI's GeneBench-Pro tests AI agents on handling ambiguity and revising assumptions in computational biology research. It matters because it evaluates scientific judgment for genomics, quantitative biology, and translational medicine tasks.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🛠️ Tools & Dev</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://github.com/Evolink-AI/Awesome-Blender-Seedance-Workflow-Usecases" target="_blank" class="article-item">
+                    <div class="score">↑299</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Weekly Top Repos): Evolink-AI/Awesome-Blender-Seedance-Workflow-Usecases</h3>
+                        <p class="summary">A curated collection of Blender + Seedance workflows for AI filmmaking (previs, camera control, agent-guided use cases) has trended on GitHub, offering filmmakers and AI developers practical tools to integrate AI into production pipelines.</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/Trystan-SA/claude-design-system-prompt" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Claude Design System Prompt</h3>
+                        <p class="summary">No news article content provided for summarization.</p>
+                    </div>
+                </a>
+                
+                <a href="https://workos.com/blog/writing-my-first-evals?utm_source=tldrdev&amp;utm_medium=newsletter&amp;utm_campaign=q22026&amp;utm_content=header_why_same_ai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Why the Same AI Prompt Gives Different Answers (And How Teams Are Fixing It) (Sponsor)</h3>
+                        <p class="summary">NickNisi from WorkOS built eval systems to address inconsistent AI agent outputs, testing against real project structures to catch errors like hallucinated methods. This matters because most teams ship AI code agents without solving output variability.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">💼 Business & Strategy</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://lucumr.pocoo.org/2026/7/4/better-models-worse-tools/" target="_blank" class="article-item">
+                    <div class="score">↑187</div>
+                    <div class="content">
+                        <h3 class="headline">Better Models: Worse Tools</h3>
+                        <p class="summary">Newer Claude models (Opus 4.8, Sonnet 5) sometimes invent extra fields in tool calls, causing Pi to reject them, while older models did not. This highlights that newer SOTA models can be worse at specific tool schemas.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/04/alibaba-reportedly-bans-employees-from-using-claude-code/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Alibaba reportedly bans employees from using Claude Code</h3>
+                        <p class="summary">Alibaba has reportedly banned employees from using Claude Code, classifying it as high-risk software, citing security concerns. This move underscores growing corporate restrictions on AI coding tools amid data protection and compliance risks.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.wsj.com/business/energy-oil/as-ai-companies-race-for-power-amazon-and-google-have-the-lead-1d97af9a?st=9LLang&reflink=desktopwebshare_permalink&utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">As AI Companies Race for Power, Amazon and Google Have the Lead (6 minute read)</h3>
+                        <p class="summary">Amazonleads in data center power capacity due to decades of infrastructure buildup, but Google is expected to significantly close the gap by 2030.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.geekwire.com/2026/microsoft-announces-2-5b-frontier-company-to-embed-ai-engineers-inside-customers/?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Microsoft unveils $2.5B ‘Frontier Company' to embed AI engineers inside customers (5 minute read)</h3>
+                        <p class="summary">Microsoft launched the $2.5B 'Frontier Company' to embed AI engineers inside customer organizations, building and running AI systems directly for them. This marks a major shift in Microsoft's AI strategy, moving beyond tools to deep integration with clients.</p>
+                    </div>
+                </a>
+                
+                <a href="https://electrek.co/2026/07/02/tesla-caps-employee-ai-spending-200-week/?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Tesla caps employee AI spending at $200/week except for Grok (6 minute read)</h3>
+                        <p class="summary">Tesla limits employee AI tool spending to $200/week, except for its own Grok, highlighting cost control challenges even for AI-driven firms.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🔮 Ecosystem & Funding</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://techcrunch.com/2026/07/04/what-is-mistral-ai-everything-to-know-about-the-openai-competitor/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">What is Mistral AI? Everything to know about the OpenAI competitor</h3>
+                        <p class="summary">Mistral AI, founded in 2023, has raised major funding to offer open-source AI models, positioning itself as a competitor to OpenAI with the goal of democratizing frontier AI.</p>
+                    </div>
+                </a>
+                
+                <a href="https://x.com/Collateral_com/status/2072387293587898768?utm_source=tldrfounders" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">ElevenLabs' Seed Deck, From $2M Pre-Seed to $11B (2 minute read)</h3>
+                        <p class="summary">ElevenLabs' original seed deck, used when valued at $2M pre-seed, is now public as the AI voice startup grew to an $11B valuation, offering insight into its early pitch.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🤖 AI Agents</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://threadreaderapp.com/thread/2072368168182432109.html?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Introducing Devin Security Swarm (3 minute read)</h3>
+                        <p class="summary">Cognition launched Devin Security Swarm, a cost-effective tool using Agentic MapReduce to find vulnerabilities in complex codebases by mapping signals, distributing agents, and verifying findings in sandboxes.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.technologyreview.com/2026/07/02/1138433/teaching-ai-to-run-with-the-turbines/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Teaching AI to run with the turbines (22 minute read)</h3>
+                        <p class="summary">Woodside Energy uses agentic AI, like the "Startup Advisor," to optimize LNG plant startups, augmenting human expertise with predictive analytics to boost operational efficiency in complex industrial workflows.</p>
+                    </div>
+                </a>
+                
+                <a href="https://x.com/MistralDevs/status/2071625939444744521?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Build a document processing workflow in 30 minutes (3 minute read)</h3>
+                        <p class="summary">Mistral Workflows launches a durable orchestration platform for building multi-agent AI document processing pipelines in 30 minutes, enabling faster, fault-tolerant automation.</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/amtechco-llc.com/post/3mpnppwyzts26" target="_blank" class="article-item">
+                    <div class="score">↑9</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Amtech technology</h3>
+                        <p class="summary">AI agents are evolving into autonomous collaborators that design, build, test, deploy, and optimize software, reshaping engineering by 2026, according to Amtech technology.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">📈 Hardware</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://openai.com/index/openai-broadcom-jalapeno-inference-chip/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Jalapeño: OpenAI's new Chip (7 minute read)</h3>
+                        <p class="summary">OpenAI and Broadcom unveiled Jalapeño, an LLM inference chip optimized for performance per watt and rapid deployment, designed in nine months with AI assistance for gigawatt-scale data centers, potentially reducing AI inference costs and energy use.</p>
+                    </div>
+                </a>
+                
+                <a href="https://blogs.nvidia.com/blog/nvidia-aws-ai-production-scale/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">NVIDIA and AWS Collaborate to Bring AI to Production at Scale (4 minute read)</h3>
+                        <p class="summary">NVIDIA and AWS launched EC2 G7 instances with RTX PRO 4500 Blackwell GPUs, boosting AI inference up to 4.6x. This partnership enables scalable, production-ready AI deployment, crucial for enterprises accelerating generative AI workloads.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🔥 Best Takes</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.thevccorner.com/p/the-new-saas-playbook-ai-agent-era?utm_source=tldrfounders" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">This Is the New SaaS Playbook (8 minute read)</h3>
+                        <p class="summary">"When anyone can rebuild your headline feature in a weekend, the software surface stops being a moat."</p>
+                    </div>
+                </a>
+                
+                <a href="https://tomtunguz.com/ai-execution-routing/?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Most AI Work Can Wait (3 minute read)</h3>
+                        <p class="summary">"Design systems around routing, not models."</p>
+                    </div>
+                </a>
+                
+                <a href="https://rohan.ga/blog/technological-involution/?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Technological Involution (20 minute read)</h3>
+                        <p class="summary">"Companies have started treating the populace as something to be mined."</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+        <main id="detail" class="tab-content categories-masonry">
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🛡️ Safety & Policy</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=EGAqQXVbqAc" target="_blank" class="article-item">
+                    <div class="score">↑1983</div>
+                    <div class="content">
+                        <h3 class="headline">Jackie DeAngelis: This is a &#39;MASSIVE GROIN PUNCH&#39; in US&#39; AI race against China</h3>
+                        <p class="summary">China's AI advancements pose a significant threat to the US, with commentator Jackie DeAngelis calling it a "massive groin punch" in the AI race. This matters as it underscores the urgency for America to maintain technological leadership.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=iT_yv_nEdIo" target="_blank" class="article-item">
+                    <div class="score">↑912</div>
+                    <div class="content">
+                        <h3 class="headline">China&#39;s Free AI Just Came For ChatGPT And Claude (+18 Updates)</h3>
+                        <p class="summary">China released a free AI model that directly competes with ChatGPT and Claude, offering users the ability to merge both services. This threatens the dominance of Western AI leaders.</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/anthropics/claude-code/issues/74066" target="_blank" class="article-item">
+                    <div class="score">↑305</div>
+                    <div class="content">
+                        <h3 class="headline">Potential session/cache leakage between workspace instances or consumer accounts</h3>
+                        <p class="summary">Bug report: Claude Code user experienced session leakage where the AI referenced a Minecraft temple from another workspace or consumer account, raising serious security concerns about data isolation in Enterprise ZDR.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/04/midjourney-wants-hollywood-studios-to-reveal-the-details-of-their-ai-usage/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Midjourney wants Hollywood studios to reveal the details of their AI usage</h3>
+                        <p class="summary">Midjourney is demanding that three Hollywood studios disclose their own AI usage in a legal dispute, aiming to expose potential hypocrisy as the studios sue over AI copyright issues.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/02/boeing-owned-wisk-aero-accused-of-firing-manager-who-raised-safety-concerns/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Boeing-owned Wisk Aero accused of firing manager who raised safety concerns</h3>
+                        <p class="summary">A former software manager at Boeing-owned Wisk Aero alleges he was fired after raising safety concerns about rushed software testing ahead of a key 2025 flight test, highlighting potential risks in autonomous aviation development.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/science/2026/07/chemical-accidents-rise-as-trump-administration-proposes-weakening-safety-rules/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Chemical accidents rise as Trump administration proposes weakening safety rules</h3>
+                        <p class="summary">Trump administration proposes weakening chemical safety rules as accidents rise, endangering communities and workers. Physicist Ronald Koopman's past research on hydrofluoric acid hazards underscores the risks.</p>
+                    </div>
+                </a>
+                
+                <a href="https://educatedguesswork.org/posts/notes-amazon-perplexity/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Notes on Amazon v. Perplexity (27 minute read)</h3>
+                        <p class="summary">Amazon sues Perplexity for having its Comet browser misrepresent itself as Chrome, violating the Amazon Store's Conditions of Use. This raises tensions between site restrictions and the open Web's user control principles.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.latent.space/p/gray-swan?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Insights on Indirect Prompt Injection (12 minute read)</h3>
+                        <p class="summary">Gray Swan's founders discuss the growing threat of indirect prompt injection and jailbreaks, highlighting their work on AI security benchmarks and evaluations for advanced systems.</p>
+                    </div>
+                </a>
+                
+                <a href="https://role-confusion.github.io/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Prompt Injection as Role Confusion (17 minute read)</h3>
+                        <p class="summary">Prompt injection attacks exploit LLMs' inability to distinguish system roles from user input, as all tokens arrive as undifferentiated soup. Until models achieve genuine role perception, defense remains a perpetual whack-a-mole game.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">✨ General Updates</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=1u0vKWeP9HI" target="_blank" class="article-item">
+                    <div class="score">↑914</div>
+                    <div class="content">
+                        <h3 class="headline">Huge AI News Week: Fable 5 Returns; NotebookLM Shorts; Gemini Spark Updates; Nano Banana 2 Lite 🤯</h3>
+                        <p class="summary">Anthropic's Fable 5 returns with new restrictions, while NotebookLM Shorts, Gemini Spark updates, and Nano Banana 2 Lite launch, marking a major week for AI tool releases.</p>
+                    </div>
+                </a>
+                
+                <a href="https://the-decoder.com/openai-reportedly-cut-response-costs-for-guest-chatgpt-users-by-more-than-half/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">OpenAI reportedly cut response costs for guest ChatGPT users by more than half (1 minute read)</h3>
+                        <p class="summary">OpenAI cut response costs for guest ChatGPT users by over half, but it's unclear if the performance gains will extend to the full product for paid users.</p>
+                    </div>
+                </a>
+                
+                <a href="https://kubernetes.io/blog/2026/06/26/open-source-maintainership-in-the-age-of-ai/?utm_source=tldrdevops" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Open source maintainership in the age of AI (4 minute read)</h3>
+                        <p class="summary">Kubernetes introduced AI contribution policies requiring disclosure and accountability, while expanding tools like GitHub Copilot and CodeRabbit to improve code quality and reduce maintainer workload.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.creativeboom.com/tips/design-roles-are-changing-so-how-do-you-stay-a-maker-when-your-job-becomes-a-mender/?utm_source=tldrdesign" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Design roles are changing… so how do you stay a maker when your job becomes a mender? (6 minute read)</h3>
+                        <p class="summary">Designers fear losing creative skills as their roles shift from original ideation to refining AI output. Experts advise maintaining personal projects and using AI as a limited tool to preserve strategic creativity.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🚀 Product Launches</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=w9PZRPQwz90" target="_blank" class="article-item">
+                    <div class="score">↑350</div>
+                    <div class="content">
+                        <h3 class="headline">NEW NotebookLM Video AI Agent Update!</h3>
+                        <p class="summary">Google's NotebookLM gets a new Video AI Agent update, enhancing multimedia analysis capabilities. This matters for users seeking advanced AI-powered note-taking and content processing.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.testingcatalog.com/meituan-launches-longcat-2-0-1-6t-parameter-model-on-apis/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Meituan launches LongCat-2.0 1.6T parameter model on APIs (2 minute read)</h3>
+                        <p class="summary">Meituan launched LongCat-2.0, a 1.6 trillion-parameter MoE model for agentic coding and long-context tasks. It was revealed as the engine behind the popular "Owl Alpha" stealth model, which recently ranked top three globally on OpenRouter.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.testingcatalog.com/google-tests-notebook-collections-for-notebooklm/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Google tests notebook collections for NotebookLM (2 minute read)</h3>
+                        <p class="summary">Google is testing a collections feature for NotebookLM, allowing users to organize multiple notebooks under one heading. This addresses a key limitation for managing large libraries, improving user organization.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.liquid.ai/blog/lfm2-5-230m?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Liquid AI Releases Liquid Foundation Models 2.5 230M (3 minute read)</h3>
+                        <p class="summary">Liquid AI released LFM 2.5, a 230M-parameter non-transformer model that matches the performance of models three times larger on edge tasks, enabling more efficient on-device AI without sacrificing capability.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🧠 Research & Papers</h2>
+                <div class="article-list">
+                    
+                <a href="https://github.com/openai/codex/issues/30364" target="_blank" class="article-item">
+                    <div class="score">↑303</div>
+                    <div class="content">
+                        <h3 class="headline">GPT-5.5 Codex reasoning-token clustering may be leading to degraded performance</h3>
+                        <p class="summary">A GPT-5.5 Codex bug causes reasoning tokens to cluster at fixed values (516, 1034, 1552), likely degrading complex task performance. This affects OpenAI's Codex model and was reported in a GitHub issue with aggregate evidence.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arxiv.org/abs/2605.21997" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">The Log Is the Agent</h3>
+                        <p class="summary">The article argues that logs should act as autonomous agents in system monitoring, automating detection and response. This shifts logging from passive record-keeping to active problem-solving, impacting DevOps and infrastructure management.</p>
+                    </div>
+                </a>
+                
+                <a href="https://gilkalai.wordpress.com/2026/07/02/the-ramanujan-challenge-for-ai/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">The Ramanujan Challenge for AI (1 minute read)</h3>
+                        <p class="summary">The Ramanujan Challenge tests if AI can derive proofs from formulas, assessing its ability to perform symbolic reasoning beyond pattern recognition.</p>
+                    </div>
+                </a>
+                
+                <a href="https://openai.com/index/introducing-genebench-pro/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">GeneBench-Pro: Scientific Judgment in AI Agents (9 minute read)</h3>
+                        <p class="summary">OpenAI's GeneBench-Pro tests AI agents on handling ambiguity and revising assumptions in computational biology research. It matters because it evaluates scientific judgment for genomics, quantitative biology, and translational medicine tasks.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🛠️ Tools & Dev</h2>
+                <div class="article-list">
+                    
+                <a href="https://github.com/Evolink-AI/Awesome-Blender-Seedance-Workflow-Usecases" target="_blank" class="article-item">
+                    <div class="score">↑299</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Weekly Top Repos): Evolink-AI/Awesome-Blender-Seedance-Workflow-Usecases</h3>
+                        <p class="summary">A curated collection of Blender + Seedance workflows for AI filmmaking (previs, camera control, agent-guided use cases) has trended on GitHub, offering filmmakers and AI developers practical tools to integrate AI into production pipelines.</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/Trystan-SA/claude-design-system-prompt" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Claude Design System Prompt</h3>
+                        <p class="summary">No news article content provided for summarization.</p>
+                    </div>
+                </a>
+                
+                <a href="https://workos.com/blog/writing-my-first-evals?utm_source=tldrdev&amp;utm_medium=newsletter&amp;utm_campaign=q22026&amp;utm_content=header_why_same_ai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Why the Same AI Prompt Gives Different Answers (And How Teams Are Fixing It) (Sponsor)</h3>
+                        <p class="summary">NickNisi from WorkOS built eval systems to address inconsistent AI agent outputs, testing against real project structures to catch errors like hallucinated methods. This matters because most teams ship AI code agents without solving output variability.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">💼 Business & Strategy</h2>
+                <div class="article-list">
+                    
+                <a href="https://lucumr.pocoo.org/2026/7/4/better-models-worse-tools/" target="_blank" class="article-item">
+                    <div class="score">↑187</div>
+                    <div class="content">
+                        <h3 class="headline">Better Models: Worse Tools</h3>
+                        <p class="summary">Newer Claude models (Opus 4.8, Sonnet 5) sometimes invent extra fields in tool calls, causing Pi to reject them, while older models did not. This highlights that newer SOTA models can be worse at specific tool schemas.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/04/alibaba-reportedly-bans-employees-from-using-claude-code/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Alibaba reportedly bans employees from using Claude Code</h3>
+                        <p class="summary">Alibaba has reportedly banned employees from using Claude Code, classifying it as high-risk software, citing security concerns. This move underscores growing corporate restrictions on AI coding tools amid data protection and compliance risks.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.wsj.com/business/energy-oil/as-ai-companies-race-for-power-amazon-and-google-have-the-lead-1d97af9a?st=9LLang&reflink=desktopwebshare_permalink&utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">As AI Companies Race for Power, Amazon and Google Have the Lead (6 minute read)</h3>
+                        <p class="summary">Amazonleads in data center power capacity due to decades of infrastructure buildup, but Google is expected to significantly close the gap by 2030.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.geekwire.com/2026/microsoft-announces-2-5b-frontier-company-to-embed-ai-engineers-inside-customers/?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Microsoft unveils $2.5B ‘Frontier Company' to embed AI engineers inside customers (5 minute read)</h3>
+                        <p class="summary">Microsoft launched the $2.5B 'Frontier Company' to embed AI engineers inside customer organizations, building and running AI systems directly for them. This marks a major shift in Microsoft's AI strategy, moving beyond tools to deep integration with clients.</p>
+                    </div>
+                </a>
+                
+                <a href="https://electrek.co/2026/07/02/tesla-caps-employee-ai-spending-200-week/?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Tesla caps employee AI spending at $200/week except for Grok (6 minute read)</h3>
+                        <p class="summary">Tesla limits employee AI tool spending to $200/week, except for its own Grok, highlighting cost control challenges even for AI-driven firms.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🔮 Ecosystem & Funding</h2>
+                <div class="article-list">
+                    
+                <a href="https://techcrunch.com/2026/07/04/what-is-mistral-ai-everything-to-know-about-the-openai-competitor/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">What is Mistral AI? Everything to know about the OpenAI competitor</h3>
+                        <p class="summary">Mistral AI, founded in 2023, has raised major funding to offer open-source AI models, positioning itself as a competitor to OpenAI with the goal of democratizing frontier AI.</p>
+                    </div>
+                </a>
+                
+                <a href="https://x.com/Collateral_com/status/2072387293587898768?utm_source=tldrfounders" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">ElevenLabs' Seed Deck, From $2M Pre-Seed to $11B (2 minute read)</h3>
+                        <p class="summary">ElevenLabs' original seed deck, used when valued at $2M pre-seed, is now public as the AI voice startup grew to an $11B valuation, offering insight into its early pitch.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🤖 AI Agents</h2>
+                <div class="article-list">
+                    
+                <a href="https://threadreaderapp.com/thread/2072368168182432109.html?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Introducing Devin Security Swarm (3 minute read)</h3>
+                        <p class="summary">Cognition launched Devin Security Swarm, a cost-effective tool using Agentic MapReduce to find vulnerabilities in complex codebases by mapping signals, distributing agents, and verifying findings in sandboxes.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.technologyreview.com/2026/07/02/1138433/teaching-ai-to-run-with-the-turbines/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Teaching AI to run with the turbines (22 minute read)</h3>
+                        <p class="summary">Woodside Energy uses agentic AI, like the "Startup Advisor," to optimize LNG plant startups, augmenting human expertise with predictive analytics to boost operational efficiency in complex industrial workflows.</p>
+                    </div>
+                </a>
+                
+                <a href="https://x.com/MistralDevs/status/2071625939444744521?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Build a document processing workflow in 30 minutes (3 minute read)</h3>
+                        <p class="summary">Mistral Workflows launches a durable orchestration platform for building multi-agent AI document processing pipelines in 30 minutes, enabling faster, fault-tolerant automation.</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/amtechco-llc.com/post/3mpnppwyzts26" target="_blank" class="article-item">
+                    <div class="score">↑9</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Amtech technology</h3>
+                        <p class="summary">AI agents are evolving into autonomous collaborators that design, build, test, deploy, and optimize software, reshaping engineering by 2026, according to Amtech technology.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">📈 Hardware</h2>
+                <div class="article-list">
+                    
+                <a href="https://openai.com/index/openai-broadcom-jalapeno-inference-chip/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Jalapeño: OpenAI's new Chip (7 minute read)</h3>
+                        <p class="summary">OpenAI and Broadcom unveiled Jalapeño, an LLM inference chip optimized for performance per watt and rapid deployment, designed in nine months with AI assistance for gigawatt-scale data centers, potentially reducing AI inference costs and energy use.</p>
+                    </div>
+                </a>
+                
+                <a href="https://blogs.nvidia.com/blog/nvidia-aws-ai-production-scale/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">NVIDIA and AWS Collaborate to Bring AI to Production at Scale (4 minute read)</h3>
+                        <p class="summary">NVIDIA and AWS launched EC2 G7 instances with RTX PRO 4500 Blackwell GPUs, boosting AI inference up to 4.6x. This partnership enables scalable, production-ready AI deployment, crucial for enterprises accelerating generative AI workloads.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🔥 Best Takes</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.thevccorner.com/p/the-new-saas-playbook-ai-agent-era?utm_source=tldrfounders" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">This Is the New SaaS Playbook (8 minute read)</h3>
+                        <p class="summary">"When anyone can rebuild your headline feature in a weekend, the software surface stops being a moat."</p>
+                    </div>
+                </a>
+                
+                <a href="https://tomtunguz.com/ai-execution-routing/?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Most AI Work Can Wait (3 minute read)</h3>
+                        <p class="summary">"Design systems around routing, not models."</p>
+                    </div>
+                </a>
+                
+                <a href="https://rohan.ga/blog/technological-involution/?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Technological Involution (20 minute read)</h3>
+                        <p class="summary">"Companies have started treating the populace as something to be mined."</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+        </main>
+    </div>
+    <script>
+        // Open all accordions by default
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                toggleAccordion(header);
+            });
+        });
+
+        // Tab Switching Logic
+        function switchTab(e, tabId) {
+            if (e) e.preventDefault();
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // If triggered by a tab button, set it active, else find the tab button for that tabId
+            let tabBtn = (e && e.target && e.target.classList.contains('tab-btn')) ? e.target : document.querySelector(`.tab-btn[onclick*="${tabId}"]`);
+            if (tabBtn) tabBtn.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            // scroll to top if clicked view all
+            if (e && e.target && e.target.classList.contains('view-all')) {
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // Accordion Logic
+        function toggleAccordion(headerElement) {
+            headerElement.classList.toggle('open');
+            const body = headerElement.nextElementSibling;
+            if (headerElement.classList.contains('open')) {
+                body.style.maxHeight = body.scrollHeight + "px";
+            } else {
+                body.style.maxHeight = "0";
+            }
+        }
+
+        // Read article persistence
+        document.addEventListener("DOMContentLoaded", () => {
+            const STORAGE_KEY = "read_articles";
+            let readArticles = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+            
+            document.querySelectorAll('.article-item').forEach(item => {
+                const url = item.getAttribute('href');
+                if (readArticles.has(url)) {
+                    item.classList.add('read-article');
+                }
+                
+                item.addEventListener('click', () => {
+                    readArticles.add(url);
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify([...readArticles]));
+                    
+                    // Mark all identically-linked items read
+                    document.querySelectorAll(`.article-item[href="${url}"]`).forEach(i => i.classList.add('read-article'));
+                });
+            });
+        });
+    </script>
+</body>
+</html>
