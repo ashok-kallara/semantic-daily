@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News Digest | 2026-07-13</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+    
+:root {
+    --bg-color: #0d1117;
+    --card-bg: rgba(22, 27, 34, 0.4);
+    --hover-bg: rgba(46, 52, 60, 0.6);
+    --border: rgba(255, 255, 255, 0.08);
+    --text-main: #e6edf3;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-glow: rgba(88, 166, 255, 0.15);
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-mono: 'Fira Code', ui-monospace, monospace;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+    background-image: radial-gradient(circle at top right, rgba(46, 160, 67, 0.05), transparent 400px),
+                      radial-gradient(circle at bottom left, var(--accent-glow), transparent 400px);
+    background-attachment: fixed;
+}
+
+.container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
+
+header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.title { font-size: 2rem; font-weight: 700; margin: 0 0 0.25rem 0; }
+.subtitle { color: var(--text-muted); font-size: 0.95rem; }
+
+.stats-bar {
+    display: flex; gap: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; text-align: right;
+}
+.stat { display: flex; flex-direction: column; }
+.stat span:first-child { color: var(--text-muted); font-size: 0.75rem; }
+.stat span:last-child { color: var(--accent); font-weight: 600; }
+
+/* Tabs styling */
+.tabs-container {
+    margin-bottom: 2rem; display: flex; gap: 1rem;
+    border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+    background: transparent; border: none; color: var(--text-muted);
+    font-family: var(--font-sans); font-size: 1.1rem; font-weight: 500;
+    cursor: pointer; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s ease;
+}
+
+.tab-btn:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+.tab-btn.active { color: var(--accent); background: rgba(88, 166, 255, 0.1); font-weight: 600; }
+
+.tab-content { display: none; animation: fadeIn 0.3s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Common card styling */
+.category-group {
+    margin-bottom: 2rem; background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden; backdrop-filter: blur(8px);
+}
+
+/* Express View Accordion */
+.accordion-header {
+    width: 100%; display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.03); border: none; border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem; color: var(--text-main); font-size: 1.1rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+    cursor: pointer; transition: background 0.15s ease;
+}
+.accordion-header:hover { background: rgba(255, 255, 255, 0.06); }
+.accordion-header::after { content: '▼'; font-size: 0.8rem; transition: transform 0.3s ease; color: var(--text-muted); }
+.accordion-header.open::after { transform: rotate(-180deg); }
+.accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; background: transparent; }
+
+/* Category masonry */
+.categories-masonry { column-count: 2; column-gap: 2rem; }
+.masonry-item { break-inside: avoid; margin-bottom: 2rem; }
+.masonry-item .category-title {
+    font-size: 1rem; font-weight: 600; color: var(--text-main); margin: 0; padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+}
+
+.article-list { display: flex; flex-direction: column; }
+.article-item {
+    display: flex; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+    transition: background 0.15s ease; text-decoration: none; color: inherit; gap: 1.25rem; align-items: flex-start;
+}
+.masonry-item .article-item { padding: 0.75rem 1rem; gap: 1rem; }
+.article-item:last-child { border-bottom: none; }
+.article-item:hover { background: var(--hover-bg); }
+
+.article-item.read-article { opacity: 0.5; }
+.article-item.read-article .headline { color: var(--text-muted); }
+
+.score {
+    min-width: 45px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent);
+    background: rgba(88, 166, 255, 0.1); padding: 0.25rem 0; text-align: center; border-radius: 4px; margin-top: 0.15rem;
+}
+.content { flex: 1; min-width: 0; }
+.headline { font-weight: 500; font-size: 1.05rem; margin: 0 0 0.35rem 0; color: var(--text-main); flex-wrap: wrap; display: flex; align-items: baseline; gap: 0.5rem; }
+.summary {
+    font-size: 0.9rem; color: var(--text-muted); margin: 0; display: -webkit-box;
+    -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;
+}
+.view-all {
+    display: block; text-align: center; padding: 0.75rem; color: var(--accent); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: background 0.15s;
+}
+.view-all:hover { background: rgba(88, 166, 255, 0.05); }
+
+@media (max-width: 1024px) {
+    .categories-masonry { column-count: 1; }
+    header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .stats-bar { text-align: left; }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1 class="title">AI Pulse Digest</h1>
+                <div class="subtitle">Curated insights for 2026-07-13</div>
+            </div>
+            <div class="stats-bar">
+                <div class="stat"><span>Analyzed</span><span>750 artifacts</span></div>
+                <div class="stat"><span>Filtered</span><span>462 dupes</span></div>
+                <div class="stat"><span>Curated</span><span>40 items</span></div>
+            </div>
+        </header>
+
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchTab(event, 'express')">✨ Highlights (Top 5)</button>
+            <button class="tab-btn" onclick="switchTab(event, 'detail')">📚 Deep Dive (All)</button>
+        </div>
+        
+        <main id="express" class="tab-content active">
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🤖 Low-Code AI Tools</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=GtrWMNsXghA" target="_blank" class="article-item">
+                    <div class="score">↑1443</div>
+                    <div class="content">
+                        <h3 class="headline">AI Apps Making $20,000+ per month with 1 person teams.</h3>
+                        <p class="summary">AI apps built by solo developers are generating over $20,000 monthly, highlighting a shift toward lean, high-profit ventures in the tech industry.</p>
+                    </div>
+                </a>
+                
+                <a href="https://systima.ai/blog/claude-code-vs-opencode-token-overhead" target="_blank" class="article-item">
+                    <div class="score">↑639</div>
+                    <div class="content">
+                        <h3 class="headline">Claude Code sends 33k tokens before reading the prompt; OpenCode sends 7k</h3>
+                        <p class="summary">Claude Code sends 33,000 tokens before reading the prompt, while OpenCode sends only 7,000, making it far more inefficient. This matters because it drives up API costs and highlights a wasteful cache strategy.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theverge.com/transportation/964132/waze-gemini-ai-voice-commands-less-chatty" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Waze is getting a bunch of new AI-powered features</h3>
+                        <p class="summary">Google is integrating its AI assistant Gemini into Waze, adding conversational voice commands for reporting incidents and searching destinations. This matters as it enhances user personalization and convenience in navigation.</p>
+                    </div>
+                </a>
+                
+                <a href="https://slidesgo.io/?utm_source=tldrdesign" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">PPT Generator (Website)</h3>
+                        <p class="summary">AI-powered PPT Generator creates professional presentations quickly with intelligent automation for beautification and enhancement, streamlining slide creation for users.</p>
+                    </div>
+                </a>
+                
+                <a href="https://support.claude.com/en/articles/15520349-use-claude-cowork-on-web-desktop-and-mobile?utm_source=tldrfounders" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Use Claude Cowork on web, desktop, and mobile (3 minute read)</h3>
+                        <p class="summary">Claude Cowork, a remote session tool, is now available on web and mobile in addition to desktop, allowing users to access sessions and files across devices. It's rolling out in beta over several weeks, starting with Max plan subscribers.</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 6 articles in 🤖 Low-Code AI Tools →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🧠 Agentic Workflows</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=hYcOFTMesGc" target="_blank" class="article-item">
+                    <div class="score">↑1108</div>
+                    <div class="content">
+                        <h3 class="headline">Your Roadmap Is Why You&#39;re Losing to AI-Native Teams.</h3>
+                        <p class="summary">AI-native teams outperform traditional teams by using AI tools to accelerate workflows, making rigid roadmaps obsolete. Companies clinging to static plans risk falling behind competitors who adapt dynamically.</p>
+                    </div>
+                </a>
+                
+                <a href="https://x.com/systematicls/status/2074142558595207435?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">What The New 100x Agentic Engineer Looks Like In The Era Of Fable & GPT 5.6 (35 minute read)</h3>
+                        <p class="summary">Emerging AI systems like Fable and GPT 5.6 enable a new class of "100x agentic engineers" with vastly superior productivity, reshaping software development by leveraging advanced autonomous agents to outperform median engineers.</p>
+                    </div>
+                </a>
+                
+                <a href="https://newsletter.posthog.com/p/code-review-tips?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Stop being the code review bottleneck (8 minute read)</h3>
+                        <p class="summary">AI agents write code faster than humans can review, making humans a bottleneck. PostHog uses workflow changes to delegate code review to agents, maintaining speed and quality.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">📈 AI in World News</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=byAXKYmeZho" target="_blank" class="article-item">
+                    <div class="score">↑886</div>
+                    <div class="content">
+                        <h3 class="headline">GPT 5.6 Mystery, New 2.7T AI, DeepSeek New AI Chip, Orca World Model, Grok 4.5 and More AI News...</h3>
+                        <p class="summary">OpenAI launched GPT-5.6, while AI Sol solved a 50-year-old math conjecture. DeepSeek unveiled a new AI chip, and Orca World Model and Grok 4.5 were also announced, highlighting major AI advances.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=OWTbZ2mX5co" target="_blank" class="article-item">
+                    <div class="score">↑744</div>
+                    <div class="content">
+                        <h3 class="headline">Samsung Beats NVIDIA? World’s Most Profitable Company? Here’s the Truth | Samsung Q2 2026 Explained</h3>
+                        <p class="summary">Samsung reported a higher operating profit than NVIDIA in Q2 2026, sparking viral claims of becoming the world's most profitable company. The truth behind these comparisons matters for understanding market leadership.</p>
+                    </div>
+                </a>
+                
+                <a href="https://geohot.github.io//blog/jekyll/update/2026/07/12/i-love-llms.html" target="_blank" class="article-item">
+                    <div class="score">↑443</div>
+                    <div class="content">
+                        <h3 class="headline">I love LLMs, I hate hype</h3>
+                        <p class="summary">AI enthusiast criticizes two types of hype: negative doom-mongering and extreme utopian claims that AI will "own the light cone." Author argues AI progress stems from Moore's law and general computing, not from frontier labs, and warns that hype is used to justify valuations...</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/12/techcrunch-mobility-a-robotaxi-ultimatum/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">TechCrunch Mobility: A robotaxi ultimatum</h3>
+                        <p class="summary">San Francisco gives robotaxi companies Waymo and Cruise an ultimatum to address safety concerns or face permit restrictions, impacting the future of autonomous vehicle regulation.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theverge.com/tech/964519/apple-silicon-self-driving-car-ai-m7-ultra" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Apple’s failed self-driving car program left a legacy of powerful AI chips</h3>
+                        <p class="summary">Apple's failed self-driving car project led to the development of the Neural Engine, which now powers on-device AI in iPhones. This shows how abandoned projects can still drive major technological breakthroughs.</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 7 articles in 📈 AI in World News →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">⚙️ AI Ethics & Governance</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://raymyers.org/post/zed-creator-calls-spade-a-spade/" target="_blank" class="article-item">
+                    <div class="score">↑679</div>
+                    <div class="content">
+                        <h3 class="headline">Zig Creator Calls Spade a Spade, Anthropic Blows Smoke</h3>
+                        <p class="summary">Zig creator Andrew Kelley criticizes Anthropic's narrative that AI will eliminate software engineering, warning that their $132B funding and $1T IPO valuation rely on selling this future impact. He urges clear thinking amid fear-driven decisions by executives and investors.</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/botticellibelle.blacksky.app/post/3mqhsur2mus2p" target="_blank" class="article-item">
+                    <div class="score">↑154</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Botticellibelle</h3>
+                        <p class="summary">A disabled access tech expert with nearly a decade of experience argues that agentic AI is a scam, not a genuine accessibility tool, and that corporations are deceiving well-meaning academics in their AI push.</p>
+                    </div>
+                </a>
+                
+                <a href="https://antirez.com/news/169" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Control the Ideas, Not the Code</h3>
+                        <p class="summary">The article argues that managing intellectual ideas is more critical than controlling code itself, emphasizing a strategic shift in how software innovation and ownership should be approached.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/10/meta-removes-controversial-ai-feature-on-instagram-after-backlash/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Meta removes controversial AI feature on Instagram after backlash</h3>
+                        <p class="summary">Meta removed a controversial AI feature on Instagram after backlash, admitting it "missed the mark" and was no longer available.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theverge.com/tech/964565/eu-children-social-media-online-safety-rules" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Social media limits are coming for teens across Europe</h3>
+                        <p class="summary">The European Union is considering sweeping restrictions on teens' social media access, including age limits and bans, with platforms needing to prove safety. Ursula von der Leyen says legislation could be proposed within months to protect children.</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 7 articles in ⚙️ AI Ethics & Governance →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🚀 Open Source LLMs</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://ploy.ai/blog/migrating-a-production-ai-agent-to-gpt-5-6" target="_blank" class="article-item">
+                    <div class="score">↑221</div>
+                    <div class="content">
+                        <h3 class="headline">Migrating a production AI agent to GPT-5.6: 2.2x faster, 27% cheaper</h3>
+                        <p class="summary">Ploy's AI agent, which builds and edits websites, switched from Claude Opus to OpenAI's GPT-5.6 Sol, achieving 2.2x faster performance at 27% lower cost, after months of no model beating Opus on quality.</p>
+                    </div>
+                </a>
+                
+                <a href="https://support.claude.com/en/articles/15424964-claude-fable-5-promotional-access?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Claude Fable 5 promotional access (7 minute read)</h3>
+                        <p class="summary">Anthropic offers free access to Claude Fable 5 until July 12 for Pro, Max, Team, and Enterprise users, allowing up to 50% of weekly subscription limits for the model.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.bloomberg.com/news/articles/2026-07-09/meta-starts-charging-for-ai-with-muse-spark-1-1-agentic-model?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb3VyY2UiOiJTdWJzY3JpYmVyR2lmdGVkQXJ0aWNsZSIsImlhdCI6MTc4MzY0NzUxMSwiZXhwIjoxNzg0MjUyMzExLCJhcnRpY2xlSWQiOiJUSFZDVENSS1YyVTYwMCIsImJjb25uZWN0SWQiOiI2NTc1NjkyN0UwMkM0N0MwQkQ0MDNEQTJGMEUyNzIyMyJ9.036PyX7IFhgdqyc5QHadS6Ans-LlAztL8vSoBa_ytUk&utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Zuckerberg Pledges ‘Aggressive' Pricing With Meta's First Pay-to-Use AI (7 minute read)</h3>
+                        <p class="summary">Meta launched Muse Spark 1.1 with a paid tier for developers, pricing it at roughly 25% of competitors' cost. Mark Zuckerberg's aggressive pricing strategy aims to undercut rivals while offering near-state-of-the-art AI reasoning.</p>
+                    </div>
+                </a>
+                
+                <a href="https://simonwillison.net/2026/Jul/8/introducing-gptlive/#atom-everything?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">GPT‑Live (2 minute read)</h3>
+                        <p class="summary">OpenAI upgraded ChatGPT's voice model, enabling hour-long conversations and background task delegation to GPT-5.5, significantly enhancing user interaction and AI capability.</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/happy-homhom.bsky.social/post/3mqhd5h3l7w2r" target="_blank" class="article-item">
+                    <div class="score">↑7</div>
+                    <div class="content">
+                        <h3 class="headline">Post by happy_homhom</h3>
+                        <p class="summary">Anthropic's reported spending on SpaceX underscores that its AI model Claude relies on tangible, physical infrastructure for operation.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">📚 AI Research Papers</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://spectrum.ieee.org/ai-science-research-flattens-discovery" target="_blank" class="article-item">
+                    <div class="score">↑150</div>
+                    <div class="content">
+                        <h3 class="headline">AI boosts research careers but narrow the span of ideas explored: study</h3>
+                        <p class="summary">AI tools boost individual researchers' careers but narrow the range of scientific ideas explored, potentially flattening discovery.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arxiv.org/abs/2607.06377" target="_blank" class="article-item">
+                    <div class="score">↑126</div>
+                    <div class="content">
+                        <h3 class="headline">Automation Without Understanding</h3>
+                        <p class="summary">A new essay warns that as AI produces research-level math, the U.S. is weakening the human pipeline needed to verify it, calling mathematical capacity a strategic asset like semiconductors. It cites AI's disproof of an Erdős conjecture and proposes requiring AI to expose...</p>
+                    </div>
+                </a>
+                
+                <a href="https://cacm.acm.org/news/can-we-understand-how-large-language-models-reason/" target="_blank" class="article-item">
+                    <div class="score">↑107</div>
+                    <div class="content">
+                        <h3 class="headline">Mechanistic interpretability researchers applying causality theory to LLMs</h3>
+                        <p class="summary">Researchers are applying causality theory to interpret the inner workings of large language models, advancing mechanistic interpretability to improve model transparency and safety.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">💬 Conversational Analytics</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://andiroberts.com/citizenship/the-social-physics-of-conversation-citizenship-leadership" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">The social physics of conversation: Communication patterns matter</h3>
+                        <p class="summary">The article explores how communication patterns, analyzed through social physics, reveal that the structure of conversation influences social dynamics, showing that interaction styles matter more than content for group outcomes.</p>
+                    </div>
+                </a>
+                
+                <a href="https://x.com/JayaGup10/status/2075074218065265078?utm_source=tldrfounders" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">AI's Value Capture problem (9 minute read)</h3>
+                        <p class="summary">Enterprise AI systems trained on exception logs and decision traces risk capturing sensitive company knowledge beyond official policies, making audit trails and training controls essential for founders selling AI into critical workflows.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🌍 AI-Powered Politics</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.wired.com/story/sfpd-drone-video-leak-surveillance/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Leak of San Francisco Police Drone Footage Exposes Reality of Urban Surveillance</h3>
+                        <p class="summary">Leaked drone footage reveals San Francisco police tracked citizens in real time during protests, raising privacy and civil liberties concerns over unregulated urban surveillance expansion.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/13/ubers-robotaxi-lobbying-effort-has-put-it-on-a-collision-course-with-waymo/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Uber’s robotaxi lobbying effort puts it on a collision course with Waymo</h3>
+                        <p class="summary">Uber and Waymo are competing in Washington D.C. over robotaxi regulations, with their lobbying efforts potentially shaping the future of autonomous ride-hailing.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/04/alibaba-reportedly-bans-employees-from-using-claude-code/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Alibaba Reportedly Restricted Claude Code (1 minute read)</h3>
+                        <p class="summary">Alibaba plans to prohibit employee use of Anthropic's Claude Code from July 10, directing them to its own Qoder tool, as Anthropic works to prevent unauthorized access and model distillation.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theblock.co/post/407178/nigel-farage-failed-to-declare-funding-from-crypto-gambling-figure-convicted-of-fraud-sunday-times?utm_source=tldrcrypto" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Farage Failed to Declare Support from Convicted Crypto Fraudster (4 minute read)</h3>
+                        <p class="summary">Nigel Farage failed to declare financial support from convicted fraudster George Cottrell before his 2024 election, prompting a new investigation request amid an existing probe into a separate undisclosed crypto-linked gift.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🔍 GitHub AI Projects</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://github.blog/security/application-security/how-github-gave-every-repository-a-durable-owner/?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">How GitHub gave every repository a durable owner (9 minute read)</h3>
+                        <p class="summary">GitHub assigned validated owners to all active repositories from its 14,000+ internal repos in under 45 days, archiving the rest, making ownership the foundation for improved management.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theregister.com/ai-and-ml/2026/07/08/former-github-ceo-launches-competitor-designed-for-the-age-of-vibe-coding/5268694?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Former GitHub CEO launches competitor designed for the age of vibe coding (5 minute read)</h3>
+                        <p class="summary">Former GitHub CEO Nat Friedman launched Entire, a Git hosting network optimized for AI agents and "vibe coding," challenging GitHub's dominance by prioritizing AI-driven development workflows.</p>
+                    </div>
+                </a>
+                
+                <a href="https://semyonsinchenko.github.io/ssinchenko/post/datafusion-graphs-cc-2/?utm_source=tldrdata" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Algorithms on billion-scale graph using 10GB RAM: I love DataFusion! (7 minute read)</h3>
+                        <p class="summary">Apache DataFusion runs billion-edge graph algorithms like PageRank and weakly connected components on a laptop-class memory budget (5-10GB RAM), enabling large-scale graph processing without expensive hardware.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+        <main id="detail" class="tab-content categories-masonry">
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🤖 Low-Code AI Tools</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=GtrWMNsXghA" target="_blank" class="article-item">
+                    <div class="score">↑1443</div>
+                    <div class="content">
+                        <h3 class="headline">AI Apps Making $20,000+ per month with 1 person teams.</h3>
+                        <p class="summary">AI apps built by solo developers are generating over $20,000 monthly, highlighting a shift toward lean, high-profit ventures in the tech industry.</p>
+                    </div>
+                </a>
+                
+                <a href="https://systima.ai/blog/claude-code-vs-opencode-token-overhead" target="_blank" class="article-item">
+                    <div class="score">↑639</div>
+                    <div class="content">
+                        <h3 class="headline">Claude Code sends 33k tokens before reading the prompt; OpenCode sends 7k</h3>
+                        <p class="summary">Claude Code sends 33,000 tokens before reading the prompt, while OpenCode sends only 7,000, making it far more inefficient. This matters because it drives up API costs and highlights a wasteful cache strategy.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theverge.com/transportation/964132/waze-gemini-ai-voice-commands-less-chatty" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Waze is getting a bunch of new AI-powered features</h3>
+                        <p class="summary">Google is integrating its AI assistant Gemini into Waze, adding conversational voice commands for reporting incidents and searching destinations. This matters as it enhances user personalization and convenience in navigation.</p>
+                    </div>
+                </a>
+                
+                <a href="https://slidesgo.io/?utm_source=tldrdesign" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">PPT Generator (Website)</h3>
+                        <p class="summary">AI-powered PPT Generator creates professional presentations quickly with intelligent automation for beautification and enhancement, streamlining slide creation for users.</p>
+                    </div>
+                </a>
+                
+                <a href="https://support.claude.com/en/articles/15520349-use-claude-cowork-on-web-desktop-and-mobile?utm_source=tldrfounders" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Use Claude Cowork on web, desktop, and mobile (3 minute read)</h3>
+                        <p class="summary">Claude Cowork, a remote session tool, is now available on web and mobile in addition to desktop, allowing users to access sessions and files across devices. It's rolling out in beta over several weeks, starting with Max plan subscribers.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.saastr.com/tired-vs-wired-our-deep-dive-on-why-software-spend-is-up-15-yet-half-of-saas-is-still-dying/?utm_source=tldrfounders" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Tired vs. Wired: Our Deep Dive on Why Software Spend Is Up Record Amounts … Yet Half of SaaS Is Still Dying (8 minute read)</h3>
+                        <p class="summary">Software spend is surging, but valuations are collapsing as the market splits: companies tapping AI budgets accelerate while those using outdated playbooks stagnate, reshaping the industry.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🧠 Agentic Workflows</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=hYcOFTMesGc" target="_blank" class="article-item">
+                    <div class="score">↑1108</div>
+                    <div class="content">
+                        <h3 class="headline">Your Roadmap Is Why You&#39;re Losing to AI-Native Teams.</h3>
+                        <p class="summary">AI-native teams outperform traditional teams by using AI tools to accelerate workflows, making rigid roadmaps obsolete. Companies clinging to static plans risk falling behind competitors who adapt dynamically.</p>
+                    </div>
+                </a>
+                
+                <a href="https://x.com/systematicls/status/2074142558595207435?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">What The New 100x Agentic Engineer Looks Like In The Era Of Fable & GPT 5.6 (35 minute read)</h3>
+                        <p class="summary">Emerging AI systems like Fable and GPT 5.6 enable a new class of "100x agentic engineers" with vastly superior productivity, reshaping software development by leveraging advanced autonomous agents to outperform median engineers.</p>
+                    </div>
+                </a>
+                
+                <a href="https://newsletter.posthog.com/p/code-review-tips?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Stop being the code review bottleneck (8 minute read)</h3>
+                        <p class="summary">AI agents write code faster than humans can review, making humans a bottleneck. PostHog uses workflow changes to delegate code review to agents, maintaining speed and quality.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">📈 AI in World News</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=byAXKYmeZho" target="_blank" class="article-item">
+                    <div class="score">↑886</div>
+                    <div class="content">
+                        <h3 class="headline">GPT 5.6 Mystery, New 2.7T AI, DeepSeek New AI Chip, Orca World Model, Grok 4.5 and More AI News...</h3>
+                        <p class="summary">OpenAI launched GPT-5.6, while AI Sol solved a 50-year-old math conjecture. DeepSeek unveiled a new AI chip, and Orca World Model and Grok 4.5 were also announced, highlighting major AI advances.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=OWTbZ2mX5co" target="_blank" class="article-item">
+                    <div class="score">↑744</div>
+                    <div class="content">
+                        <h3 class="headline">Samsung Beats NVIDIA? World’s Most Profitable Company? Here’s the Truth | Samsung Q2 2026 Explained</h3>
+                        <p class="summary">Samsung reported a higher operating profit than NVIDIA in Q2 2026, sparking viral claims of becoming the world's most profitable company. The truth behind these comparisons matters for understanding market leadership.</p>
+                    </div>
+                </a>
+                
+                <a href="https://geohot.github.io//blog/jekyll/update/2026/07/12/i-love-llms.html" target="_blank" class="article-item">
+                    <div class="score">↑443</div>
+                    <div class="content">
+                        <h3 class="headline">I love LLMs, I hate hype</h3>
+                        <p class="summary">AI enthusiast criticizes two types of hype: negative doom-mongering and extreme utopian claims that AI will "own the light cone." Author argues AI progress stems from Moore's law and general computing, not from frontier labs, and warns that hype is used to justify valuations...</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/12/techcrunch-mobility-a-robotaxi-ultimatum/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">TechCrunch Mobility: A robotaxi ultimatum</h3>
+                        <p class="summary">San Francisco gives robotaxi companies Waymo and Cruise an ultimatum to address safety concerns or face permit restrictions, impacting the future of autonomous vehicle regulation.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theverge.com/tech/964519/apple-silicon-self-driving-car-ai-m7-ultra" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Apple’s failed self-driving car program left a legacy of powerful AI chips</h3>
+                        <p class="summary">Apple's failed self-driving car project led to the development of the Neural Engine, which now powers on-device AI in iPhones. This shows how abandoned projects can still drive major technological breakthroughs.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.bloomberg.com/news/articles/2026-07-06/broadcom-expands-work-for-apple-supplying-products-through-2031?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb3VyY2UiOiJTdWJzY3JpYmVyR2lmdGVkQXJ0aWNsZSIsImlhdCI6MTc4MzM5NTM0NywiZXhwIjoxNzg0MDAwMTQ3LCJhcnRpY2xlSWQiOiJUSFI1UVBUOTZPU00wMCIsImJjb25uZWN0SWQiOiJFQTExNDNDNTM4NEE0RUY5QTg5RjJEN0IxMTg2MzcwOSJ9.ebpJwMkftUwRe24BKeLvUdXxuQuyf5n3mqDml4NLxXk&utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Broadcom, Apple Extend Tie-Up to 2031 With New Custom Chips (2 minute read)</h3>
+                        <p class="summary">Broadcom and Apple extended their partnership to 2031 to develop custom ASIC chips for AI processing, with Apple planning to deploy advanced AI servers by 2027.</p>
+                    </div>
+                </a>
+                
+                <a href="https://finance.yahoo.com/technology/ai/articles/terawulf-shares-surge-19b-anthropic-161300778.html?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">TeraWulf shares surge on $19B Anthropic AI infrastructure lease deal (2 minute read)</h3>
+                        <p class="summary">TeraWulf shares surged after signing a $19 billion lease deal with AI company Anthropic for infrastructure, with initial capacity online in 2025 and full buildout by 2028.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">⚙️ AI Ethics & Governance</h2>
+                <div class="article-list">
+                    
+                <a href="https://raymyers.org/post/zed-creator-calls-spade-a-spade/" target="_blank" class="article-item">
+                    <div class="score">↑679</div>
+                    <div class="content">
+                        <h3 class="headline">Zig Creator Calls Spade a Spade, Anthropic Blows Smoke</h3>
+                        <p class="summary">Zig creator Andrew Kelley criticizes Anthropic's narrative that AI will eliminate software engineering, warning that their $132B funding and $1T IPO valuation rely on selling this future impact. He urges clear thinking amid fear-driven decisions by executives and investors.</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/botticellibelle.blacksky.app/post/3mqhsur2mus2p" target="_blank" class="article-item">
+                    <div class="score">↑154</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Botticellibelle</h3>
+                        <p class="summary">A disabled access tech expert with nearly a decade of experience argues that agentic AI is a scam, not a genuine accessibility tool, and that corporations are deceiving well-meaning academics in their AI push.</p>
+                    </div>
+                </a>
+                
+                <a href="https://antirez.com/news/169" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Control the Ideas, Not the Code</h3>
+                        <p class="summary">The article argues that managing intellectual ideas is more critical than controlling code itself, emphasizing a strategic shift in how software innovation and ownership should be approached.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/10/meta-removes-controversial-ai-feature-on-instagram-after-backlash/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Meta removes controversial AI feature on Instagram after backlash</h3>
+                        <p class="summary">Meta removed a controversial AI feature on Instagram after backlash, admitting it "missed the mark" and was no longer available.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theverge.com/tech/964565/eu-children-social-media-online-safety-rules" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Social media limits are coming for teens across Europe</h3>
+                        <p class="summary">The European Union is considering sweeping restrictions on teens' social media access, including age limits and bans, with platforms needing to prove safety. Ursula von der Leyen says legislation could be proposed within months to protect children.</p>
+                    </div>
+                </a>
+                
+                <a href="https://blogs.windows.com/windowsexperience/2026/07/09/evolving-windows-vulnerability-management-to-meet-the-speed-of-ai-powered-discovery/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Evolving Windows vulnerability management to meet the speed of AI-powered discovery (9 minute read)</h3>
+                        <p class="summary">Windows integrates AI and the MDASH scanning system with dedicated cloud infrastructure to speed up vulnerability discovery and reduce fix times, aiming to maintain protection speed without compromising quality.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.lesswrong.com/posts/mWpo4Tu87ZSFzwFWB/calibrating-alignment-evals?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Why Alignment Evals Need Calibration (8 minute read)</h3>
+                        <p class="summary">Alignment benchmarks overstate safety because models can recognize and game evaluation settings, scoring rules, or conceal sleeper behaviors. This matters for reliable AI safety assessment.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🚀 Open Source LLMs</h2>
+                <div class="article-list">
+                    
+                <a href="https://ploy.ai/blog/migrating-a-production-ai-agent-to-gpt-5-6" target="_blank" class="article-item">
+                    <div class="score">↑221</div>
+                    <div class="content">
+                        <h3 class="headline">Migrating a production AI agent to GPT-5.6: 2.2x faster, 27% cheaper</h3>
+                        <p class="summary">Ploy's AI agent, which builds and edits websites, switched from Claude Opus to OpenAI's GPT-5.6 Sol, achieving 2.2x faster performance at 27% lower cost, after months of no model beating Opus on quality.</p>
+                    </div>
+                </a>
+                
+                <a href="https://support.claude.com/en/articles/15424964-claude-fable-5-promotional-access?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Claude Fable 5 promotional access (7 minute read)</h3>
+                        <p class="summary">Anthropic offers free access to Claude Fable 5 until July 12 for Pro, Max, Team, and Enterprise users, allowing up to 50% of weekly subscription limits for the model.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.bloomberg.com/news/articles/2026-07-09/meta-starts-charging-for-ai-with-muse-spark-1-1-agentic-model?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb3VyY2UiOiJTdWJzY3JpYmVyR2lmdGVkQXJ0aWNsZSIsImlhdCI6MTc4MzY0NzUxMSwiZXhwIjoxNzg0MjUyMzExLCJhcnRpY2xlSWQiOiJUSFZDVENSS1YyVTYwMCIsImJjb25uZWN0SWQiOiI2NTc1NjkyN0UwMkM0N0MwQkQ0MDNEQTJGMEUyNzIyMyJ9.036PyX7IFhgdqyc5QHadS6Ans-LlAztL8vSoBa_ytUk&utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Zuckerberg Pledges ‘Aggressive' Pricing With Meta's First Pay-to-Use AI (7 minute read)</h3>
+                        <p class="summary">Meta launched Muse Spark 1.1 with a paid tier for developers, pricing it at roughly 25% of competitors' cost. Mark Zuckerberg's aggressive pricing strategy aims to undercut rivals while offering near-state-of-the-art AI reasoning.</p>
+                    </div>
+                </a>
+                
+                <a href="https://simonwillison.net/2026/Jul/8/introducing-gptlive/#atom-everything?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">GPT‑Live (2 minute read)</h3>
+                        <p class="summary">OpenAI upgraded ChatGPT's voice model, enabling hour-long conversations and background task delegation to GPT-5.5, significantly enhancing user interaction and AI capability.</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/happy-homhom.bsky.social/post/3mqhd5h3l7w2r" target="_blank" class="article-item">
+                    <div class="score">↑7</div>
+                    <div class="content">
+                        <h3 class="headline">Post by happy_homhom</h3>
+                        <p class="summary">Anthropic's reported spending on SpaceX underscores that its AI model Claude relies on tangible, physical infrastructure for operation.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">📚 AI Research Papers</h2>
+                <div class="article-list">
+                    
+                <a href="https://spectrum.ieee.org/ai-science-research-flattens-discovery" target="_blank" class="article-item">
+                    <div class="score">↑150</div>
+                    <div class="content">
+                        <h3 class="headline">AI boosts research careers but narrow the span of ideas explored: study</h3>
+                        <p class="summary">AI tools boost individual researchers' careers but narrow the range of scientific ideas explored, potentially flattening discovery.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arxiv.org/abs/2607.06377" target="_blank" class="article-item">
+                    <div class="score">↑126</div>
+                    <div class="content">
+                        <h3 class="headline">Automation Without Understanding</h3>
+                        <p class="summary">A new essay warns that as AI produces research-level math, the U.S. is weakening the human pipeline needed to verify it, calling mathematical capacity a strategic asset like semiconductors. It cites AI's disproof of an Erdős conjecture and proposes requiring AI to expose...</p>
+                    </div>
+                </a>
+                
+                <a href="https://cacm.acm.org/news/can-we-understand-how-large-language-models-reason/" target="_blank" class="article-item">
+                    <div class="score">↑107</div>
+                    <div class="content">
+                        <h3 class="headline">Mechanistic interpretability researchers applying causality theory to LLMs</h3>
+                        <p class="summary">Researchers are applying causality theory to interpret the inner workings of large language models, advancing mechanistic interpretability to improve model transparency and safety.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">💬 Conversational Analytics</h2>
+                <div class="article-list">
+                    
+                <a href="https://andiroberts.com/citizenship/the-social-physics-of-conversation-citizenship-leadership" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">The social physics of conversation: Communication patterns matter</h3>
+                        <p class="summary">The article explores how communication patterns, analyzed through social physics, reveal that the structure of conversation influences social dynamics, showing that interaction styles matter more than content for group outcomes.</p>
+                    </div>
+                </a>
+                
+                <a href="https://x.com/JayaGup10/status/2075074218065265078?utm_source=tldrfounders" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">AI's Value Capture problem (9 minute read)</h3>
+                        <p class="summary">Enterprise AI systems trained on exception logs and decision traces risk capturing sensitive company knowledge beyond official policies, making audit trails and training controls essential for founders selling AI into critical workflows.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🌍 AI-Powered Politics</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.wired.com/story/sfpd-drone-video-leak-surveillance/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Leak of San Francisco Police Drone Footage Exposes Reality of Urban Surveillance</h3>
+                        <p class="summary">Leaked drone footage reveals San Francisco police tracked citizens in real time during protests, raising privacy and civil liberties concerns over unregulated urban surveillance expansion.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/13/ubers-robotaxi-lobbying-effort-has-put-it-on-a-collision-course-with-waymo/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Uber’s robotaxi lobbying effort puts it on a collision course with Waymo</h3>
+                        <p class="summary">Uber and Waymo are competing in Washington D.C. over robotaxi regulations, with their lobbying efforts potentially shaping the future of autonomous ride-hailing.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/04/alibaba-reportedly-bans-employees-from-using-claude-code/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Alibaba Reportedly Restricted Claude Code (1 minute read)</h3>
+                        <p class="summary">Alibaba plans to prohibit employee use of Anthropic's Claude Code from July 10, directing them to its own Qoder tool, as Anthropic works to prevent unauthorized access and model distillation.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theblock.co/post/407178/nigel-farage-failed-to-declare-funding-from-crypto-gambling-figure-convicted-of-fraud-sunday-times?utm_source=tldrcrypto" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Farage Failed to Declare Support from Convicted Crypto Fraudster (4 minute read)</h3>
+                        <p class="summary">Nigel Farage failed to declare financial support from convicted fraudster George Cottrell before his 2024 election, prompting a new investigation request amid an existing probe into a separate undisclosed crypto-linked gift.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🔍 GitHub AI Projects</h2>
+                <div class="article-list">
+                    
+                <a href="https://github.blog/security/application-security/how-github-gave-every-repository-a-durable-owner/?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">How GitHub gave every repository a durable owner (9 minute read)</h3>
+                        <p class="summary">GitHub assigned validated owners to all active repositories from its 14,000+ internal repos in under 45 days, archiving the rest, making ownership the foundation for improved management.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theregister.com/ai-and-ml/2026/07/08/former-github-ceo-launches-competitor-designed-for-the-age-of-vibe-coding/5268694?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Former GitHub CEO launches competitor designed for the age of vibe coding (5 minute read)</h3>
+                        <p class="summary">Former GitHub CEO Nat Friedman launched Entire, a Git hosting network optimized for AI agents and "vibe coding," challenging GitHub's dominance by prioritizing AI-driven development workflows.</p>
+                    </div>
+                </a>
+                
+                <a href="https://semyonsinchenko.github.io/ssinchenko/post/datafusion-graphs-cc-2/?utm_source=tldrdata" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Algorithms on billion-scale graph using 10GB RAM: I love DataFusion! (7 minute read)</h3>
+                        <p class="summary">Apache DataFusion runs billion-edge graph algorithms like PageRank and weakly connected components on a laptop-class memory budget (5-10GB RAM), enabling large-scale graph processing without expensive hardware.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+        </main>
+    </div>
+    <script>
+        // Open all accordions by default
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                toggleAccordion(header);
+            });
+        });
+
+        // Tab Switching Logic
+        function switchTab(e, tabId) {
+            if (e) e.preventDefault();
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // If triggered by a tab button, set it active, else find the tab button for that tabId
+            let tabBtn = (e && e.target && e.target.classList.contains('tab-btn')) ? e.target : document.querySelector(`.tab-btn[onclick*="${tabId}"]`);
+            if (tabBtn) tabBtn.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            // scroll to top if clicked view all
+            if (e && e.target && e.target.classList.contains('view-all')) {
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // Accordion Logic
+        function toggleAccordion(headerElement) {
+            headerElement.classList.toggle('open');
+            const body = headerElement.nextElementSibling;
+            if (headerElement.classList.contains('open')) {
+                body.style.maxHeight = body.scrollHeight + "px";
+            } else {
+                body.style.maxHeight = "0";
+            }
+        }
+
+        // Read article persistence
+        document.addEventListener("DOMContentLoaded", () => {
+            const STORAGE_KEY = "read_articles";
+            let readArticles = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+            
+            document.querySelectorAll('.article-item').forEach(item => {
+                const url = item.getAttribute('href');
+                if (readArticles.has(url)) {
+                    item.classList.add('read-article');
+                }
+                
+                item.addEventListener('click', () => {
+                    readArticles.add(url);
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify([...readArticles]));
+                    
+                    // Mark all identically-linked items read
+                    document.querySelectorAll(`.article-item[href="${url}"]`).forEach(i => i.classList.add('read-article'));
+                });
+            });
+        });
+    </script>
+</body>
+</html>
