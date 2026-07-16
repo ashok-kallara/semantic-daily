@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News Digest | 2026-07-16</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+    
+:root {
+    --bg-color: #0d1117;
+    --card-bg: rgba(22, 27, 34, 0.4);
+    --hover-bg: rgba(46, 52, 60, 0.6);
+    --border: rgba(255, 255, 255, 0.08);
+    --text-main: #e6edf3;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-glow: rgba(88, 166, 255, 0.15);
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-mono: 'Fira Code', ui-monospace, monospace;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+    background-image: radial-gradient(circle at top right, rgba(46, 160, 67, 0.05), transparent 400px),
+                      radial-gradient(circle at bottom left, var(--accent-glow), transparent 400px);
+    background-attachment: fixed;
+}
+
+.container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
+
+header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.title { font-size: 2rem; font-weight: 700; margin: 0 0 0.25rem 0; }
+.subtitle { color: var(--text-muted); font-size: 0.95rem; }
+
+.stats-bar {
+    display: flex; gap: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; text-align: right;
+}
+.stat { display: flex; flex-direction: column; }
+.stat span:first-child { color: var(--text-muted); font-size: 0.75rem; }
+.stat span:last-child { color: var(--accent); font-weight: 600; }
+
+/* Tabs styling */
+.tabs-container {
+    margin-bottom: 2rem; display: flex; gap: 1rem;
+    border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+    background: transparent; border: none; color: var(--text-muted);
+    font-family: var(--font-sans); font-size: 1.1rem; font-weight: 500;
+    cursor: pointer; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s ease;
+}
+
+.tab-btn:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+.tab-btn.active { color: var(--accent); background: rgba(88, 166, 255, 0.1); font-weight: 600; }
+
+.tab-content { display: none; animation: fadeIn 0.3s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Common card styling */
+.category-group {
+    margin-bottom: 2rem; background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden; backdrop-filter: blur(8px);
+}
+
+/* Express View Accordion */
+.accordion-header {
+    width: 100%; display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.03); border: none; border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem; color: var(--text-main); font-size: 1.1rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+    cursor: pointer; transition: background 0.15s ease;
+}
+.accordion-header:hover { background: rgba(255, 255, 255, 0.06); }
+.accordion-header::after { content: '▼'; font-size: 0.8rem; transition: transform 0.3s ease; color: var(--text-muted); }
+.accordion-header.open::after { transform: rotate(-180deg); }
+.accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; background: transparent; }
+
+/* Category masonry */
+.categories-masonry { column-count: 2; column-gap: 2rem; }
+.masonry-item { break-inside: avoid; margin-bottom: 2rem; }
+.masonry-item .category-title {
+    font-size: 1rem; font-weight: 600; color: var(--text-main); margin: 0; padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+}
+
+.article-list { display: flex; flex-direction: column; }
+.article-item {
+    display: flex; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+    transition: background 0.15s ease; text-decoration: none; color: inherit; gap: 1.25rem; align-items: flex-start;
+}
+.masonry-item .article-item { padding: 0.75rem 1rem; gap: 1rem; }
+.article-item:last-child { border-bottom: none; }
+.article-item:hover { background: var(--hover-bg); }
+
+.article-item.read-article { opacity: 0.5; }
+.article-item.read-article .headline { color: var(--text-muted); }
+
+.score {
+    min-width: 45px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent);
+    background: rgba(88, 166, 255, 0.1); padding: 0.25rem 0; text-align: center; border-radius: 4px; margin-top: 0.15rem;
+}
+.content { flex: 1; min-width: 0; }
+.headline { font-weight: 500; font-size: 1.05rem; margin: 0 0 0.35rem 0; color: var(--text-main); flex-wrap: wrap; display: flex; align-items: baseline; gap: 0.5rem; }
+.summary {
+    font-size: 0.9rem; color: var(--text-muted); margin: 0; display: -webkit-box;
+    -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;
+}
+.view-all {
+    display: block; text-align: center; padding: 0.75rem; color: var(--accent); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: background 0.15s;
+}
+.view-all:hover { background: rgba(88, 166, 255, 0.05); }
+
+@media (max-width: 1024px) {
+    .categories-masonry { column-count: 1; }
+    header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .stats-bar { text-align: left; }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1 class="title">AI Pulse Digest</h1>
+                <div class="subtitle">Curated insights for 2026-07-16</div>
+            </div>
+            <div class="stats-bar">
+                <div class="stat"><span>Analyzed</span><span>1049 artifacts</span></div>
+                <div class="stat"><span>Filtered</span><span>611 dupes</span></div>
+                <div class="stat"><span>Curated</span><span>64 items</span></div>
+            </div>
+        </header>
+
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchTab(event, 'express')">✨ Highlights (Top 5)</button>
+            <button class="tab-btn" onclick="switchTab(event, 'detail')">📚 Deep Dive (All)</button>
+        </div>
+        
+        <main id="express" class="tab-content active">
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🤖 AI Agents</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://github.com/xai-org/grok-build" target="_blank" class="article-item">
+                    <div class="score">↑9279</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Weekly Top Repos): xai-org/grok-build</h3>
+                        <p class="summary">SpaceXAI's open-source coding agent harness and TUI, built in Rust, offers a fullscreen, mouse-interactive, and extensible interface. Its weekly GitHub trending status highlights growing developer interest in AI-assisted coding tools.</p>
+                    </div>
+                </a>
+                
+                <a href="https://eardatasci.github.io/c/ambiance/index.html" target="_blank" class="article-item">
+                    <div class="score">↑201</div>
+                    <div class="content">
+                        <h3 class="headline">Towards a harness that can do anything</h3>
+                        <p class="summary">Arda Tasci proposes a harness to free LLMs from chat panes, emphasizing token efficiency and self-healing to reduce cognitive load by leveraging LLMs' coding knowledge.</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/vshulcz/deja-vu/" target="_blank" class="article-item">
+                    <div class="score">↑120</div>
+                    <div class="content">
+                        <h3 class="headline">Open-source memory for coding agents, synced over SSH</h3>
+                        <p class="summary">deja is a zero-dependency binary that indexes coding agent conversations (Claude Code, Codex, opencode) into searchable memory over SSH, enabling agents to recall past solutions instead of re-debugging, with automatic redaction of secrets.</p>
+                    </div>
+                </a>
+                
+                <a href="https://orkes.io/?utm_source=TLDR&amp;utm_medium=newsletter&amp;utm_campaign=2026-07-14_Primary_Orkes&amp;utm_content=header_combine_ai_reasoning" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Combine AI reasoning with deterministic execution (Webinar) (Sponsor)</h3>
+                        <p class="summary">A webinar showcases separating AI reasoning from deterministic execution, turning one-time plans into fixed, recoverable sub-workflows in Orkes Conductor to solve debugging, governance, and trust issues in agent runs.</p>
+                    </div>
+                </a>
+                
+                <a href="https://threadreaderapp.com/thread/2076447247693402301.html?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Today, we are releasing verifiers v1 (3 minute read)</h3>
+                        <p class="summary">Prime Intellect released verifiers v1, an overhauled environment stack for agentic RL and evals, enabling complex tasks like coding and computer use at scale by decomposing environments into task sets, harnesses, and runtimes.</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 6 articles in 🤖 AI Agents →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🚀 Product Launches</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://thinkingmachines.ai/news/introducing-inkling/" target="_blank" class="article-item">
+                    <div class="score">↑1044</div>
+                    <div class="content">
+                        <h3 class="headline">Inkling: Our Open-Weights Model</h3>
+                        <p class="summary">Inkling, an open-weights 975B-parameter multimodal AI model, is released by Tinker for fine-tuning and customization. It balances cost and performance with efficient thinking, offering a flexible foundation for developers despite not being the strongest overall model.</p>
+                    </div>
+                </a>
+                
+                <a href="https://coasty.ai/docs" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Launch HN: Coasty (YC S26) – An API for computer-use agents</h3>
+                        <p class="summary">Coasty (YC S26) launches an API for computer-use agents, allowing AI to automate browser and desktop interactions. This simplifies building agents that can perform tasks like data entry and web navigation.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/15/amid-hardware-legal-battle-openai-releases-a-230-keyboard-for-codex/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Amid hardware legal battle, OpenAI releases a $230 keyboard for Codex</h3>
+                        <p class="summary">OpenAI released a $230 keyboard for its Codex coding app, while facing a legal battle with Apple over hardware trade theft allegations. The move signals OpenAI's expansion into hardware amid controversy.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/15/thinking-machines-amps-up-its-bet-against-one-size-fits-all-ai-with-its-first-open-model-inkling/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Thinking Machines amps up its bet against one-size-fits-all AI with its first open model, Inkling</h3>
+                        <p class="summary">Thinking Machines released its first open model, Inkling, opposing one-size-fits-all AI. It's their first public proof after 18 months of private infrastructure building.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/ai/2026/07/openais-first-branded-hardware-is-a-light-up-keyboard/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">OpenAI's first branded hardware is... a light-up keyboard?</h3>
+                        <p class="summary">OpenAI launches its first branded hardware, the $230 Codex Micro mini-keyboard, in collaboration with Work Louder. It uses color-coded keys to monitor and interact with multiple Codex agents, signaling OpenAI's expansion into specialized AI hardware.</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 7 articles in 🚀 Product Launches →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🛠️ Tools & Dev</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=1mvlBz6pj1I" target="_blank" class="article-item">
+                    <div class="score">↑727</div>
+                    <div class="content">
+                        <h3 class="headline">How To Build Your Own RAG AI System - Better Results Than Claude</h3>
+                        <p class="summary">Building a custom RAG AI system can outperform models like Claude by integrating retrieval-augmented generation for more accurate, context-specific responses. This matters for developers seeking tailored AI solutions with improved reliability over general-purpose models.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.neomindlabs.com/2026/06/08/running-gemma-4-26b-at-5-tokens-sec-on-a-13-year-old-xeon-with-no-gpu/" target="_blank" class="article-item">
+                    <div class="score">↑297</div>
+                    <div class="content">
+                        <h3 class="headline">Running Gemma 4 26B at 5 tokens/sec on a 13-year-old Xeon with no GPU</h3>
+                        <p class="summary">A blogger ran Google's Gemma 4 26B model at 5 tokens/sec on a 13-year-old dual Xeon server without GPU, challenging the assumption that modern AI needs expensive hardware or subscriptions.</p>
+                    </div>
+                </a>
+                
+                <a href="https://core.telegram.org/bots/serverless" target="_blank" class="article-item">
+                    <div class="score">↑195</div>
+                    <div class="content">
+                        <h3 class="headline">Telegram Serverless</h3>
+                        <p class="summary">Telegram introduced Serverless, a platform that runs bot backend code directly on its infrastructure, eliminating the need for external servers. It offers built-in Bot API, database, and automatic scaling, simplifying bot development for Telegram developers.</p>
+                    </div>
+                </a>
+                
+                <a href="https://brainless.swerdlow.dev" target="_blank" class="article-item">
+                    <div class="score">↑124</div>
+                    <div class="content">
+                        <h3 class="headline">Brainless: Shadcn components that look like Claude Code, Codex and Grok</h3>
+                        <p class="summary">Developer @benswerd created shadcn UI components that replicate the interfaces of Claude Code, OpenAI Codex, and Grok, making it easy for developers to embed these AI coding assistant UIs into their own projects.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.cdata.com/blog/token-efficient-enterprise-claude-workflows?utm_source=tldr-ai&amp;utm_medium=newsletter_0714&amp;utm_campaign=26Q3_Token_Efficiency_Blog" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Token-efficient Claude workflows can save up to 97.6% of context costs (Sponsor)</h3>
+                        <p class="summary">CData Connect AI reduces LLM context costs by up to 97.6% for Claude workflows using Salesforce, ServiceNow, and Snowflake, based on benchmark tests. This matters for businesses seeking to cut AI operational expenses.</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 7 articles in 🛠️ Tools & Dev →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🔥 Best Takes</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=m8VC2SV2igM" target="_blank" class="article-item">
+                    <div class="score">↑692</div>
+                    <div class="content">
+                        <h3 class="headline">This Completely Changes the Way We Build Production AI Agents (Vercel Eve)</h3>
+                        <p class="summary">"now your entire production AI agent can be just a single folder of ..."</p>
+                    </div>
+                </a>
+                
+                <a href="https://x.com/joon_h_lee/status/2076714221837173097?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Making Fable Cheaper Than Opus (12 minute read)</h3>
+                        <p class="summary">Cognition replaced Opus 4.8 with Fable 5, and Devin's bill went down.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.a16z.news/p/the-next-ai-goldrush-tokens-loops?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">You Just Hired a Million Bad Employees (11 minute read)</h3>
+                        <p class="summary">"AI was supposed to replace human labor, but it has done the opposite. Humans are now cheaper than software for the first time in history."</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🛡️ Safety & Policy</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://bsky.app/profile/ferl67.bsky.social/post/3mqnot2h33k2a" target="_blank" class="article-item">
+                    <div class="score">↑653</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Mark</h3>
+                        <p class="summary">Publishers are suing Google, accusing it of using copyrighted books without permission to train its AI models. This case could set a precedent for how AI companies use copyrighted material.</p>
+                    </div>
+                </a>
+                
+                <a href="https://dpa-international.com/economics/urn:newsml:dpa.com:20090101:260715-930-389143/" target="_blank" class="article-item">
+                    <div class="score">↑247</div>
+                    <div class="content">
+                        <h3 class="headline">OpenAI loses trademark dispute at EU court</h3>
+                        <p class="summary">OpenAI lost its EU trademark challenge for "OPENAI" after the General Court ruled the term is descriptive for software and AI services, lacking distinctiveness. The decision, which can be appealed, upholds the EU Intellectual Property Office's rejection.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.siegelendowment.org/wp-content/uploads/2026/07/fortune-david-siegel-open-source-ai.pdf" target="_blank" class="article-item">
+                    <div class="score">↑224</div>
+                    <div class="content">
+                        <h3 class="headline">Governments, companies, nonprofits should invest in free, open source AI [pdf]</h3>
+                        <p class="summary">A new report argues governments, companies, and nonprofits should prioritize investment in free, open source AI to ensure broad access and prevent centralized control over the technology.</p>
+                    </div>
+                </a>
+                
+                <a href="https://smarterarticles.co.uk/the-three-second-theft-why-ai-voice-fraud-outruns-every-defence" target="_blank" class="article-item">
+                    <div class="score">↑177</div>
+                    <div class="content">
+                        <h3 class="headline">The Three-Second Theft: Why AI Voice Fraud Outruns Every Defence</h3>
+                        <p class="summary">AI voice fraud, using cloned voices of family members in distress, has become common and devastating. Scammers impersonated a daughter's voice to defraud Sharon Brightwell of $15,000, highlighting a crisis law enforcement and regulators cannot contain.</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/radiology-ai.bsky.social/post/3mqjku27flv26" target="_blank" class="article-item">
+                    <div class="score">↑12</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Radiology: Artificial Intelligence</h3>
+                        <p class="summary">The article discusses aligning policy, practice, and patient safety to ensure trustworthy AI implementation in radiology, emphasizing the need for coherent integration across these domains.</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 15 articles in 🛡️ Safety & Policy →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">📈 Hardware</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=-c049GMb-xU" target="_blank" class="article-item">
+                    <div class="score">↑496</div>
+                    <div class="content">
+                        <h3 class="headline">ANALYSIS: Why IIT Bhubaneswar&#39;s Spintronic Chip in Nature Could Replace Nvidia&#39;s GPUs</h3>
+                        <p class="summary">IIT Bhubaneswar-led team published a spintronic chip study in Nature Nanotechnology, potentially offering a more efficient alternative to Nvidia's GPUs for AI processing.</p>
+                    </div>
+                </a>
+                
+                <a href="https://spectrum.ieee.org/high-bandwidth-flash" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">High-Bandwidth Flash offers efficient storage for model weights</h3>
+                        <p class="summary">High-bandwidth flash storage improves efficiency for storing AI model weights, reducing latency and energy use. This matters for faster, more scalable deployment of large language models.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.bloomberg.com/news/newsletters/2026-07-12/apple-s-chip-plans-m6-m7-pro-m7-max-m7-ultra-m8-details-touch-macbook-pro?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb3VyY2UiOiJTdWJzY3JpYmVyR2lmdGVkQXJ0aWNsZSIsImlhdCI6MTc4MzkxMjY1MCwiZXhwIjoxNzg0NTE3NDUwLCJhcnRpY2xlSWQiOiJUSTJFVzFSMjRVOEswMCIsImJjb25uZWN0SWQiOiI2NTc1NjkyN0UwMkM0N0MwQkQ0MDNEQTJGMEUyNzIyMyJ9.wIArJVWB1ST8yeIXgP9B-hXmhsBq_3WnFBf0X5faPNc&utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Apple's M6, M7, and M8 Chips Show How AI Is Reshaping the Company (11 minute read)</h3>
+                        <p class="summary">Apple's chip development (M6, M7, M8) is now driven by AI, reshaping product design and timelines. The canceled car project's AI hardware now powers Macs and servers, turning a costly failure into a key investment.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.cnbc.com/2026/07/06/nvidia-kyber-rack-system-delays-manufacturing-taiwan-rubin-chips-.html?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Nvidia's next-gen AI rack system delayed to 2028 on manufacturing snags (4 minute read)</h3>
+                        <p class="summary">Nvidia's Kyber rack system, housing 144 Rubin Ultra chips as one giant computer, is delayed to 2028 due to circuit board manufacturing issues, signaling limits to its annual release pace.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">✨ General Updates</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=RggfYSmtbtk" target="_blank" class="article-item">
+                    <div class="score">↑385</div>
+                    <div class="content">
+                        <h3 class="headline">Can AI protect humanitarian aid? | AI for Good 2026 | Global Stage</h3>
+                        <p class="summary">AI is being used by humanitarian groups to identify needs and improve aid delivery, but experts warn it also poses risks like bias and data privacy that must be addressed to ensure ethical protection.</p>
+                    </div>
+                </a>
+                
+                <a href="https://thezvi.wordpress.com/2026/07/13/better-call-sol-the-workhorse/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Better Call Sol: The Workhorse (16 minute read)</h3>
+                        <p class="summary">Zvi Mowshowitz argues GPT-5.6 Sol offers the best balance of reasoning, speed, and cost for demanding knowledge work, making it the default choice while noting task-specific models still matter for peak performance.</p>
+                    </div>
+                </a>
+                
+                <a href="https://a16z.com/the-most-human-technology-ever-made/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">The Most Human Technology Ever Made (8 minute read)</h3>
+                        <p class="summary">AI empowers individuals, especially non-technical people, to create and innovate by lowering production barriers, unlike consumption-focused technologies, fostering creativity and meaningful personal projects.</p>
+                    </div>
+                </a>
+                
+                <a href="https://vercel.com/blog/ai-gateway-production-index-july-2026?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Open-Weight Models Reached 29% of AI Gateway Usage (9 minute read)</h3>
+                        <p class="summary">Vercel reported open-weight models handled 29% of AI Gateway token volume in June but only 4% of spending, highlighting their cost efficiency.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🔮 Ecosystem & Funding</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://joinedanthropic.com" target="_blank" class="article-item">
+                    <div class="score">↑101</div>
+                    <div class="content">
+                        <h3 class="headline">Where are YC founders now? OpenAI and Anthropic, mostly</h3>
+                        <p class="summary">YC founders increasingly work at OpenAI and Anthropic, reflecting a shift from building startups to joining leading AI labs, highlighting AI's dominance in the startup ecosystem.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/16/ultrahumans-former-hardware-vp-raises-5-5m-for-devices-that-control-ai-agents-not-just-record-you/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Ultrahuman’s former hardware VP raises $5.5M for devices that control AI agents, not just record you</h3>
+                        <p class="summary">Former Ultrahuman hardware VP raised $5.5M for Aina to build devices that control AI agents, not just record. A new device pilot is coming soon.</p>
+                    </div>
+                </a>
+                
+                <a href="https://agenticeconomytreatise.com/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">The Agentic Economy treatise (Website)</h3>
+                        <p class="summary">Intelligence and the economy are merging into a single "agentic" system, where AI agents autonomously perform tasks and transactions, reshaping how value is created and exchanged.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.astralcodexten.com/p/introducing-plan-a?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Introducing Plan A (27 minute read)</h3>
+                        <p class="summary">The article introduces Plan A, a positive vision and roadmap for navigating a future where AI becomes real, serving as a guide for proactive adaptation.</p>
+                    </div>
+                </a>
+                
+                <a href="https://thenextweb.com/news/higgsfield-ai-5bn-valuation-funding-round?utm_source=tldrdesign" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">AI Video Startup Higgsfield is in Talks to Raise at a $5bn Valuation (3 minute read)</h3>
+                        <p class="summary">AI startup Higgsfield, founded by Alex Mashrabov, is in talks to raise $300-500mn at a $5bn valuation after hitting a $500mn annualized revenue run rate, with 70% from enterprise clients and DST Global among potential investors. This matters as rapid growth and AI film...</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">💼 Business & Strategy</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://bsky.app/profile/seven.eurosky.social/post/3mp4sc7itwc2n" target="_blank" class="article-item">
+                    <div class="score">↑89</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Metin Seven (Moon Child's dad 🙂)</h3>
+                        <p class="summary">Ford rehired 350 engineers after an AI initiative failed to capture institutional knowledge or effectively train junior staff, highlighting AI's limitations in preserving expertise.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/15/applied-computing-wants-to-give-oil-and-gas-operators-an-ai-model-for-the-entire-plant/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Applied Computing wants to give oil and gas operators an AI model for the entire plant</h3>
+                        <p class="summary">Applied Computing raised $20M Series A to develop a foundational AI model for the oil, gas, and petrochemical industry, aiming to optimize entire plant operations.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/15/microsoft-is-reportedly-training-salespeople-to-talk-down-openai-and-anthropic/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Microsoft is reportedly training salespeople to talk down OpenAI and Anthropic</h3>
+                        <p class="summary">Microsoft is training salespeople to promote its in-house AI models as more efficient and cost-effective than OpenAI and Anthropic, signaling a competitive shift despite its investment in OpenAI.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/15/whatnot-acquires-shaped-to-power-real-time-live-shopping-recommendations/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Whatnot acquires Shaped to power real-time live shopping recommendations</h3>
+                        <p class="summary">Livestream shopping platform Whatnot acquired AI startup Shaped to enhance real-time recommendations and search, boosting personalization and discovery as it expands into new product categories.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/gadgets/2026/07/third-party-app-stores-coming-to-google-play-next-week-as-epic-settlement-withdrawn/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Third-party app stores coming to Google Play next week as Epic settlement withdrawn</h3>
+                        <p class="summary">Google will allow third-party app stores on Google Play starting next week after withdrawing its antitrust settlement with Epic Games, potentially disrupting Android's revenue model.</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 10 articles in 💼 Business & Strategy →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🧠 Research & Papers</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://arxiv.org/abs/2607.11859" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Can LLMs Perform Deep Technical Comprehension of Computer Architecture Papers</h3>
+                        <p class="summary">Researchers tested LLMs on deep technical comprehension of computer architecture papers, finding they struggle with complex reasoning tasks like ISA design and microarchitecture. This matters because it reveals current limits of LLMs for specialized engineering domains.</p>
+                    </div>
+                </a>
+                
+                <a href="https://sakana.ai/smart-cellular-bricks/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Smart Cellular Bricks: Towards Collective Intelligence for the Physical World (11 minute read)</h3>
+                        <p class="summary">Sakana AI developed "Smart Cellular Bricks" that use local neural networks to autonomously classify and reconstruct 3D shapes without centralized control, demonstrating collective intelligence in physical hardware with high accuracy and robustness.</p>
+                    </div>
+                </a>
+                
+                <a href="https://genception.github.io/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Video Generators as General-Purpose Vision Models (8 minute read)</h3>
+                        <p class="summary">DeepMind's GenCeption repurposes a pretrained video generation model as a unified vision system controlled by text, showing video generators can serve as general-purpose vision models.</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+        <main id="detail" class="tab-content categories-masonry">
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🤖 AI Agents</h2>
+                <div class="article-list">
+                    
+                <a href="https://github.com/xai-org/grok-build" target="_blank" class="article-item">
+                    <div class="score">↑9279</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Weekly Top Repos): xai-org/grok-build</h3>
+                        <p class="summary">SpaceXAI's open-source coding agent harness and TUI, built in Rust, offers a fullscreen, mouse-interactive, and extensible interface. Its weekly GitHub trending status highlights growing developer interest in AI-assisted coding tools.</p>
+                    </div>
+                </a>
+                
+                <a href="https://eardatasci.github.io/c/ambiance/index.html" target="_blank" class="article-item">
+                    <div class="score">↑201</div>
+                    <div class="content">
+                        <h3 class="headline">Towards a harness that can do anything</h3>
+                        <p class="summary">Arda Tasci proposes a harness to free LLMs from chat panes, emphasizing token efficiency and self-healing to reduce cognitive load by leveraging LLMs' coding knowledge.</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/vshulcz/deja-vu/" target="_blank" class="article-item">
+                    <div class="score">↑120</div>
+                    <div class="content">
+                        <h3 class="headline">Open-source memory for coding agents, synced over SSH</h3>
+                        <p class="summary">deja is a zero-dependency binary that indexes coding agent conversations (Claude Code, Codex, opencode) into searchable memory over SSH, enabling agents to recall past solutions instead of re-debugging, with automatic redaction of secrets.</p>
+                    </div>
+                </a>
+                
+                <a href="https://orkes.io/?utm_source=TLDR&amp;utm_medium=newsletter&amp;utm_campaign=2026-07-14_Primary_Orkes&amp;utm_content=header_combine_ai_reasoning" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Combine AI reasoning with deterministic execution (Webinar) (Sponsor)</h3>
+                        <p class="summary">A webinar showcases separating AI reasoning from deterministic execution, turning one-time plans into fixed, recoverable sub-workflows in Orkes Conductor to solve debugging, governance, and trust issues in agent runs.</p>
+                    </div>
+                </a>
+                
+                <a href="https://threadreaderapp.com/thread/2076447247693402301.html?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Today, we are releasing verifiers v1 (3 minute read)</h3>
+                        <p class="summary">Prime Intellect released verifiers v1, an overhauled environment stack for agentic RL and evals, enabling complex tasks like coding and computer use at scale by decomposing environments into task sets, harnesses, and runtimes.</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/zli12321/LHTB?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Testing Agents on Long-Horizon Terminal Work (GitHub Repo)</h3>
+                        <p class="summary">Long-Horizon Terminal-Bench tests LLM agents on sustained work across hundreds of terminal interactions, with 46 stateful tasks using hidden verifiers to inspect final artifacts. It matters because it prevents agents from gaming progress reports.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🚀 Product Launches</h2>
+                <div class="article-list">
+                    
+                <a href="https://thinkingmachines.ai/news/introducing-inkling/" target="_blank" class="article-item">
+                    <div class="score">↑1044</div>
+                    <div class="content">
+                        <h3 class="headline">Inkling: Our Open-Weights Model</h3>
+                        <p class="summary">Inkling, an open-weights 975B-parameter multimodal AI model, is released by Tinker for fine-tuning and customization. It balances cost and performance with efficient thinking, offering a flexible foundation for developers despite not being the strongest overall model.</p>
+                    </div>
+                </a>
+                
+                <a href="https://coasty.ai/docs" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Launch HN: Coasty (YC S26) – An API for computer-use agents</h3>
+                        <p class="summary">Coasty (YC S26) launches an API for computer-use agents, allowing AI to automate browser and desktop interactions. This simplifies building agents that can perform tasks like data entry and web navigation.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/15/amid-hardware-legal-battle-openai-releases-a-230-keyboard-for-codex/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Amid hardware legal battle, OpenAI releases a $230 keyboard for Codex</h3>
+                        <p class="summary">OpenAI released a $230 keyboard for its Codex coding app, while facing a legal battle with Apple over hardware trade theft allegations. The move signals OpenAI's expansion into hardware amid controversy.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/15/thinking-machines-amps-up-its-bet-against-one-size-fits-all-ai-with-its-first-open-model-inkling/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Thinking Machines amps up its bet against one-size-fits-all AI with its first open model, Inkling</h3>
+                        <p class="summary">Thinking Machines released its first open model, Inkling, opposing one-size-fits-all AI. It's their first public proof after 18 months of private infrastructure building.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/ai/2026/07/openais-first-branded-hardware-is-a-light-up-keyboard/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">OpenAI's first branded hardware is... a light-up keyboard?</h3>
+                        <p class="summary">OpenAI launches its first branded hardware, the $230 Codex Micro mini-keyboard, in collaboration with Work Louder. It uses color-coded keys to monitor and interact with multiple Codex agents, signaling OpenAI's expansion into specialized AI hardware.</p>
+                    </div>
+                </a>
+                
+                <a href="https://simonwillison.net/2026/Jul/6/hy3/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Hy3 (1 minute read)</h3>
+                        <p class="summary">Tencent released Hy3, a 295-billion-parameter Mixture-of-Experts model with 21 billion active parameters, that outperforms similar-sized models and rivals flagship open-source models with up to five times more parameters. It's freely available on OpenRouter until July 21.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.granola.ai/?via=adops-tldr-tech&amp;dub_id=GdSW4VdbKUwWE4RE&amp;utm_source=TLDR&amp;utm_medium=newsletter&amp;utm_campaign=2026-07-07_Quick+links_Granola&amp;utm_content=header_granola_lets_you" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Granola now lets you chat with your notes - during the meeting (Sponsor)</h3>
+                        <p class="summary">Granola introduces real-time LLM chat within meetings, allowing users to ask questions and get context from live notes. This matters for staying engaged and informed during virtual calls.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🛠️ Tools & Dev</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=1mvlBz6pj1I" target="_blank" class="article-item">
+                    <div class="score">↑727</div>
+                    <div class="content">
+                        <h3 class="headline">How To Build Your Own RAG AI System - Better Results Than Claude</h3>
+                        <p class="summary">Building a custom RAG AI system can outperform models like Claude by integrating retrieval-augmented generation for more accurate, context-specific responses. This matters for developers seeking tailored AI solutions with improved reliability over general-purpose models.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.neomindlabs.com/2026/06/08/running-gemma-4-26b-at-5-tokens-sec-on-a-13-year-old-xeon-with-no-gpu/" target="_blank" class="article-item">
+                    <div class="score">↑297</div>
+                    <div class="content">
+                        <h3 class="headline">Running Gemma 4 26B at 5 tokens/sec on a 13-year-old Xeon with no GPU</h3>
+                        <p class="summary">A blogger ran Google's Gemma 4 26B model at 5 tokens/sec on a 13-year-old dual Xeon server without GPU, challenging the assumption that modern AI needs expensive hardware or subscriptions.</p>
+                    </div>
+                </a>
+                
+                <a href="https://core.telegram.org/bots/serverless" target="_blank" class="article-item">
+                    <div class="score">↑195</div>
+                    <div class="content">
+                        <h3 class="headline">Telegram Serverless</h3>
+                        <p class="summary">Telegram introduced Serverless, a platform that runs bot backend code directly on its infrastructure, eliminating the need for external servers. It offers built-in Bot API, database, and automatic scaling, simplifying bot development for Telegram developers.</p>
+                    </div>
+                </a>
+                
+                <a href="https://brainless.swerdlow.dev" target="_blank" class="article-item">
+                    <div class="score">↑124</div>
+                    <div class="content">
+                        <h3 class="headline">Brainless: Shadcn components that look like Claude Code, Codex and Grok</h3>
+                        <p class="summary">Developer @benswerd created shadcn UI components that replicate the interfaces of Claude Code, OpenAI Codex, and Grok, making it easy for developers to embed these AI coding assistant UIs into their own projects.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.cdata.com/blog/token-efficient-enterprise-claude-workflows?utm_source=tldr-ai&amp;utm_medium=newsletter_0714&amp;utm_campaign=26Q3_Token_Efficiency_Blog" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Token-efficient Claude workflows can save up to 97.6% of context costs (Sponsor)</h3>
+                        <p class="summary">CData Connect AI reduces LLM context costs by up to 97.6% for Claude workflows using Salesforce, ServiceNow, and Snowflake, based on benchmark tests. This matters for businesses seeking to cut AI operational expenses.</p>
+                    </div>
+                </a>
+                
+                <a href="https://manus.im/blog/manus-auto-publish?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Introducing Auto-Publish: Build Once, Ship Continuously (4 minute read)</h3>
+                        <p class="summary">Manus introduced Auto-Publish, enabling automatic deployment of successful builds to live URLs. This removes manual intervention, streamlining continuous delivery for developers.</p>
+                    </div>
+                </a>
+                
+                <a href="https://pytorch.org/blog/bringing-pytorch-monarch-to-amd-gpus-single-controller-distributed-training-on-rocm/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Bringing PyTorch Monarch to AMD GPUs: Single-Controller Distributed Training on ROCm (13 minute read)</h3>
+                        <p class="summary">PyTorch Monarch now supports elastic, fault-tolerant distributed training on AMD GPUs via ROCm, enabling dynamic recovery from node failures without job interruption. This matters for stable large-scale AI training across hundreds of GPUs.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🔥 Best Takes</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=m8VC2SV2igM" target="_blank" class="article-item">
+                    <div class="score">↑692</div>
+                    <div class="content">
+                        <h3 class="headline">This Completely Changes the Way We Build Production AI Agents (Vercel Eve)</h3>
+                        <p class="summary">"now your entire production AI agent can be just a single folder of ..."</p>
+                    </div>
+                </a>
+                
+                <a href="https://x.com/joon_h_lee/status/2076714221837173097?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Making Fable Cheaper Than Opus (12 minute read)</h3>
+                        <p class="summary">Cognition replaced Opus 4.8 with Fable 5, and Devin's bill went down.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.a16z.news/p/the-next-ai-goldrush-tokens-loops?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">You Just Hired a Million Bad Employees (11 minute read)</h3>
+                        <p class="summary">"AI was supposed to replace human labor, but it has done the opposite. Humans are now cheaper than software for the first time in history."</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🛡️ Safety & Policy</h2>
+                <div class="article-list">
+                    
+                <a href="https://bsky.app/profile/ferl67.bsky.social/post/3mqnot2h33k2a" target="_blank" class="article-item">
+                    <div class="score">↑653</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Mark</h3>
+                        <p class="summary">Publishers are suing Google, accusing it of using copyrighted books without permission to train its AI models. This case could set a precedent for how AI companies use copyrighted material.</p>
+                    </div>
+                </a>
+                
+                <a href="https://dpa-international.com/economics/urn:newsml:dpa.com:20090101:260715-930-389143/" target="_blank" class="article-item">
+                    <div class="score">↑247</div>
+                    <div class="content">
+                        <h3 class="headline">OpenAI loses trademark dispute at EU court</h3>
+                        <p class="summary">OpenAI lost its EU trademark challenge for "OPENAI" after the General Court ruled the term is descriptive for software and AI services, lacking distinctiveness. The decision, which can be appealed, upholds the EU Intellectual Property Office's rejection.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.siegelendowment.org/wp-content/uploads/2026/07/fortune-david-siegel-open-source-ai.pdf" target="_blank" class="article-item">
+                    <div class="score">↑224</div>
+                    <div class="content">
+                        <h3 class="headline">Governments, companies, nonprofits should invest in free, open source AI [pdf]</h3>
+                        <p class="summary">A new report argues governments, companies, and nonprofits should prioritize investment in free, open source AI to ensure broad access and prevent centralized control over the technology.</p>
+                    </div>
+                </a>
+                
+                <a href="https://smarterarticles.co.uk/the-three-second-theft-why-ai-voice-fraud-outruns-every-defence" target="_blank" class="article-item">
+                    <div class="score">↑177</div>
+                    <div class="content">
+                        <h3 class="headline">The Three-Second Theft: Why AI Voice Fraud Outruns Every Defence</h3>
+                        <p class="summary">AI voice fraud, using cloned voices of family members in distress, has become common and devastating. Scammers impersonated a daughter's voice to defraud Sharon Brightwell of $15,000, highlighting a crisis law enforcement and regulators cannot contain.</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/radiology-ai.bsky.social/post/3mqjku27flv26" target="_blank" class="article-item">
+                    <div class="score">↑12</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Radiology: Artificial Intelligence</h3>
+                        <p class="summary">The article discusses aligning policy, practice, and patient safety to ensure trustworthy AI implementation in radiology, emphasizing the need for coherent integration across these domains.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/16/meta-now-alerts-parents-if-their-teen-discussed-suicide-or-self-harm-with-its-ai-chatbot/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Meta now alerts parents if their teen discussed suicide or self-harm with its AI chatbot</h3>
+                        <p class="summary">Meta now alerts parents if teens discuss suicide or self-harm with its AI chatbot, responding to regulatory and parental concerns about AI safety for minors.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/15/hack-suggests-ai-music-generator-suno-scraped-youtube-for-training-data/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Hack suggests AI music generator Suno scraped YouTube for training data</h3>
+                        <p class="summary">A hacker used employee credentials to access Suno's source code, revealing the AI music generator scraped decades of YouTube audio for training data, raising copyright concerns.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/tech-policy/2026/07/judge-trump-cant-deport-researchers-just-for-working-in-content-moderation/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Judge: Trump can’t deport researchers just for working in content moderation</h3>
+                        <p class="summary">A US judge blocked Trump's policy allowing deportation of non-citizen researchers working on content moderation, ruling in favor of the Coalition for Independent Technology Research. This protects free speech and scientific inquiry from immigration enforcement.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/security/2026/07/windows-0-day-drops-the-same-day-microsoft-releases-record-number-of-patches/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Windows 0-day drops the same day Microsoft releases record number of patches</h3>
+                        <p class="summary">A researcher published a Windows zero-day exploit (HiveLegacy) allowing low-privilege accounts to modify admin accounts, right after Microsoft's record patch release. This matters as it's the ninth such exploit from a researcher frustrated with Microsoft's bug handling.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/tech-policy/2026/07/fcc-to-repeal-39-tv-ownership-cap-in-boost-for-trump-friendly-news-orgs/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">FCC to repeal 39% TV ownership cap in boost for Trump-friendly news orgs</h3>
+                        <p class="summary">FCC Chairman Carr plans to repeal the 39% TV ownership cap, replacing it with case-by-case reviews. This would likely benefit Trump-friendly news organizations by allowing them to exceed the limit, setting up a court battle over FCC authority.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theverge.com/policy/966438/eu-google-android-ai-interoperability-search-data-dma" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Google ordered to open Android and Search to rivals in Europe</h3>
+                        <p class="summary">The EU ordered Google to open Android and Search to rival AI assistants under the Digital Markets Act, weakening its control over key platforms and boosting competitors.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theverge.com/policy/966283/fcc-broadcast-ownership-cap-brendan-carr" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Brendan Carr plans to let broadcast giants dominate the airwaves</h3>
+                        <p class="summary">FCC Chair Brendan Carr plans an August 6th vote to eliminate the 39% national TV ownership cap, allowing broadcast giants to dominate. Carr argues streaming and social media make the rule obsolete, but critics warn it could reduce local media diversity.</p>
+                    </div>
+                </a>
+                
+                <a href="https://pages.awscloud.com/awsmp-gro-mnpc-webinar-mss-module-8-agent-identity-access-management-workshop.html?trk=ef106cca-a754-4b62-a472-dbfbfba96f4c&amp;sc_channel=el&amp;utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Workshop: Build AI agents with scoped credentials (Sponsor)</h3>
+                        <p class="summary">A workshop sponsored by AWS covers AI agent identity management, demonstrating scoped credentials, automatic rotation, and audit trails to prevent long-lived credential breaches.</p>
+                    </div>
+                </a>
+                
+                <a href="https://spyglass.org/apple-v-openai-lawsuit-lines/?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Reading Between the Apple v. OpenAI Lawsuit Lines (7 minute read)</h3>
+                        <p class="summary">Apple's lawsuit against OpenAI threatens to derail its hardware differentiation strategy, consuming resources and scaring off partners while forcing a rethink to avoid Apple's IP.</p>
+                    </div>
+                </a>
+                
+                <a href="https://tetralogical.com/blog/2026/07/13/accessibility-in-the-age-of-ai/?utm_source=tldrdesign" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Accessibility in the Age of AI (11 minute read)</h3>
+                        <p class="summary">AI is accelerating accessibility testing and coding but has also caused a documented increase in website accessibility errors, highlighting a growing gap between AI's potential and its current impact.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">📈 Hardware</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=-c049GMb-xU" target="_blank" class="article-item">
+                    <div class="score">↑496</div>
+                    <div class="content">
+                        <h3 class="headline">ANALYSIS: Why IIT Bhubaneswar&#39;s Spintronic Chip in Nature Could Replace Nvidia&#39;s GPUs</h3>
+                        <p class="summary">IIT Bhubaneswar-led team published a spintronic chip study in Nature Nanotechnology, potentially offering a more efficient alternative to Nvidia's GPUs for AI processing.</p>
+                    </div>
+                </a>
+                
+                <a href="https://spectrum.ieee.org/high-bandwidth-flash" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">High-Bandwidth Flash offers efficient storage for model weights</h3>
+                        <p class="summary">High-bandwidth flash storage improves efficiency for storing AI model weights, reducing latency and energy use. This matters for faster, more scalable deployment of large language models.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.bloomberg.com/news/newsletters/2026-07-12/apple-s-chip-plans-m6-m7-pro-m7-max-m7-ultra-m8-details-touch-macbook-pro?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb3VyY2UiOiJTdWJzY3JpYmVyR2lmdGVkQXJ0aWNsZSIsImlhdCI6MTc4MzkxMjY1MCwiZXhwIjoxNzg0NTE3NDUwLCJhcnRpY2xlSWQiOiJUSTJFVzFSMjRVOEswMCIsImJjb25uZWN0SWQiOiI2NTc1NjkyN0UwMkM0N0MwQkQ0MDNEQTJGMEUyNzIyMyJ9.wIArJVWB1ST8yeIXgP9B-hXmhsBq_3WnFBf0X5faPNc&utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Apple's M6, M7, and M8 Chips Show How AI Is Reshaping the Company (11 minute read)</h3>
+                        <p class="summary">Apple's chip development (M6, M7, M8) is now driven by AI, reshaping product design and timelines. The canceled car project's AI hardware now powers Macs and servers, turning a costly failure into a key investment.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.cnbc.com/2026/07/06/nvidia-kyber-rack-system-delays-manufacturing-taiwan-rubin-chips-.html?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Nvidia's next-gen AI rack system delayed to 2028 on manufacturing snags (4 minute read)</h3>
+                        <p class="summary">Nvidia's Kyber rack system, housing 144 Rubin Ultra chips as one giant computer, is delayed to 2028 due to circuit board manufacturing issues, signaling limits to its annual release pace.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">✨ General Updates</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=RggfYSmtbtk" target="_blank" class="article-item">
+                    <div class="score">↑385</div>
+                    <div class="content">
+                        <h3 class="headline">Can AI protect humanitarian aid? | AI for Good 2026 | Global Stage</h3>
+                        <p class="summary">AI is being used by humanitarian groups to identify needs and improve aid delivery, but experts warn it also poses risks like bias and data privacy that must be addressed to ensure ethical protection.</p>
+                    </div>
+                </a>
+                
+                <a href="https://thezvi.wordpress.com/2026/07/13/better-call-sol-the-workhorse/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Better Call Sol: The Workhorse (16 minute read)</h3>
+                        <p class="summary">Zvi Mowshowitz argues GPT-5.6 Sol offers the best balance of reasoning, speed, and cost for demanding knowledge work, making it the default choice while noting task-specific models still matter for peak performance.</p>
+                    </div>
+                </a>
+                
+                <a href="https://a16z.com/the-most-human-technology-ever-made/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">The Most Human Technology Ever Made (8 minute read)</h3>
+                        <p class="summary">AI empowers individuals, especially non-technical people, to create and innovate by lowering production barriers, unlike consumption-focused technologies, fostering creativity and meaningful personal projects.</p>
+                    </div>
+                </a>
+                
+                <a href="https://vercel.com/blog/ai-gateway-production-index-july-2026?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Open-Weight Models Reached 29% of AI Gateway Usage (9 minute read)</h3>
+                        <p class="summary">Vercel reported open-weight models handled 29% of AI Gateway token volume in June but only 4% of spending, highlighting their cost efficiency.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🔮 Ecosystem & Funding</h2>
+                <div class="article-list">
+                    
+                <a href="https://joinedanthropic.com" target="_blank" class="article-item">
+                    <div class="score">↑101</div>
+                    <div class="content">
+                        <h3 class="headline">Where are YC founders now? OpenAI and Anthropic, mostly</h3>
+                        <p class="summary">YC founders increasingly work at OpenAI and Anthropic, reflecting a shift from building startups to joining leading AI labs, highlighting AI's dominance in the startup ecosystem.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/16/ultrahumans-former-hardware-vp-raises-5-5m-for-devices-that-control-ai-agents-not-just-record-you/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Ultrahuman’s former hardware VP raises $5.5M for devices that control AI agents, not just record you</h3>
+                        <p class="summary">Former Ultrahuman hardware VP raised $5.5M for Aina to build devices that control AI agents, not just record. A new device pilot is coming soon.</p>
+                    </div>
+                </a>
+                
+                <a href="https://agenticeconomytreatise.com/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">The Agentic Economy treatise (Website)</h3>
+                        <p class="summary">Intelligence and the economy are merging into a single "agentic" system, where AI agents autonomously perform tasks and transactions, reshaping how value is created and exchanged.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.astralcodexten.com/p/introducing-plan-a?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Introducing Plan A (27 minute read)</h3>
+                        <p class="summary">The article introduces Plan A, a positive vision and roadmap for navigating a future where AI becomes real, serving as a guide for proactive adaptation.</p>
+                    </div>
+                </a>
+                
+                <a href="https://thenextweb.com/news/higgsfield-ai-5bn-valuation-funding-round?utm_source=tldrdesign" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">AI Video Startup Higgsfield is in Talks to Raise at a $5bn Valuation (3 minute read)</h3>
+                        <p class="summary">AI startup Higgsfield, founded by Alex Mashrabov, is in talks to raise $300-500mn at a $5bn valuation after hitting a $500mn annualized revenue run rate, with 70% from enterprise clients and DST Global among potential investors. This matters as rapid growth and AI film...</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">💼 Business & Strategy</h2>
+                <div class="article-list">
+                    
+                <a href="https://bsky.app/profile/seven.eurosky.social/post/3mp4sc7itwc2n" target="_blank" class="article-item">
+                    <div class="score">↑89</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Metin Seven (Moon Child's dad 🙂)</h3>
+                        <p class="summary">Ford rehired 350 engineers after an AI initiative failed to capture institutional knowledge or effectively train junior staff, highlighting AI's limitations in preserving expertise.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/15/applied-computing-wants-to-give-oil-and-gas-operators-an-ai-model-for-the-entire-plant/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Applied Computing wants to give oil and gas operators an AI model for the entire plant</h3>
+                        <p class="summary">Applied Computing raised $20M Series A to develop a foundational AI model for the oil, gas, and petrochemical industry, aiming to optimize entire plant operations.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/15/microsoft-is-reportedly-training-salespeople-to-talk-down-openai-and-anthropic/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Microsoft is reportedly training salespeople to talk down OpenAI and Anthropic</h3>
+                        <p class="summary">Microsoft is training salespeople to promote its in-house AI models as more efficient and cost-effective than OpenAI and Anthropic, signaling a competitive shift despite its investment in OpenAI.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/07/15/whatnot-acquires-shaped-to-power-real-time-live-shopping-recommendations/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Whatnot acquires Shaped to power real-time live shopping recommendations</h3>
+                        <p class="summary">Livestream shopping platform Whatnot acquired AI startup Shaped to enhance real-time recommendations and search, boosting personalization and discovery as it expands into new product categories.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/gadgets/2026/07/third-party-app-stores-coming-to-google-play-next-week-as-epic-settlement-withdrawn/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Third-party app stores coming to Google Play next week as Epic settlement withdrawn</h3>
+                        <p class="summary">Google will allow third-party app stores on Google Play starting next week after withdrawing its antitrust settlement with Epic Games, potentially disrupting Android's revenue model.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theverge.com/ai-artificial-intelligence/965066/ai-police-cops" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">COMPUTER COPS: Inside the big business of selling AI to the police</h3>
+                        <p class="summary">The Verge reports on AI vendors selling police automation tools at the IACP conference, threatening to reshape core legal processes in American policing.</p>
+                    </div>
+                </a>
+                
+                <a href="https://blog.bytebytego.com/p/how-microsoft-ships-ai-agents-at?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">How Microsoft Ships Thousands of Production AI Agents (18 minute read)</h3>
+                        <p class="summary">Microsoft detailed infrastructure for deploying thousands of AI agents across Foundry and Copilot, using practices like treating retrieval as a sub-agent, distinct identities, and rubric-based evaluations with automated improvement loops. This matters for scaling reliable AI...</p>
+                    </div>
+                </a>
+                
+                <a href="https://threadreaderapp.com/thread/2076580921398931788.html?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Tom Blomfield is taking a leave of absence from YC to join Anthropic (1 minute read)</h3>
+                        <p class="summary">Tom Blomfield is taking a leave of absence from Y Combinator to join Anthropic's compute team, working with Tom Brown. This move highlights the growing draw of AI companies for top tech talent.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.cnbc.com/2026/07/10/openai-power-consolidates-under-co-founder-greg-brockman-ahead-of-ipo.html?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">OpenAI power consolidates under co-founder Greg Brockman ahead of prospective IPO (4 minute read)</h3>
+                        <p class="summary">Greg Brockman consolidates power at OpenAI after Fidji Simo's departure, tasked with driving revenue amid competition from Anthropic and Google. This matters as OpenAI eyes a potential IPO while facing declining ChatGPT market share.</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/theagilebrand.bsky.social/post/3mqpix3dxj22z" target="_blank" class="article-item">
+                    <div class="score">↑8</div>
+                    <div class="content">
+                        <h3 class="headline">Post by The Agile Brand with Greg Kihlström</h3>
+                        <p class="summary">Agentic AI budgets are projected to rise 38% in the next year, signaling a major shift in business investment toward autonomous AI systems. This trend highlights growing corporate prioritization of AI-driven automation and decision-making.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🧠 Research & Papers</h2>
+                <div class="article-list">
+                    
+                <a href="https://arxiv.org/abs/2607.11859" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Can LLMs Perform Deep Technical Comprehension of Computer Architecture Papers</h3>
+                        <p class="summary">Researchers tested LLMs on deep technical comprehension of computer architecture papers, finding they struggle with complex reasoning tasks like ISA design and microarchitecture. This matters because it reveals current limits of LLMs for specialized engineering domains.</p>
+                    </div>
+                </a>
+                
+                <a href="https://sakana.ai/smart-cellular-bricks/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Smart Cellular Bricks: Towards Collective Intelligence for the Physical World (11 minute read)</h3>
+                        <p class="summary">Sakana AI developed "Smart Cellular Bricks" that use local neural networks to autonomously classify and reconstruct 3D shapes without centralized control, demonstrating collective intelligence in physical hardware with high accuracy and robustness.</p>
+                    </div>
+                </a>
+                
+                <a href="https://genception.github.io/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Video Generators as General-Purpose Vision Models (8 minute read)</h3>
+                        <p class="summary">DeepMind's GenCeption repurposes a pretrained video generation model as a unified vision system controlled by text, showing video generators can serve as general-purpose vision models.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+        </main>
+    </div>
+    <script>
+        // Open all accordions by default
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                toggleAccordion(header);
+            });
+        });
+
+        // Tab Switching Logic
+        function switchTab(e, tabId) {
+            if (e) e.preventDefault();
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // If triggered by a tab button, set it active, else find the tab button for that tabId
+            let tabBtn = (e && e.target && e.target.classList.contains('tab-btn')) ? e.target : document.querySelector(`.tab-btn[onclick*="${tabId}"]`);
+            if (tabBtn) tabBtn.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            // scroll to top if clicked view all
+            if (e && e.target && e.target.classList.contains('view-all')) {
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // Accordion Logic
+        function toggleAccordion(headerElement) {
+            headerElement.classList.toggle('open');
+            const body = headerElement.nextElementSibling;
+            if (headerElement.classList.contains('open')) {
+                body.style.maxHeight = body.scrollHeight + "px";
+            } else {
+                body.style.maxHeight = "0";
+            }
+        }
+
+        // Read article persistence
+        document.addEventListener("DOMContentLoaded", () => {
+            const STORAGE_KEY = "read_articles";
+            let readArticles = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+            
+            document.querySelectorAll('.article-item').forEach(item => {
+                const url = item.getAttribute('href');
+                if (readArticles.has(url)) {
+                    item.classList.add('read-article');
+                }
+                
+                item.addEventListener('click', () => {
+                    readArticles.add(url);
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify([...readArticles]));
+                    
+                    // Mark all identically-linked items read
+                    document.querySelectorAll(`.article-item[href="${url}"]`).forEach(i => i.classList.add('read-article'));
+                });
+            });
+        });
+    </script>
+</body>
+</html>
