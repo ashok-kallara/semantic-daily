@@ -1,0 +1,3306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News Digest | 2026-08-15</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+    
+:root {
+    --bg-color: #0d1117;
+    --card-bg: rgba(22, 27, 34, 0.4);
+    --hover-bg: rgba(46, 52, 60, 0.6);
+    --border: rgba(255, 255, 255, 0.08);
+    --text-main: #e6edf3;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-glow: rgba(88, 166, 255, 0.15);
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-mono: 'Fira Code', ui-monospace, monospace;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+    background-image: radial-gradient(circle at top right, rgba(46, 160, 67, 0.05), transparent 400px),
+                      radial-gradient(circle at bottom left, var(--accent-glow), transparent 400px);
+    background-attachment: fixed;
+}
+
+.container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
+
+header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.title { font-size: 2rem; font-weight: 700; margin: 0 0 0.25rem 0; }
+.subtitle { color: var(--text-muted); font-size: 0.95rem; }
+
+.stats-bar {
+    display: flex; gap: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; text-align: right;
+}
+.stat { display: flex; flex-direction: column; }
+.stat span:first-child { color: var(--text-muted); font-size: 0.75rem; }
+.stat span:last-child { color: var(--accent); font-weight: 600; }
+
+/* Tabs styling */
+.tabs-container {
+    margin-bottom: 2rem; display: flex; gap: 1rem;
+    border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+    background: transparent; border: none; color: var(--text-muted);
+    font-family: var(--font-sans); font-size: 1.1rem; font-weight: 500;
+    cursor: pointer; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s ease;
+}
+
+.tab-btn:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+.tab-btn.active { color: var(--accent); background: rgba(88, 166, 255, 0.1); font-weight: 600; }
+
+.tab-content { display: none; animation: fadeIn 0.3s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Common card styling */
+.category-group {
+    margin-bottom: 2rem; background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden; backdrop-filter: blur(8px);
+}
+
+/* Express View Accordion */
+.accordion-header {
+    width: 100%; display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.03); border: none; border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem; color: var(--text-main); font-size: 1.1rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+    cursor: pointer; transition: background 0.15s ease;
+}
+.accordion-header:hover { background: rgba(255, 255, 255, 0.06); }
+.accordion-header::after { content: '▼'; font-size: 0.8rem; transition: transform 0.3s ease; color: var(--text-muted); }
+.accordion-header.open::after { transform: rotate(-180deg); }
+.accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; background: transparent; }
+
+/* Category masonry */
+.categories-masonry { column-count: 2; column-gap: 2rem; }
+.masonry-item { break-inside: avoid; margin-bottom: 2rem; }
+.masonry-item .category-title {
+    font-size: 1rem; font-weight: 600; color: var(--text-main); margin: 0; padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+}
+
+.article-list { display: flex; flex-direction: column; }
+.article-item {
+    display: flex; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+    transition: background 0.15s ease; text-decoration: none; color: inherit; gap: 1.25rem; align-items: flex-start;
+}
+.masonry-item .article-item { padding: 0.75rem 1rem; gap: 1rem; }
+.article-item:last-child { border-bottom: none; }
+.article-item:hover { background: var(--hover-bg); }
+
+.article-item.read-article { opacity: 0.5; }
+.article-item.read-article .headline { color: var(--text-muted); }
+
+.score {
+    min-width: 45px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent);
+    background: rgba(88, 166, 255, 0.1); padding: 0.25rem 0; text-align: center; border-radius: 4px; margin-top: 0.15rem;
+}
+.content { flex: 1; min-width: 0; }
+.headline { font-weight: 500; font-size: 1.05rem; margin: 0 0 0.35rem 0; color: var(--text-main); flex-wrap: wrap; display: flex; align-items: baseline; gap: 0.5rem; }
+.summary {
+    font-size: 0.9rem; color: var(--text-muted); margin: 0; display: -webkit-box;
+    -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;
+}
+.view-all {
+    display: block; text-align: center; padding: 0.75rem; color: var(--accent); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: background 0.15s;
+}
+.view-all:hover { background: rgba(88, 166, 255, 0.05); }
+
+@media (max-width: 1024px) {
+    .categories-masonry { column-count: 1; }
+    header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .stats-bar { text-align: left; }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1 class="title">AI Pulse Digest</h1>
+                <div class="subtitle">Curated insights for 2026-08-15</div>
+            </div>
+            <div class="stats-bar">
+                <div class="stat"><span>Analyzed</span><span>1432 artifacts</span></div>
+                <div class="stat"><span>Filtered</span><span>859 dupes</span></div>
+                <div class="stat"><span>Curated</span><span>184 items</span></div>
+            </div>
+        </header>
+
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchTab(event, 'express')">✨ Highlights (Top 5)</button>
+            <button class="tab-btn" onclick="switchTab(event, 'detail')">📚 Deep Dive (All)</button>
+        </div>
+        
+        <main id="express" class="tab-content active">
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🧠 Research & Papers</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=2WT1kNnoyuU" target="_blank" class="article-item">
+                    <div class="score">↑5218</div>
+                    <div class="content">
+                        <h3 class="headline">Mathematicians STUNNED After AI Solves 10 Decades Old Problems</h3>
+                        <p class="summary">The Friday crew discusses mathematicians stunned as AI solves decades old problems. Daniel Litt: https://www.daniellitt.com/ ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://blog.google/security/how-google-is-making-private-ai-practical-with-homomorphic-encryption/" target="_blank" class="article-item">
+                    <div class="score">↑404</div>
+                    <div class="content">
+                        <h3 class="headline">Google is making private AI practical with homomorphic encryption</h3>
+                        <p class="summary">Security How Google is Making Private AI Practical with Homomorphic Encryption Aug 14, 2026 | x.com Facebook LinkedIn Mail Copy link Jeremy Kun Staff Software Engineer Share x.com Facebook LinkedIn...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.byhand.ai/" target="_blank" class="article-item">
+                    <div class="score">↑315</div>
+                    <div class="content">
+                        <h3 class="headline">AI by Hand</h3>
+                        <p class="summary">AI by Hand ✍️ | Prof. Tom Yeh | Substack AI by Hand ✍️ Math, Algorithms, Architectures, by hand By Prof. Tom Yeh · Over 73,000 subscribers Subscribe By subscribing, you agree Substack's Terms of Use...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.mixedbread.com/blog/toast-1" target="_blank" class="article-item">
+                    <div class="score">↑207</div>
+                    <div class="content">
+                        <h3 class="headline">Introducing Toast 1</h3>
+                        <p class="summary">On this page Pareto Optimal Search Financial Analysis: OfficeQA Pro V2 Legal Agentic Benchmark - Firm Knowledge Demo: Dig Deep Into Dwarkesh's Podcast Frontier Class Retrieval Availability and...</p>
+                    </div>
+                </a>
+                
+                <a href="https://theagenttimes.com/articles/chollet-endorses-llm-guided-symbolic-world-modeling-as-top-a-13fc0339" target="_blank" class="article-item">
+                    <div class="score">↑97</div>
+                    <div class="content">
+                        <h3 class="headline">Chollet Endorses LLM-Guided Symbolic World Modeling as Top ARC-AGI-3…</h3>
+                        <p class="summary"># The Agent Times
+
+> Independent journalism for the AI agent economy. AI-assisted sourcing under human editorial control. Est. 2026.
+
+The Agent Times covers agent platforms, open source, research,...</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 24 articles in 🧠 Research & Papers →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🛠️ Tools & Dev</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://github.com/anywhere-labs/deepseek-harness-desktop" target="_blank" class="article-item">
+                    <div class="score">↑4110</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Weekly Top Repos): anywhere-labs/deepseek-harness-desktop</h3>
+                        <p class="summary">Language: TypeScript
+Description: 为 DeepSeek Harness (DSH) 生态打造的现代化桌面端体验</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.unite.ai/grok-4-6-arrives-in-github-copilot-across-eight-development-surfaces/" target="_blank" class="article-item">
+                    <div class="score">↑92</div>
+                    <div class="content">
+                        <h3 class="headline">Grok 4.6 Arrives in GitHub Copilot Across Eight Development Surfaces – Unite.AI</h3>
+                        <p class="summary">Grok 4.6 Arrives in GitHub Copilot Across Eight Development Surfaces – Unite.AI
+
+xAI’s Grok 4.6 is now rolling out in GitHub Copilot, two days after the model’s August 12, 2026 release, the company...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.techradar.com/ai-platforms-assistants/a-year-ago-it-took-claude-ai-and-me-hours-to-build-asteroids-we-just-built-a-breakout-clone-in-five-minutes-and-you-can-play-it" target="_blank" class="article-item">
+                    <div class="score">↑71</div>
+                    <div class="content">
+                        <h3 class="headline">A year ago, it took Claude AI and me hours to build Asteroids; we just built a Breakout clone in five minutes — and you can play it | TechRadar</h3>
+                        <p class="summary">A year ago, it took Claude AI and me hours to build Asteroids; we just built a Breakout clone in five minutes — and you can play it | TechRadar
+
+## Useful links
+
+- Best VPN
+- Best Free VPN
+- Best Web...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.techtimes.com/articles/324521/20260814/google-sheets-canvas-launches-turn-any-spreadsheet-live-airtable-style-apps.htm" target="_blank" class="article-item">
+                    <div class="score">↑27</div>
+                    <div class="content">
+                        <h3 class="headline">Google Sheets Canvas Launches: Turn Any Spreadsheet Into Live Airtable-Style Apps</h3>
+                        <p class="summary">Google Sheets Canvas Launches: Turn Any Spreadsheet Into Live Airtable-Style Apps
+
+gettyimages.com
+
+Google has embedded no-code application generation inside a tool 900 million people already use...</p>
+                    </div>
+                </a>
+                
+                <a href="https://aijourn.com/harnessrouter-open-sources-the-worlds-first-unified-interface-for-agent-harnesses-and-the-unified-harness-protocol/" target="_blank" class="article-item">
+                    <div class="score">↑21</div>
+                    <div class="content">
+                        <h3 class="headline">HarnessRouter Open-Sources the World’s First Unified Interface for Agent Harnesses and the Unified Harness Protocol | The AI Journal</h3>
+                        <p class="summary">HarnessRouter Open-Sources the World’s First Unified Interface for Agent Harnesses and the Unified Harness Protocol | The AI Journal
+
+— On August 14, 2026, HarnessRouter, the world’s first unified...</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 11 articles in 🛠️ Tools & Dev →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">✨ General Updates</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=NC4h5kWH_-A" target="_blank" class="article-item">
+                    <div class="score">↑2375</div>
+                    <div class="content">
+                        <h3 class="headline">AI News: A Flood of New Models (Here&#39;s What Matters)</h3>
+                        <p class="summary">Here's the AI News you likely missed this week. Try Seedance 2.5 on Artlist here ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://huggingface.co/Qwen/Qwen3.8-27B-FP8" target="_blank" class="article-item">
+                    <div class="score">↑1170</div>
+                    <div class="content">
+                        <h3 class="headline">Qwen 3.8 27B</h3>
+                        <p class="summary">Qwen 3.8 27B</p>
+                    </div>
+                </a>
+                
+                <a href="https://claude.com/blog/maximizing-the-value-of-your-claude-code-sessions" target="_blank" class="article-item">
+                    <div class="score">↑236</div>
+                    <div class="content">
+                        <h3 class="headline">Maximizing the value of your Claude Code sessions</h3>
+                        <p class="summary">Maximizing the value of your Claude Code sessions How to run efficient sessions that get the most value from every token. Category Claude Code Enterprise AI Product Claude Code Date August 14, 2026...</p>
+                    </div>
+                </a>
+                
+                <a href="https://pod.wave.co/podcast/hard-fork/zuckerbergs-anti-doom-fantasy-finally-an-ai-detector-that-works-ai-math" target="_blank" class="article-item">
+                    <div class="score">↑95</div>
+                    <div class="content">
+                        <h3 class="headline">Zuckerberg’s Anti-Doom Fantasy + Finally an A.I. Detector That Works + A.I. Math - Hard Fork | Wave AI Podcast Notes</h3>
+                        <p class="summary">Zuckerberg’s Anti-Doom Fantasy + Finally an A.I. Detector That Works + A.I. Math - Hard Fork | Wave AI Podcast Notes
+
+Loading summary
+
+Transcript206 lines
+
+[00:00]
+
+A
+
+This episode is supported by...</p>
+                    </div>
+                </a>
+                
+                <a href="https://newsletter.decisiveliberty.news/p/kim-java-ces-2026-made-the-robot" target="_blank" class="article-item">
+                    <div class="score">↑92</div>
+                    <div class="content">
+                        <h3 class="headline">Kim Java: CES 2026 Made the Robot Endgame Obvious</h3>
+                        <p class="summary">Kim Java: CES 2026 Made the Robot Endgame Obvious
+
+Decisive Liberty Newsletter Podcast
+
+Kim Java: CES 2026 Made the Robot Endgame Obvious
+
+## Kim Java: CES 2026 Made the Robot Endgame...</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 21 articles in ✨ General Updates →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">💼 Business & Strategy</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=WPqoCJK8vBo" target="_blank" class="article-item">
+                    <div class="score">↑2067</div>
+                    <div class="content">
+                        <h3 class="headline">Is the AI Bubble Finally, Actually About to Burst? (w/ Ed Zitron)</h3>
+                        <p class="summary">There are fresh signs that the AI boom is wobbling. Again. In recent weeks, a much-vaunted AI focused hedge fund run by Valley ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://cryptobriefing.com/musk-admits-wrong-anthropic-amazon-investors/" target="_blank" class="article-item">
+                    <div class="score">↑97</div>
+                    <div class="content">
+                        <h3 class="headline">Elon Musk admits he was 'clearly wrong' about Anthropic, and Amazon investors are paying attention</h3>
+                        <p class="summary">Elon Musk admits he was 'clearly wrong' about Anthropic, and Amazon investors are paying attention
+
+SEARCH
+
+Searching...
+
+Via abc7news.com
+
+# Elon Musk admits he was ‘clearly wrong’ about Anthropic,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.calcalistech.com/ctechnews/article/byfa8qn8zg" target="_blank" class="article-item">
+                    <div class="score">↑93</div>
+                    <div class="content">
+                        <h3 class="headline">Sergey Brin is pushing Google to go all in on Gemini as AI race intensifies | Ctech</h3>
+                        <p class="summary">Sergey Brin is pushing Google to go all in on Gemini as AI race intensifies | Ctech
+
+ACCESSIBILITY
+
+by
+
+https://twitter.com/Calcalistech
+
+ACCESSIBILITY
+
+### Headlines
+
+### Ynet Global
+
+Recently...</p>
+                    </div>
+                </a>
+                
+                <a href="https://time.com/article/2026/08/14/claude-fired-worker-ai-job-disruption/" target="_blank" class="article-item">
+                    <div class="score">↑89</div>
+                    <div class="content">
+                        <h3 class="headline">Exclusive: Claude Was Put in Charge of Human Workers—and Fired One</h3>
+                        <p class="summary">Personalized Content
+
+## Business
+
+Follow this section to personalize your feed and get instant alerts.
+
+Follow Go to your personalized feed
+
+WHY FOLLOW?
+
+Update your preferences in Account...</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/podcast/metas-open-ai-and-a-250m-deal-gone-very-wrong/" target="_blank" class="article-item">
+                    <div class="score">↑88</div>
+                    <div class="content">
+                        <h3 class="headline">Meta's 'open' AI, and a $250M deal gone very wrong  | TechCrunch</h3>
+                        <p class="summary">Meta's 'open' AI, and a $250M deal gone very wrong | TechCrunch
+
+# Meta’s ‘open’ AI, and a $250M deal gone very wrong
+
+,
+
+,
+
+,
+
+Aug 14, 2026
+
+Listen on Apple Podcasts Listen on Spotify
+
+Meta released...</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 24 articles in 💼 Business & Strategy →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🤖 AI Agents</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=0l3vUprzNzg" target="_blank" class="article-item">
+                    <div class="score">↑1064</div>
+                    <div class="content">
+                        <h3 class="headline">Elon Just Gave Everyone an AI Agent</h3>
+                        <p class="summary">Check Out Our Sponsor: LEDGER AGENT STACK ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=sY2BE_AjqPE" target="_blank" class="article-item">
+                    <div class="score">↑678</div>
+                    <div class="content">
+                        <h3 class="headline">Anthropic Accidentally Created An AI Turf War</h3>
+                        <p class="summary">Anthropic put AI agents together with conflicting goals and watched them escalate into sabotage - deleting accounts, disguising ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.sciencealert.com/1000-ai-agents-started-agreeing-without-anyone-telling-them-to" target="_blank" class="article-item">
+                    <div class="score">↑98</div>
+                    <div class="content">
+                        <h3 class="headline">1,000 AI Agents Started Agreeing Without Anyone Telling Them To : ScienceAlert</h3>
+                        <p class="summary">1,000 AI Agents Started Agreeing Without Anyone Telling Them To : ScienceAlert
+
+# 1,000 AI Agents Started Agreeing Without Anyone Telling Them To
+
+Tech 15 August 2026
+
+Add ScienceAlert on...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.businessinsider.com/ai-running-sf-store-fired-employee-for-the-first-time-2026-8" target="_blank" class="article-item">
+                    <div class="score">↑96</div>
+                    <div class="content">
+                        <h3 class="headline">An AI Running an SF Store Fired an Employee for the First Time - Business Insider</h3>
+                        <p class="summary">An AI Running an SF Store Fired an Employee for the First Time - Business Insider
+
+You're currently following this author! Want to unfollow? Unsubscribe via the link in your email.
+
+Follow
+
+Luna, an...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.businessinsider.com/anthropic-ai-agents-sabotage-each-other-turf-war-2026-8" target="_blank" class="article-item">
+                    <div class="score">↑95</div>
+                    <div class="content">
+                        <h3 class="headline">AI Agents Sabotaged Each Other When Given the Same Task: Anthropic - Business Insider</h3>
+                        <p class="summary">AI Agents Sabotaged Each Other When Given the Same Task: Anthropic - Business Insider
+
+You're currently following this author! Want to unfollow? Unsubscribe via the link in your...</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 25 articles in 🤖 AI Agents →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🛡️ Safety & Policy</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://bsky.app/profile/merz.bsky.social/post/3msedwz7y7c2z" target="_blank" class="article-item">
+                    <div class="score">↑363</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Alex Merz 🇺🇸🇨🇦🇺🇦</h3>
+                        <p class="summary">#AI #LLM Something I've not seen commented on is the explosion of bot-impeding pages (e.g., via Cloudflare) that now appear before web pages load. The cumulative time waste for human users has got to...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.reuters.com/world/frances-top-court-rules-social-media-ban-curtails-freedom-expression-2026-08-14/" target="_blank" class="article-item">
+                    <div class="score">↑221</div>
+                    <div class="content">
+                        <h3 class="headline">France's top court blocks social media ban for under-15s</h3>
+                        <p class="summary">France's top court blocks social media ban for under-15s</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theringer.com/podcasts/plain-english-with-derek-thompson/2026/08/14/it-may-be-time-to-freak-out-about-ai" target="_blank" class="article-item">
+                    <div class="score">↑98</div>
+                    <div class="content">
+                        <h3 class="headline">It May Be Time to Freak Out About AI - The Ringer</h3>
+                        <p class="summary">It May Be Time to Freak Out About AI - The Ringer
+
+Plain English With Derek Thompson
+
+# It May Be Time to Freak Out About AI
+
+## Hosts
+
+Derek Thompson Derek Thompson
+
+## About the episode
+
+Today,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://techamerica.ai/hinton-fei-fei-li-andrew-ng-open-ai-models-safety" target="_blank" class="article-item">
+                    <div class="score">↑89</div>
+                    <div class="content">
+                        <h3 class="headline">AI Pioneers Hinton, Li and Ng Debate Open Models and Safety - TechAmerica.ai</h3>
+                        <p class="summary">AI Pioneers Hinton, Li and Ng Debate Open Models and Safety - TechAmerica.ai
+
+# AI Pioneers Hinton, Li and Ng Debate Open Models and Safety
+
+## Geoffrey Hinton, Fei-Fei Li and Andrew Ng debate open...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.avinashtech.com/chatgpt-computer-history-mac/" target="_blank" class="article-item">
+                    <div class="score">↑87</div>
+                    <div class="content">
+                        <h3 class="headline">ChatGPT can now log everything you do on your Mac: what to know – Avinashtech</h3>
+                        <p class="summary">ChatGPT can now log everything you do on your Mac: what to know – Avinashtech
+
+# ChatGPT can now log everything you do on your Mac: what to know
+
+OpenAI has switched on ChatGPT Computer History, an...</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 25 articles in 🛡️ Safety & Policy →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🔥 Best Takes</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://xn--gckvb8fzb.com/the-temu-fication-of-software-digital-goods-services/" target="_blank" class="article-item">
+                    <div class="score">↑164</div>
+                    <div class="content">
+                        <h3 class="headline">The TEMU-Fication of Software, Digital Goods and Services</h3>
+                        <p class="summary">A hypothesis on the not-so-distant future of software, books, music, and movies, in which most of what we consume gets cheaper, more abundant, and noticeably worse, while the human-made variant moves...</p>
+                    </div>
+                </a>
+                
+                <a href="https://getsmall.xyz/post/cmstjfl9l000if70ljmpzr4va" target="_blank" class="article-item">
+                    <div class="score">↑123</div>
+                    <div class="content">
+                        <h3 class="headline">Stop sending me huge PRs; a rant</h3>
+                        <p class="summary">I'm tired boss. I'm tired of reviewing one, two, three thousand line PRs because some agent was able to "one shot the whole issue." Small PRs were never asked for because they're easier to write,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.bloodinthemachine.com/p/the-state-of-the-ai-bubble-with-ed" target="_blank" class="article-item">
+                    <div class="score">↑100</div>
+                    <div class="content">
+                        <h3 class="headline">The State of the AI Bubble with Ed Zitron</h3>
+                        <p class="summary">The State of the AI Bubble with Ed Zitron 
+
+Blood in the Machine
+
+The State of the AI Bubble with Ed Zitron 
+
+## The State of the AI Bubble with Ed Zitron 
+
+How much further can the AI bubble inflate...</p>
+                    </div>
+                </a>
+                
+                <a href="https://saassentinel.com/2026/08/14/anthropic-red-team-finds-claude-agents-built-malware-to-sabotage-each-other-and-fixed-prices-without-being-asked/" target="_blank" class="article-item">
+                    <div class="score">↑96</div>
+                    <div class="content">
+                        <h3 class="headline">Anthropic Red Team Finds Claude Agents Built Malware to Sabotage Each Other and Fixed Prices Without Being Asked - The SaaS Sentinel</h3>
+                        <p class="summary">Anthropic Red Team Finds Claude Agents Built Malware to Sabotage Each Other and Fixed Prices Without Being Asked - The SaaS Sentinel
+
+# Anthropic Red Team Finds Claude Agents Built Malware to...</p>
+                    </div>
+                </a>
+                
+                <a href="https://dev.to/breachprotocol/three-agents-shared-one-codebase-and-started-writing-malware-at-each-other-10pl" target="_blank" class="article-item">
+                    <div class="score">↑90</div>
+                    <div class="content">
+                        <h3 class="headline">Three agents shared one codebase and started writing malware at each other - DEV Community</h3>
+                        <p class="summary">Three agents shared one codebase and started writing malware at each other - DEV Community
+
+ Posted on Aug 14 • Originally published at groundtruth.day 
+
+# Three agents shared one codebase and...</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 10 articles in 🔥 Best Takes →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🚀 Product Launches</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=kyaVsNCfdxw" target="_blank" class="article-item">
+                    <div class="score">↑157</div>
+                    <div class="content">
+                        <h3 class="headline">Qwen Live EP2: Decoding Qwen: Multimodal Gets to Work</h3>
+                        <p class="summary">In this episode of Qwen Live, we discuss Qwen's latest multimodal and agentic advances — like Qwen-Image 3.0 and ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.nogentech.org/cerebras-powers-openai-gpt-5-6-ultrafast/" target="_blank" class="article-item">
+                    <div class="score">↑98</div>
+                    <div class="content">
+                        <h3 class="headline">OpenAI Launches Ultrafast Mode for GPT 5.6 Sol via Cerebras</h3>
+                        <p class="summary">OpenAI Launches Ultrafast Mode for GPT 5.6 Sol via Cerebras
+
+Cerebras powers OpenAI ultrafast ChatGPT 5.6 Sol 14x faster.
+
+Table of contents
+
+## OpenAI previewed Ultrafast, a new API tier running...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.deeplearning.ai/the-batch/muse-code-wants-your-data" target="_blank" class="article-item">
+                    <div class="score">↑97</div>
+                    <div class="content">
+                        <h3 class="headline">Muse Code Wants Your Data: Meta's Muse Spark 1.2 and Muse Code approach the intelligence frontier at a discount</h3>
+                        <p class="summary">Muse Code Wants Your Data: Meta's Muse Spark 1.2 and Muse Code approach the intelligence frontier at a discount
+
+Loading the Elevenlabs Text to Speech AudioNative Player...
+
+Meta will cut coding...</p>
+                    </div>
+                </a>
+                
+                <a href="https://venturebeat.com/technology/glm-5-3-is-here-with-advanced-cyber-capabilities-and-reportedly-already-found-a-serious-vulnerability-in-cursor" target="_blank" class="article-item">
+                    <div class="score">↑96</div>
+                    <div class="content">
+                        <h3 class="headline">GLM-5.3 is here with advanced cyber capabilities — and reportedly already found a 'serious vulnerability' in Cursor | VentureBeat</h3>
+                        <p class="summary">GLM-5.3 is here with advanced cyber capabilities — and reportedly already found a 'serious vulnerability' in Cursor | VentureBeat
+
+Featured
+
+3:56 pm, PT, August 14, 2026
+
+Credit: VentureBeat made...</p>
+                    </div>
+                </a>
+                
+                <a href="https://decrypt.co/375684/china-z-ai-glm-5-3-top-open-weight-coding-model" target="_blank" class="article-item">
+                    <div class="score">↑95</div>
+                    <div class="content">
+                        <h3 class="headline">China's Z.AI Ships GLM-5.3, Calling It the Top Open-Weight Coding Model - Decrypt</h3>
+                        <p class="summary">China's Z.AI Ships GLM-5.3, Calling It the Top Open-Weight Coding Model - Decrypt
+
+### BTC
+
+$62,972.00
+
+0.40%
+
+### ETH
+
+$1,878.94
+
+0.30%
+
+### BNB
+
+$610.84
+
+0.70%
+
+### USDC
+
+$0.99956
+
+0.00%
+
+###...</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 25 articles in 🚀 Product Launches →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">📈 Hardware</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.deeplearning.ai/the-batch/googles-robotics-model-has-legs" target="_blank" class="article-item">
+                    <div class="score">↑98</div>
+                    <div class="content">
+                        <h3 class="headline">Google’s Robotics Model Has Legs: Gemini Robotics 2 gets Google closer to true multi-embodiment</h3>
+                        <p class="summary">Google’s Robotics Model Has Legs: Gemini Robotics 2 gets Google closer to true multi-embodiment
+
+Loading the Elevenlabs Text to Speech AudioNative Player...
+
+Google’s latest vision-language-action...</p>
+                    </div>
+                </a>
+                
+                <a href="https://charonhub.deeplearning.ai/googles-robotics-model-has-legs/" target="_blank" class="article-item">
+                    <div class="score">↑64</div>
+                    <div class="content">
+                        <h3 class="headline">Gemini Robotics 2 Gets Google Closer to True Multi-Embodiment</h3>
+                        <p class="summary">Gemini Robotics 2 Gets Google Closer to True Multi-Embodiment
+
+Google’s latest vision-language-action model can walk a humanoid robot across a room, crouch to a low shelf, and close a five-fingered...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.barchart.com/story/news/3843100/lg-to-unveil-its-next-gen-humanoid-robot-built-on-nvidia-isaac-gr00t" target="_blank" class="article-item">
+                    <div class="score">↑47</div>
+                    <div class="content">
+                        <h3 class="headline">LG to Unveil Its Next-Gen Humanoid Robot, Built on NVIDIA Isaac GR00T</h3>
+                        <p class="summary">LG to Unveil Its Next-Gen Humanoid Robot, Built on NVIDIA Isaac GR00T
+
+Watch Live: [[ data.title ]]
+
+[[ type === 'moc' ? 'MARKET ON CLOSE' : 'FREE WEBINAR' ]]
+
+[[ timeLabel ]] WATCH LIVE:
+
+Your...</p>
+                    </div>
+                </a>
+                
+                <a href="https://dev.to/trismegistus/cerebras-just-made-gpt-56-sol-10x-faster-and-it-changes-the-economics-of-ai-inference-3clc" target="_blank" class="article-item">
+                    <div class="score">↑20</div>
+                    <div class="content">
+                        <h3 class="headline">Cerebras Just Made GPT-5.6 Sol 10x Faster — and It Changes the Economics of AI Inference - DEV Community</h3>
+                        <p class="summary">Cerebras Just Made GPT-5.6 Sol 10x Faster — and It Changes the Economics of AI Inference - DEV Community
+
+Cerebras Systems just announced that they're accelerating GPT-5.6 Sol to ultrafast speeds on...</p>
+                    </div>
+                </a>
+                
+                <a href="https://the-decoder.com/world-labs-turns-one-real-world-robot-task-into-thousands-of-simulated-variations-for-training/" target="_blank" class="article-item">
+                    <div class="score">↑14</div>
+                    <div class="content">
+                        <h3 class="headline">World Labs turns one real-world robot task into thousands of simulated variations for training</h3>
+                        <p class="summary">World Labs turns one real-world robot task into thousands of simulated variations for training
+
+# World Labs turns one real-world robot task into thousands of simulated variations for training
+
+View...</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 9 articles in 📈 Hardware →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">🔮 Ecosystem & Funding</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://news.bitcoin.com/featured/spacex-closes-60-billion-cursor-deal-in-major-ai-compute-push/" target="_blank" class="article-item">
+                    <div class="score">↑83</div>
+                    <div class="content">
+                        <h3 class="headline">SpaceX Closes $60 Billion Cursor Deal in Major AI Compute Push</h3>
+                        <p class="summary">SpaceX Closes $60 Billion Cursor Deal in Major AI Compute Push
+
+Powered by
+
+Featured Published:Aug 14, 2026, 1:22 PM
+
+# SpaceX Closes $60 Billion Cursor Deal in Major AI Compute Push
+
+SpaceX has...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.startuphub.ai/podcast/today-in-ai-2026-08-13" target="_blank" class="article-item">
+                    <div class="score">↑82</div>
+                    <div class="content">
+                        <h3 class="headline">Today in AI: Musk's AI Revenue Bombshell and Infrastructure Boom | Today in AI | StartupHub.ai</h3>
+                        <p class="summary">Today in AI: Musk's AI Revenue Bombshell and Infrastructure Boom | Today in AI | StartupHub.ai
+
+Episode 18 · August 13, 2026
+
+# Today in AI: Musk's AI Revenue Bombshell and Infrastructure Boom
+
+Elon...</p>
+                    </div>
+                </a>
+                
+                <a href="https://interestingengineering.com/ai-robotics/nvidia-cuts-130b-openai-ohio-campus" target="_blank" class="article-item">
+                    <div class="score">↑62</div>
+                    <div class="content">
+                        <h3 class="headline">Nvidia cuts $130B+ from OpenAI's Ohio 10GW campus guarantee: Reports</h3>
+                        <p class="summary">Nvidia cuts $130B+ from OpenAI's Ohio 10GW campus guarantee: Reports
+
+Skip to content
+
+Jensen Huang, CEO of Nvidia. Wikimedia Commons
+
+TRENDINGLATEST
+
+1Next-gen molten salt reactor designed to...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.techtimes.com/articles/324538/20260814/dynatrace-acquires-arize-915m-bet-that-ai-evaluation-starts-before-production.htm" target="_blank" class="article-item">
+                    <div class="score">↑40</div>
+                    <div class="content">
+                        <h3 class="headline">Dynatrace Acquires Arize: $915M Bet That AI Evaluation Starts Before Production</h3>
+                        <p class="summary">Dynatrace Acquires Arize: $915M Bet That AI Evaluation Starts Before Production
+
+gettyimages.com
+
+Dynatrace (NYSE: DT) has agreed to acquire Arize, the San Francisco-based AI observability startup,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.wsj.com/business/entrepreneurship/vibe-coding-startup-lovable-hits-13-billion-valuation-0c87ff8a?st=gDMBds&reflink=desktopwebshare_permalink&utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Vibe-Coding Startup Lovable Hits $13 Billion Valuation (4 minute read)</h3>
+                        <p class="summary">The startup is on track to generate a revenue run rate of close to $600 million by the end of this month.</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 7 articles in 🔮 Ecosystem & Funding →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">uncategorized</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://bsky.app/profile/dopamine-harvest.bsky.social/post/3msxmb57blw2x" target="_blank" class="article-item">
+                    <div class="score">↑3</div>
+                    <div class="content">
+                        <h3 class="headline">Post by 𝔻𝕠𝕡𝕒𝕞𝕚𝕟𝕖 ℍ𝕒𝕣𝕧𝕖𝕤𝕥𝕖𝕣</h3>
+                        <p class="summary">COB#200605 #abstractart #cryptoart #ai #vaporwave #machinelearning #netart #surrealism #tezos #glitchartistscollective</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.minimax.io/blog/minimax-music-3-0-next-generation-open-weights-production-ready-versatile-music-model" target="_blank" class="article-item">
+                    <div class="score">↑2</div>
+                    <div class="content">
+                        <h3 class="headline">MiniMax Music 3.0: Next-Generation Open-Weights, Production-Ready & Versatile Music Model - MiniMax Research | MiniMax</h3>
+                        <p class="summary">MiniMax Music 3.0: Next-Generation Open-Weights, Production-Ready & Versatile Music Model - MiniMax Research | MiniMax
+
+Models
+
+LLM
+
+VIDEO
+
+SPEECH & MUSIC
+
+Product
+
+API
+
+Token Plan
+
+Research
+
+MiniMax...</p>
+                    </div>
+                </a>
+                
+                <a href="https://officechai.com/miscellaneous/alibaba-releases-qwen-3-8-27b-beats-muse-glimmer-30b-on-many-benchmarks/" target="_blank" class="article-item">
+                    <div class="score">↑1</div>
+                    <div class="content">
+                        <h3 class="headline">Alibaba Releases Qwen 3.8-27B, Beats Muse Glimmer 30B On Many Benchmarks</h3>
+                        <p class="summary">Alibaba Releases Qwen 3.8-27B, Beats Muse Glimmer 30B On Many Benchmarks
+
+Even as Chinese models are closing in on the AI frontier, they’re also making moves in the local models space.
+
+Alibaba has...</p>
+                    </div>
+                </a>
+                
+                        
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+        <main id="detail" class="tab-content categories-masonry">
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🧠 Research & Papers</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=2WT1kNnoyuU" target="_blank" class="article-item">
+                    <div class="score">↑5218</div>
+                    <div class="content">
+                        <h3 class="headline">Mathematicians STUNNED After AI Solves 10 Decades Old Problems</h3>
+                        <p class="summary">The Friday crew discusses mathematicians stunned as AI solves decades old problems. Daniel Litt: https://www.daniellitt.com/ ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://blog.google/security/how-google-is-making-private-ai-practical-with-homomorphic-encryption/" target="_blank" class="article-item">
+                    <div class="score">↑404</div>
+                    <div class="content">
+                        <h3 class="headline">Google is making private AI practical with homomorphic encryption</h3>
+                        <p class="summary">Security How Google is Making Private AI Practical with Homomorphic Encryption Aug 14, 2026 | x.com Facebook LinkedIn Mail Copy link Jeremy Kun Staff Software Engineer Share x.com Facebook LinkedIn...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.byhand.ai/" target="_blank" class="article-item">
+                    <div class="score">↑315</div>
+                    <div class="content">
+                        <h3 class="headline">AI by Hand</h3>
+                        <p class="summary">AI by Hand ✍️ | Prof. Tom Yeh | Substack AI by Hand ✍️ Math, Algorithms, Architectures, by hand By Prof. Tom Yeh · Over 73,000 subscribers Subscribe By subscribing, you agree Substack's Terms of Use...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.mixedbread.com/blog/toast-1" target="_blank" class="article-item">
+                    <div class="score">↑207</div>
+                    <div class="content">
+                        <h3 class="headline">Introducing Toast 1</h3>
+                        <p class="summary">On this page Pareto Optimal Search Financial Analysis: OfficeQA Pro V2 Legal Agentic Benchmark - Firm Knowledge Demo: Dig Deep Into Dwarkesh's Podcast Frontier Class Retrieval Availability and...</p>
+                    </div>
+                </a>
+                
+                <a href="https://theagenttimes.com/articles/chollet-endorses-llm-guided-symbolic-world-modeling-as-top-a-13fc0339" target="_blank" class="article-item">
+                    <div class="score">↑97</div>
+                    <div class="content">
+                        <h3 class="headline">Chollet Endorses LLM-Guided Symbolic World Modeling as Top ARC-AGI-3…</h3>
+                        <p class="summary"># The Agent Times
+
+> Independent journalism for the AI agent economy. AI-assisted sourcing under human editorial control. Est. 2026.
+
+The Agent Times covers agent platforms, open source, research,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.techtimes.com/articles/324509/20260814/danish-university-releases-dfm-mimir-v1-1b-parameter-ai-matches-4b-parameter-rivals-legal-data.htm" target="_blank" class="article-item">
+                    <div class="score">↑94</div>
+                    <div class="content">
+                        <h3 class="headline">Danish University Releases DFM Mimir v1: 1B-Parameter AI Matches 4B-Parameter Rivals on Legal Data</h3>
+                        <p class="summary">Danish University Releases DFM Mimir v1: 1B-Parameter AI Matches 4B-Parameter Rivals on Legal Data
+
+gettyimages.com
+
+A 1-billion-parameter language model built at the University of Southern Denmark...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.siliconsnark.com/glm-5-3-got-better-at-coding-and-accidentally-learned-exploitation-chains/" target="_blank" class="article-item">
+                    <div class="score">↑88</div>
+                    <div class="content">
+                        <h3 class="headline">GLM-5.3 Got Better at Coding and Accidentally Learned Exploitation Chains</h3>
+                        <p class="summary">GLM-5.3 Got Better at Coding and Accidentally Learned Exploitation Chains
+
+# GLM-5.3 Got Better at Coding and Accidentally Learned Exploitation Chains
+
+Z.ai’s GLM-5.3 boosts coding through...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.htx.com/news/gpt-5-also-has-tip-of-the-tongue-moments-google-tested-45-mi-VX49qGdo/" target="_blank" class="article-item">
+                    <div class="score">↑78</div>
+                    <div class="content">
+                        <h3 class="headline">GPT-5 Also Has Tip-of-the-Tongue Moments, Google Tested 4.5 Million Times: The Keys Are Lost | HTX Insights</h3>
+                        <p class="summary">GPT-5 Also Has Tip-of-the-Tongue Moments, Google Tested 4.5 Million Times: The Keys Are Lost | HTX Insights
+
+# GPT-5 Also Has Tip-of-the-Tongue Moments, Google Tested 4.5 Million Times: The Keys Are...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.techtimes.com/articles/324510/20260814/ai-feature-labels-geometry-not-text-tsinghua-posts-saeverbalizer-preprint.htm" target="_blank" class="article-item">
+                    <div class="score">↑76</div>
+                    <div class="content">
+                        <h3 class="headline">AI Feature Labels From Geometry, Not Text: Tsinghua Posts SAEVerbalizer Preprint</h3>
+                        <p class="summary">AI Feature Labels From Geometry, Not Text: Tsinghua Posts SAEVerbalizer Preprint
+
+gettyimages.com
+
+Researchers at Tsinghua University have posted their preprint on arXiv addressing one of AI...</p>
+                    </div>
+                </a>
+                
+                <a href="https://binaryverseai.com/stealing-reasoning/" target="_blank" class="article-item">
+                    <div class="score">↑76</div>
+                    <div class="content">
+                        <h3 class="headline">Stealing Reasoning: Exposing Hidden AI Chain-of-Thought</h3>
+                        <p class="summary">Stealing Reasoning: Exposing Hidden AI Chain-of-Thought
+
+AI companies have spent years making their best reasoning models harder to imitate. One increasingly important defense is simple in principle:...</p>
+                    </div>
+                </a>
+                
+                <a href="https://the-decoder.com/study-contradicts-anthropic-and-openai-claims-that-autonomous-ai-research-is-within-reach/" target="_blank" class="article-item">
+                    <div class="score">↑73</div>
+                    <div class="content">
+                        <h3 class="headline">Study contradicts Anthropic and OpenAI claims that autonomous AI research is within reach</h3>
+                        <p class="summary">Study contradicts Anthropic and OpenAI claims that autonomous AI research is within reach
+
+# Study contradicts Anthropic and OpenAI claims that autonomous AI research is within reach
+
+View the...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.ynetnews.com/health_science/article/skp76baume" target="_blank" class="article-item">
+                    <div class="score">↑67</div>
+                    <div class="content">
+                        <h3 class="headline">AI designed a virus, scientists brought it to life</h3>
+                        <p class="summary">AI designed a virus, scientists brought it to life
+
+Search
+
+Channels
+
+Sites & Sources
+
+Contact
+
+- Contact us
+- Privacy Policy
+- Terms of Use
+- Accessibility Statement
+
+# AI designed a virus,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://the-decoder.com/new-benchmark-confirms-ai-models-still-perform-poorly-at-visual-perception/" target="_blank" class="article-item">
+                    <div class="score">↑59</div>
+                    <div class="content">
+                        <h3 class="headline">New benchmark confirms AI models still perform poorly at visual perception</h3>
+                        <p class="summary">Moonshot AI's PerceptionBench reveals that top multimodal models like GPT-5.6 Sol fail basic visual perception tasks, scoring under 60% accuracy. This matters because many AI reasoning errors stem from flawed early-stage image reading, not logic.</p>
+                    </div>
+                </a>
+                
+                <a href="https://ultrathink.ai/news/dfm-mimir-v1-recurrent-ai-scaling" target="_blank" class="article-item">
+                    <div class="score">↑50</div>
+                    <div class="content">
+                        <h3 class="headline">How DFM Mimir v1 Matches 4B-Parameter Rivals Using Recurrent Architecture and Ethical Data | Ultrathink</h3>
+                        <p class="summary">How DFM Mimir v1 Matches 4B-Parameter Rivals Using Recurrent Architecture and Ethical Data | Ultrathink
+
+ANALYSIS • August 14, 2026 • 4 min read
+
+# How DFM Mimir v1 Matches 4B-Parameter Rivals Using...</p>
+                    </div>
+                </a>
+                
+                <a href="https://waking-up-with-ai.podbean.com/e/recursive-self-improvement-and-the-road-to-superintelligence/" target="_blank" class="article-item">
+                    <div class="score">↑50</div>
+                    <div class="content">
+                        <h3 class="headline">Recursive Self-Improvement and the Road to Superintelligence | Paul, Weiss Waking Up With AI</h3>
+                        <p class="summary">Recursive Self-Improvement and the Road to Superintelligence | Paul, Weiss Waking Up With AI
+
+Play Recursive Self-Improvement and the Road to Superintelligence
+
+2 days ago
+
+# Recursive...</p>
+                    </div>
+                </a>
+                
+                <a href="https://thenewstack.io/glm-5-3-post-training-coding/" target="_blank" class="article-item">
+                    <div class="score">↑41</div>
+                    <div class="content">
+                        <h3 class="headline">GLM-5.3 didn’t change the base model — where did its coding gains come from? - The New Stack</h3>
+                        <p class="summary">GLM-5.3 didn’t change the base model — where did its coding gains come from? - The New Stack
+
+TNS
+
+OK
+
+VOXPOP
+
+As a JavaScript developer, what non-React tools do you use most...</p>
+                    </div>
+                </a>
+                
+                <a href="https://gadgetsnow.indiatimes.com/tech-news/chinese-neurosurgeon-and-chatgpt-crack-two-decade-old-crouzeixs-conjecture/articleshow/133229648.cms" target="_blank" class="article-item">
+                    <div class="score">↑32</div>
+                    <div class="content">
+                        <h3 class="headline">Chinese Neurosurgeon and ChatGPT Crack Two-Decade-Old Crouzeix’s Conjecture</h3>
+                        <p class="summary">Chinese Neurosurgeon and ChatGPT Crack Two-Decade-Old Crouzeix’s Conjecture
+
+Edition
+
+IN
+
+Fri, Aug 14, 2026 | Updated 03.41PM IST
+
+- Gadgets Now
+- News
+- Tech News
+- Chinese Neurosurgeon and ChatGPT...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.ibtimes.sg/ais-hidden-thoughts-werent-so-hidden-researchers-crack-open-encrypted-reasoning-openai-92157" target="_blank" class="article-item">
+                    <div class="score">↑23</div>
+                    <div class="content">
+                        <h3 class="headline">AI's Hidden Thoughts Weren't So Hidden: Researchers Crack Open...</h3>
+                        <p class="summary">AI's Hidden Thoughts Weren't So Hidden: Researchers Crack Open...
+
+# AI's Hidden Thoughts Weren't So Hidden: Researchers Crack Open Encrypted Reasoning of OpenAI, Anthropic, Google Models
+
+## A new...</p>
+                    </div>
+                </a>
+                
+                <a href="https://theneuralfeed.com/article/reconcile-once-write-anytime-a-trust-tiered-librarian-and-a-multi-agent-writer-f/v8Um4gvb" target="_blank" class="article-item">
+                    <div class="score">↑23</div>
+                    <div class="content">
+                        <h3 class="headline">Researchers build librarian-writer AI system for... | The Neural Feed</h3>
+                        <p class="summary">Researchers build librarian-writer AI system for... | The Neural Feed
+
+# Researchers build librarian-writer AI system for trustworthy reports
+
+ arXiv cs.MA August 14, 2026 
+
+⚡ A two-tier AI system...</p>
+                    </div>
+                </a>
+                
+                <a href="https://muratbuffalo.blogspot.com/2026/08/specula-scaling-formal-specifications.html?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Specula: Scaling formal specifications for autonomous model checking of system code (13 minute read)</h3>
+                        <p class="summary">Specula is an agentic system that automates the process of software bug finding through authoring and model-checking a spec for the code. It derives TLA+ specifications automatically from the code,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://ngrok.com/blog/compression-is-prediction?utm_source=email&amp;utm_medium=newsletter&amp;utm_content=blog_compression_is_predictio&amp;utm_campaign=tldr_ai_2026_08" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Compression is prediction (Sponsor)</h3>
+                        <p class="summary">Why compression is just next-token prediction, an LLM + entropy coder is a compressor, and the implications when choosing models. Check out the interactive explainer on the ngrok blog</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.pointfive.co/AI-Research?utm_source=paid-social&amp;utm_medium=tldr&amp;utm_campaign=ai-report&amp;utm_term=pf-asset" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Research: token reduction tools increase LLM costs by up to 46.4% (Sponsor)</h3>
+                        <p class="summary">Token reduction tools promise 90% cost savings. Do they deliver? PointFive tested the $ impact of token reduction across 2,908 Claude Code sessions, 103 tasks, and 3 models. See the results.</p>
+                    </div>
+                </a>
+                
+                <a href="https://designthinkingblog.com/ai-operations/glm-5-3-s-self-improving-cyber-capabilities-a-new-benchmark-in-ai/" target="_blank" class="article-item">
+                    <div class="score">↑8</div>
+                    <div class="content">
+                        <h3 class="headline">GLM-5.3's Self-Improving Cyber Capabilities: A New Benchmark In AI - Design Thinking Blog</h3>
+                        <p class="summary">GLM-5.3's Self-Improving Cyber Capabilities: A New Benchmark In AI - Design Thinking Blog
+
+# GLM-5.3’s Self-Improving Cyber Capabilities: A New Benchmark In AI
+
+Z.ai’s GLM-5.3 demonstrates...</p>
+                    </div>
+                </a>
+                
+                <a href="https://theneuralfeed.com/article/entropy-augmented-multi-objective-policy-optimization-in-multiagent-systems/WhtGH3EB" target="_blank" class="article-item">
+                    <div class="score">↑8</div>
+                    <div class="content">
+                        <h3 class="headline">Entropy-Augmented Method Boosts Multiagent Coordination by... | The Neural Feed</h3>
+                        <p class="summary">Entropy-Augmented Method Boosts Multiagent Coordination by... | The Neural Feed
+
+Agent Frameworks
+
+# Entropy-Augmented Method Boosts Multiagent Coordination by 48% in Rover Tests
+
+⚡Adding an entropy...</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🛠️ Tools & Dev</h2>
+                <div class="article-list">
+                    
+                <a href="https://github.com/anywhere-labs/deepseek-harness-desktop" target="_blank" class="article-item">
+                    <div class="score">↑4110</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Weekly Top Repos): anywhere-labs/deepseek-harness-desktop</h3>
+                        <p class="summary">Language: TypeScript
+Description: 为 DeepSeek Harness (DSH) 生态打造的现代化桌面端体验</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.unite.ai/grok-4-6-arrives-in-github-copilot-across-eight-development-surfaces/" target="_blank" class="article-item">
+                    <div class="score">↑92</div>
+                    <div class="content">
+                        <h3 class="headline">Grok 4.6 Arrives in GitHub Copilot Across Eight Development Surfaces – Unite.AI</h3>
+                        <p class="summary">Grok 4.6 Arrives in GitHub Copilot Across Eight Development Surfaces – Unite.AI
+
+xAI’s Grok 4.6 is now rolling out in GitHub Copilot, two days after the model’s August 12, 2026 release, the company...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.techradar.com/ai-platforms-assistants/a-year-ago-it-took-claude-ai-and-me-hours-to-build-asteroids-we-just-built-a-breakout-clone-in-five-minutes-and-you-can-play-it" target="_blank" class="article-item">
+                    <div class="score">↑71</div>
+                    <div class="content">
+                        <h3 class="headline">A year ago, it took Claude AI and me hours to build Asteroids; we just built a Breakout clone in five minutes — and you can play it | TechRadar</h3>
+                        <p class="summary">A year ago, it took Claude AI and me hours to build Asteroids; we just built a Breakout clone in five minutes — and you can play it | TechRadar
+
+## Useful links
+
+- Best VPN
+- Best Free VPN
+- Best Web...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.techtimes.com/articles/324521/20260814/google-sheets-canvas-launches-turn-any-spreadsheet-live-airtable-style-apps.htm" target="_blank" class="article-item">
+                    <div class="score">↑27</div>
+                    <div class="content">
+                        <h3 class="headline">Google Sheets Canvas Launches: Turn Any Spreadsheet Into Live Airtable-Style Apps</h3>
+                        <p class="summary">Google Sheets Canvas Launches: Turn Any Spreadsheet Into Live Airtable-Style Apps
+
+gettyimages.com
+
+Google has embedded no-code application generation inside a tool 900 million people already use...</p>
+                    </div>
+                </a>
+                
+                <a href="https://aijourn.com/harnessrouter-open-sources-the-worlds-first-unified-interface-for-agent-harnesses-and-the-unified-harness-protocol/" target="_blank" class="article-item">
+                    <div class="score">↑21</div>
+                    <div class="content">
+                        <h3 class="headline">HarnessRouter Open-Sources the World’s First Unified Interface for Agent Harnesses and the Unified Harness Protocol | The AI Journal</h3>
+                        <p class="summary">HarnessRouter Open-Sources the World’s First Unified Interface for Agent Harnesses and the Unified Harness Protocol | The AI Journal
+
+— On August 14, 2026, HarnessRouter, the world’s first unified...</p>
+                    </div>
+                </a>
+                
+                <a href="https://newreleases.io/project/github/verl-project/verl/release/v0.9.0" target="_blank" class="article-item">
+                    <div class="score">↑20</div>
+                    <div class="content">
+                        <h3 class="headline">verl-project/verl v0.9.0 on GitHub</h3>
+                        <p class="summary">verl-project/verl v0.9.0 on GitHub
+
+ v0.9.0 
+
+on GitHub
+
+16 hours ago
+
+# v0.9.0
+
+## Highlights
+
+### Training
+
+#### Megatron
+
+- DeepSeek-V4 GRPO end-to-end with Megatron-Bridge actor/ref, vLLM rollout...</p>
+                    </div>
+                </a>
+                
+                <a href="https://chenxiachan.github.io/thoughtdag/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Show HN: ThoughtDAG – An editable context graph for LLM conversations</h3>
+                        <p class="summary">Comments</p>
+                    </div>
+                </a>
+                
+                <a href="https://app.deltix.ai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Show HN: Deltix – AI Driven Testing</h3>
+                        <p class="summary">Comments</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/08/14/kog-is-going-deeper-to-squeeze-more-inference-out-of-gpus/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Kog is going deeper to squeeze more inference out of GPUs</h3>
+                        <p class="summary">The idea that GPUs are poorly suited for agentic workflows may be a misconception, according to French startup Kog.</p>
+                    </div>
+                </a>
+                
+                <a href="https://temporal.io/pages/durable-ai-agent-bundle?utm_source=tldr&amp;utm_medium=sponsorship&amp;utm_campaign=tldr-ai-quicklink-2026-08-13&amp;utm_content=durable-agents-bundle" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Technical bundle: learn how OpenAI, Lovable, and Cursor run durable agents (Sponsor)</h3>
+                        <p class="summary">The world's best AI runs on open-source Temporal - you can too. Get started with this free collection of guides, coding demos, tutorials, and recorded expert sessions. Download free here</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.tines.com/3b/?utm_source=tldr-tech&amp;utm_medium=paid_media&amp;utm_content=newsletter-aug-7&amp;utm_term=3b-practitioner" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Introducing Tines 3B: The single, secure environment for your agents, apps, and automations (Sponsor)</h3>
+                        <p class="summary">Empower every team to build with AI while giving IT and security complete visibility, control, and governance. Get started free.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">✨ General Updates</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=NC4h5kWH_-A" target="_blank" class="article-item">
+                    <div class="score">↑2375</div>
+                    <div class="content">
+                        <h3 class="headline">AI News: A Flood of New Models (Here&#39;s What Matters)</h3>
+                        <p class="summary">Here's the AI News you likely missed this week. Try Seedance 2.5 on Artlist here ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://huggingface.co/Qwen/Qwen3.8-27B-FP8" target="_blank" class="article-item">
+                    <div class="score">↑1170</div>
+                    <div class="content">
+                        <h3 class="headline">Qwen 3.8 27B</h3>
+                        <p class="summary">Qwen 3.8 27B</p>
+                    </div>
+                </a>
+                
+                <a href="https://claude.com/blog/maximizing-the-value-of-your-claude-code-sessions" target="_blank" class="article-item">
+                    <div class="score">↑236</div>
+                    <div class="content">
+                        <h3 class="headline">Maximizing the value of your Claude Code sessions</h3>
+                        <p class="summary">Maximizing the value of your Claude Code sessions How to run efficient sessions that get the most value from every token. Category Claude Code Enterprise AI Product Claude Code Date August 14, 2026...</p>
+                    </div>
+                </a>
+                
+                <a href="https://pod.wave.co/podcast/hard-fork/zuckerbergs-anti-doom-fantasy-finally-an-ai-detector-that-works-ai-math" target="_blank" class="article-item">
+                    <div class="score">↑95</div>
+                    <div class="content">
+                        <h3 class="headline">Zuckerberg’s Anti-Doom Fantasy + Finally an A.I. Detector That Works + A.I. Math - Hard Fork | Wave AI Podcast Notes</h3>
+                        <p class="summary">Zuckerberg’s Anti-Doom Fantasy + Finally an A.I. Detector That Works + A.I. Math - Hard Fork | Wave AI Podcast Notes
+
+Loading summary
+
+Transcript206 lines
+
+[00:00]
+
+A
+
+This episode is supported by...</p>
+                    </div>
+                </a>
+                
+                <a href="https://newsletter.decisiveliberty.news/p/kim-java-ces-2026-made-the-robot" target="_blank" class="article-item">
+                    <div class="score">↑92</div>
+                    <div class="content">
+                        <h3 class="headline">Kim Java: CES 2026 Made the Robot Endgame Obvious</h3>
+                        <p class="summary">Kim Java: CES 2026 Made the Robot Endgame Obvious
+
+Decisive Liberty Newsletter Podcast
+
+Kim Java: CES 2026 Made the Robot Endgame Obvious
+
+## Kim Java: CES 2026 Made the Robot Endgame...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.techtimes.com/articles/324514/20260814/gpt-56-sol-now-runs-real-time-speed-openais-ultrafast-preview-offers-no-price-date.htm" target="_blank" class="article-item">
+                    <div class="score">↑83</div>
+                    <div class="content">
+                        <h3 class="headline">GPT-5.6 Sol Now Runs at Real-Time Speed: OpenAI's Ultrafast Preview Offers No Price or Date</h3>
+                        <p class="summary">GPT-5.6 Sol Now Runs at Real-Time Speed: OpenAI's Ultrafast Preview Offers No Price or Date
+
+gettyimages.com
+
+On August 13, 2026, OpenAI and Cerebras Systems unveiled Ultrafast — a new API service...</p>
+                    </div>
+                </a>
+                
+                <a href="https://neon.fund/podcasts/the-al-lab-founder-who-sees-the-future-first-karan-goel-founder-ceo-of-cartesia/" target="_blank" class="article-item">
+                    <div class="score">↑80</div>
+                    <div class="content">
+                        <h3 class="headline">The Al Lab Founder Who Sees The Future First | Karan Goel, Founder & CEO of Cartesia - Neon</h3>
+                        <p class="summary">The Al Lab Founder Who Sees The Future First | Karan Goel, Founder & CEO of Cartesia - Neon
+
+### 389 / August 14, 2026 
+
+# The Al Lab Founder Who Sees The Future First | Karan Goel, Founder & CEO of...</p>
+                    </div>
+                </a>
+                
+                <a href="https://officechai.com/ai/z-ai-releases-glm-5-3-beats-fable-5-and-gpt-5-6-sol-on-cyberbench/" target="_blank" class="article-item">
+                    <div class="score">↑74</div>
+                    <div class="content">
+                        <h3 class="headline">Z.AI Releases GLM 5.3, Beats Fable 5 And GPT 5.6 Sol On CyberBench</h3>
+                        <p class="summary">Z.AI Releases GLM 5.3, Beats Fable 5 And GPT 5.6 Sol On CyberBench
+
+Anthropic and OpenAI had been holding back their models because they felt that they could be misused by China for their cyber...</p>
+                    </div>
+                </a>
+                
+                <a href="https://emergent.sh/learn/gemini-3-7-flash-vs-gemini-3-1-pro" target="_blank" class="article-item">
+                    <div class="score">↑54</div>
+                    <div class="content">
+                        <h3 class="headline">Gemini 3.7 Flash vs Gemini 3.1 Pro Preview: Full Comparison</h3>
+                        <p class="summary">Gemini 3.7 Flash vs Gemini 3.1 Pro Preview: Full Comparison
+
+# Gemini 3.7 Flash vs Gemini 3.1 Pro Preview: Full Comparison
+
+Gemini 3.7 Flash beats 3.1 Pro Preview on speed, price, and the AA...</p>
+                    </div>
+                </a>
+                
+                <a href="https://deepintellica.com/ai-work/spacexai-s-grok-4-6-pushing-the-limits-of-ai-with-massive-context-and-long-runni/" target="_blank" class="article-item">
+                    <div class="score">↑42</div>
+                    <div class="content">
+                        <h3 class="headline">SpaceXAI’s Grok 4.6: Pushing The Limits Of AI With Massive Context And Long-Running Capabilities - Deep Intellica</h3>
+                        <p class="summary">SpaceXAI’s Grok 4.6: Pushing The Limits Of AI With Massive Context And Long-Running Capabilities - Deep Intellica
+
+# SpaceXAI’s Grok 4.6: Pushing The Limits Of AI With Massive Context And...</p>
+                    </div>
+                </a>
+                
+                <a href="https://journalarta.com/en/2026/08/15/claude-ai-fired-employee-retail-store/" target="_blank" class="article-item">
+                    <div class="score">↑34</div>
+                    <div class="content">
+                        <h3 class="headline">AI Language Model Fires Employee in First-Known Manager — JournalArta Global</h3>
+                        <p class="summary">AI Language Model Fires Employee in First-Known Manager — JournalArta Global
+
+Advertisement
+
+Technology · AI
+
+# AI Language Model Fires Employee in First-Known Manager Termination
+
+An AI version of...</p>
+                    </div>
+                </a>
+                
+                <a href="https://economictimes.indiatimes.com/news/international/global-trends/openai-ceo-sam-altman-says-chatgpt-could-have-perfect-context-of-your-whole-life-within-six-months/articleshow/133242792.cms" target="_blank" class="article-item">
+                    <div class="score">↑34</div>
+                    <div class="content">
+                        <h3 class="headline">OpenAI CEO Sam Altman says ChatGPT could have ‘perfect context of your whole life’ within six months - The Economic Times</h3>
+                        <p class="summary">OpenAI CEO Sam Altman says ChatGPT could have ‘perfect context of your whole life’ within six months - The Economic Times
+
+FEATURED FUNDS★★★★★Motilal Oswal Midcap Fund Direct-Growth5Y Return23.66 %...</p>
+                    </div>
+                </a>
+                
+                <a href="https://poddtoppen.se/podcast/1698613329/thursdai-the-top-ai-news-from-the-past-week/thursdai-grok-46-grok-bot-deep-dive-deepseek-v4-pro-meta-muse-glimmer-more-ai-news-thursdai-aug-13" target="_blank" class="article-item">
+                    <div class="score">↑31</div>
+                    <div class="content">
+                        <h3 class="headline">ThursdAI - Grok 4.6, Grok Bot deep dive, DeepSeek v4 Pro, Meta Muse Glimmer & more AI news | ThursdAi Aug 13 - ThursdAI - The top AI news from the past week | Lyssna här  | Poddtoppen.se</h3>
+                        <p class="summary">ThursdAI - Grok 4.6, Grok Bot deep dive, DeepSeek v4 Pro, Meta Muse Glimmer & more AI news | ThursdAi Aug 13 - ThursdAI - The top AI news from the past week | Lyssna här | Poddtoppen.se
+
+ 
+
+#...</p>
+                    </div>
+                </a>
+                
+                <a href="https://mindmatters.ai/2026/08/does-ai-really-threaten-your-job-that-depends-on-your-job/" target="_blank" class="article-item">
+                    <div class="score">↑27</div>
+                    <div class="content">
+                        <h3 class="headline">Does AI Really Threaten Your Job? That Depends On Your Job | Mind Matters</h3>
+                        <p class="summary">Does AI Really Threaten Your Job? That Depends On Your Job | Mind Matters
+
+# Does AI Really Threaten Your Job? That Depends On Your Job 
+
+According to Robert J. Marks, jobs that AI won’t disrupt use...</p>
+                    </div>
+                </a>
+                
+                <a href="https://aimagazine.com/news/xai-google-how-do-grok-4-6-and-gemini-3-7-flash-perform" target="_blank" class="article-item">
+                    <div class="score">↑17</div>
+                    <div class="content">
+                        <h3 class="headline">xAI & Google: How do Grok 4.6 and Gemini 3.7 Flash Perform? | AI Magazine</h3>
+                        <p class="summary">xAI & Google: How do Grok 4.6 and Gemini 3.7 Flash Perform? | AI Magazine
+
+Article
+
+Artificial Intelligence (AI)
+
+# xAI & Google: How do Grok 4.6 and Gemini 3.7 Flash Perform?
+
+August 14,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://theneuralfeed.com/article/xai-officially-launches-grok-4-6-with-500k-context-and-competitive-pricing/dMFtjmzT" target="_blank" class="article-item">
+                    <div class="score">↑13</div>
+                    <div class="content">
+                        <h3 class="headline">xAI's Grok 4.6 rivals GPT-5.6 at 60% lower price, 500K... | The Neural Feed</h3>
+                        <p class="summary">xAI's Grok 4.6 rivals GPT-5.6 at 60% lower price, 500K... | The Neural Feed
+
+Viral Wire
+
+# xAI's Grok 4.6 rivals GPT-5.6 at 60% lower price, 500K context
+
+⚡Grok 4.6 ties GPT-5.6 Sol at AA Index 61,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/health/2026/08/taylor-farms-connections-to-trump-admin-spurs-probe-into-cyclospora-response/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Taylor Farms' connections to Trump admin spurs probe into Cyclospora response</h3>
+                        <p class="summary">As Americans cook their vegetables to at least 158°F to kill a diarrheal parasite that has sickened over 24,000 people and killed two this summer, one US Senator is turning up the heat on Health...</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/gadgets/2026/08/ukrainian-drones-wipe-out-entire-us-tank-brigade-in-live-war-game/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Ukrainian drones wipe out entire US tank brigade in live war game</h3>
+                        <p class="summary">Ukrainian drone teams demolished a brigade of US Army tanks and armored vehicles during a live war game held this year—but the US soldiers were lucky enough to get “respawn” attempts while learning...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.imkylelambert.com/articles/everyone-is-designing-with-ai-not-for-it?utm_source=tldrdesign" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Are You Designing for the Old World? (2 minute read)</h3>
+                        <p class="summary">AI has changed how software gets built, but not yet what gets built. Design is moving from "Responsive Web Design" toward "Malleable Design," where users shape their own layouts, dashboards, and...</p>
+                    </div>
+                </a>
+                
+                <a href="https://uxdesign.cc/battling-ai-fatigue-as-a-designer-and-developer-a-practical-guide-d04a2549e802?utm_source=tldrdesign" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Battling AI Fatigue as a Designer and Developer: A Practical Guide (8 minute read)</h3>
+                        <p class="summary">A UI designer and developer noticed AI fatigue while vibe-coding a personal expenses app, prompting reflection on healthier AI habits. Key recommendations include limiting AI use outside work,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://workos.com/blog/making-agent-prose-publishable?utm_source=tldrfounders" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Anyone can generate a blog post. Making it publishable is the work (8 minute read)</h3>
+                        <p class="summary">It takes a lot of engineering to get AI to generate thousands of words a company would put its name on.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">💼 Business & Strategy</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=WPqoCJK8vBo" target="_blank" class="article-item">
+                    <div class="score">↑2067</div>
+                    <div class="content">
+                        <h3 class="headline">Is the AI Bubble Finally, Actually About to Burst? (w/ Ed Zitron)</h3>
+                        <p class="summary">There are fresh signs that the AI boom is wobbling. Again. In recent weeks, a much-vaunted AI focused hedge fund run by Valley ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://cryptobriefing.com/musk-admits-wrong-anthropic-amazon-investors/" target="_blank" class="article-item">
+                    <div class="score">↑97</div>
+                    <div class="content">
+                        <h3 class="headline">Elon Musk admits he was 'clearly wrong' about Anthropic, and Amazon investors are paying attention</h3>
+                        <p class="summary">Elon Musk admits he was 'clearly wrong' about Anthropic, and Amazon investors are paying attention
+
+SEARCH
+
+Searching...
+
+Via abc7news.com
+
+# Elon Musk admits he was ‘clearly wrong’ about Anthropic,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.calcalistech.com/ctechnews/article/byfa8qn8zg" target="_blank" class="article-item">
+                    <div class="score">↑93</div>
+                    <div class="content">
+                        <h3 class="headline">Sergey Brin is pushing Google to go all in on Gemini as AI race intensifies | Ctech</h3>
+                        <p class="summary">Sergey Brin is pushing Google to go all in on Gemini as AI race intensifies | Ctech
+
+ACCESSIBILITY
+
+by
+
+https://twitter.com/Calcalistech
+
+ACCESSIBILITY
+
+### Headlines
+
+### Ynet Global
+
+Recently...</p>
+                    </div>
+                </a>
+                
+                <a href="https://time.com/article/2026/08/14/claude-fired-worker-ai-job-disruption/" target="_blank" class="article-item">
+                    <div class="score">↑89</div>
+                    <div class="content">
+                        <h3 class="headline">Exclusive: Claude Was Put in Charge of Human Workers—and Fired One</h3>
+                        <p class="summary">Personalized Content
+
+## Business
+
+Follow this section to personalize your feed and get instant alerts.
+
+Follow Go to your personalized feed
+
+WHY FOLLOW?
+
+Update your preferences in Account...</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/podcast/metas-open-ai-and-a-250m-deal-gone-very-wrong/" target="_blank" class="article-item">
+                    <div class="score">↑88</div>
+                    <div class="content">
+                        <h3 class="headline">Meta's 'open' AI, and a $250M deal gone very wrong  | TechCrunch</h3>
+                        <p class="summary">Meta's 'open' AI, and a $250M deal gone very wrong | TechCrunch
+
+# Meta’s ‘open’ AI, and a $250M deal gone very wrong
+
+,
+
+,
+
+,
+
+Aug 14, 2026
+
+Listen on Apple Podcasts Listen on Spotify
+
+Meta released...</p>
+                    </div>
+                </a>
+                
+                <a href="https://mgrowtech.com/openai-tells-investors-enterprise-revenue-has-overtaken-its-chatgpt-consumer-business-unite-ai/" target="_blank" class="article-item">
+                    <div class="score">↑85</div>
+                    <div class="content">
+                        <h3 class="headline">OpenAI Tells Investors Enterprise Revenue Has Overtaken Its ChatGPT Consumer Business – Unite.AI - mGrowTech</h3>
+                        <p class="summary">OpenAI Tells Investors Enterprise Revenue Has Overtaken Its ChatGPT Consumer Business – Unite.AI - mGrowTech
+
+# OpenAI Tells Investors Enterprise Revenue Has Overtaken Its ChatGPT Consumer Business –...</p>
+                    </div>
+                </a>
+                
+                <a href="https://narrative-news.com/exclusive-inside-the-google-government-strikes-that-led-to-its-massive-ai-reshuffle/" target="_blank" class="article-item">
+                    <div class="score">↑79</div>
+                    <div class="content">
+                        <h3 class="headline">Exclusive-Inside the Google government strikes that led to its massive AI reshuffle - Narrative News</h3>
+                        <p class="summary">Exclusive-Inside the Google government strikes that led to its massive AI reshuffle - Narrative News
+
+Search
+
+Saturday, August 15, 2026
+
+Sign in
+
+Welcome! Log into your account
+
+your username
+
+your...</p>
+                    </div>
+                </a>
+                
+                <a href="https://en.sedaily.com/finance/2026/08/14/lg-nvidia-team-up-to-build-physical-ai-across-robots" target="_blank" class="article-item">
+                    <div class="score">↑78</div>
+                    <div class="content">
+                        <h3 class="headline">LG, Nvidia Team Up to Build Physical AI Across Robots, Factories, Cars - Seoul Economic Daily</h3>
+                        <p class="summary">LG, Nvidia Team Up to Build Physical AI Across Robots, Factories, Cars - Seoul Economic Daily
+
+KST
+
+Seoul Economic DailyKorea's Leading Business News Since 1960
+
+Menu
+
+Saved ArticlesNewslettersAI...</p>
+                    </div>
+                </a>
+                
+                <a href="https://cxotoday.com/ai/senior-executives-come-and-go-as-openai-chases-revenue-spike-in-real-time/" target="_blank" class="article-item">
+                    <div class="score">↑77</div>
+                    <div class="content">
+                        <h3 class="headline">Senior Executives Come and Go as OpenAI Chases Revenue Spike in Real Time</h3>
+                        <p class="summary">Senior Executives Come and Go as OpenAI Chases Revenue Spike in Real Time
+
+## Fractal’s Vaidya.ai Powers BMC Health AI Chatbot on WhatsApp for Mumbai
+
+Fractal’s Vaidya.ai Powers BMC Health AI Chatbot...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.briefs.co/news/leadership-shakeup-at-openai-sparks-ipo-doubts/" target="_blank" class="article-item">
+                    <div class="score">↑74</div>
+                    <div class="content">
+                        <h3 class="headline">OpenAI Leadership Shakeup Sparks IPO Doubts</h3>
+                        <p class="summary">OpenAI Leadership Shakeup Sparks IPO Doubts
+
+# Leadership Shakeup at OpenAI Sparks IPO Doubts
+
+Nate Gregory
+
+Published Aug 14, 2026
+
+###### Summary: 
+
+- Revenue chief Denise Dresser departed OpenAI...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.techtimes.com/articles/324500/20260814/junior-workers-drive-chatgpt-enterprise-study-maps-17m-messages-across-firms.htm" target="_blank" class="article-item">
+                    <div class="score">↑65</div>
+                    <div class="content">
+                        <h3 class="headline">Junior Workers Drive ChatGPT Enterprise: Study Maps 17M Messages Across Firms</h3>
+                        <p class="summary">Junior Workers Drive ChatGPT Enterprise: Study Maps 17M Messages Across Firms
+
+gettyimages.com
+
+The junior analyst two desks from the printer is doing more with ChatGPT Enterprise than the executive...</p>
+                    </div>
+                </a>
+                
+                <a href="https://a16z.com/cursor-spacexai-the-fastest-iterating-team-wins/" target="_blank" class="article-item">
+                    <div class="score">↑63</div>
+                    <div class="content">
+                        <h3 class="headline">Cursor + SpaceXAI: the fastest iterating team wins | Andreessen Horowitz</h3>
+                        <p class="summary">Cursor + SpaceXAI: the fastest iterating team wins | Andreessen Horowitz
+
+Growth
+
+# Cursor + SpaceXAI: the fastest iterating team wins
+
+Sarah Wang, Matt Bornstein, and Martin Casado Posted August 14,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://techietricks.com/2026/08/14/why-capital-one-built-its-multi-agent-ai-platform-around-open-weight-models/" target="_blank" class="article-item">
+                    <div class="score">↑50</div>
+                    <div class="content">
+                        <h3 class="headline">Why Capital One built its multi-agent AI platform around open-weight models - TechieTricks.com</h3>
+                        <p class="summary">Why Capital One built its multi-agent AI platform around open-weight models - TechieTricks.com
+
+# Why Capital One built its multi-agent AI platform around open-weight models
+
+News August 14,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://nehtus.com/story/tech-visionary-says-the-big-ai-labs-dont-get-what-people-want/" target="_blank" class="article-item">
+                    <div class="score">↑47</div>
+                    <div class="content">
+                        <h3 class="headline">Tech Visionary Says the Big AI Labs Don’t Get What People Want | WIRED</h3>
+                        <p class="summary">Tech Visionary Says the Big AI Labs Don’t Get What People Want | WIRED
+
+Steven Levy
+
+Aug 14, 2026 11:00 AM
+
+# Tech Visionary Says the Big AI Labs Don’t Get What People Want
+
+Tim O’Reilly built a...</p>
+                    </div>
+                </a>
+                
+                <a href="https://usabusinesstimes.com/anthropics-physical-ai-push-is-quietly-reshaping-robotics/" target="_blank" class="article-item">
+                    <div class="score">↑42</div>
+                    <div class="content">
+                        <h3 class="headline">Anthropic’s Physical AI Push Is Quietly Reshaping Robotics – USA Business Times</h3>
+                        <p class="summary">Anthropic’s Physical AI Push Is Quietly Reshaping Robotics – USA Business Times
+
+# Anthropic’s Physical AI Push Is Quietly Reshaping Robotics
+
+Anthropic is moving beyond chatbots and into the...</p>
+                    </div>
+                </a>
+                
+                <a href="https://dnyuz.com/2026/08/14/big-short-michael-burry-says-the-bulletproof-ai-narrative-reminds-him-of-the-dot-com-and-housing-bubbles/" target="_blank" class="article-item">
+                    <div class="score">↑35</div>
+                    <div class="content">
+                        <h3 class="headline">‘Big Short’ Michael Burry says the bulletproof AI narrative reminds him of the dot-com and housing bubbles – DNYUZ</h3>
+                        <p class="summary">‘Big Short’ Michael Burry says the bulletproof AI narrative reminds him of the dot-com and housing bubbles – DNYUZ
+
+No Result
+
+View All Result
+
+No Result
+
+View All Result
+
+# ‘Big Short’ Michael Burry...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.briefs.co/news/enterprise-customers-are-now-openai-s-biggest-revenue-source/" target="_blank" class="article-item">
+                    <div class="score">↑30</div>
+                    <div class="content">
+                        <h3 class="headline">OpenAI Enterprise Revenue Now Top Source</h3>
+                        <p class="summary">OpenAI Enterprise Revenue Now Top Source
+
+S&P 500 6,287 +0.42%
+
+DOW 44,521 -0.18%
+
+NASDAQ 21,103 +0.71%
+
+Warning: Undefined variable $funds in...</p>
+                    </div>
+                </a>
+                
+                <a href="https://blog.terabox.com/insights/garry-tan-ai-vibe-coding-startup-founders" target="_blank" class="article-item">
+                    <div class="score">↑28</div>
+                    <div class="content">
+                        <h3 class="headline">Garry Tan: The 2,000x AI Engineer And The Future Of YC</h3>
+                        <p class="summary">Garry Tan: The 2,000x AI Engineer And The Future Of YC
+
+# Garry Tan: The 2,000x AI Engineer and the Future of YC
+
+📺 Today’s recommended deep-dive video:...</p>
+                    </div>
+                </a>
+                
+                <a href="https://founderflixtv.com/saaspocalypse-revisited-deepminds-plan-polestar-collapse-aman-vs-ryan-walker/" target="_blank" class="article-item">
+                    <div class="score">↑17</div>
+                    <div class="content">
+                        <h3 class="headline">SaaSpocalypse Revisited, DeepMind's Plan, Polestar Collapse, Aman vs Ryan Walker – FounderFlix – Free Streaming Content for Founders</h3>
+                        <p class="summary">SaaSpocalypse Revisited, DeepMind's Plan, Polestar Collapse, Aman vs Ryan Walker – FounderFlix – Free Streaming Content for Founders
+
+ John Coogan 
+
+# SaaSpocalypse Revisited, DeepMind's Plan,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/08/14/thrives-joshua-kushner-chides-silicon-valley-vcs-over-ai-euphoria/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Thrive’s Joshua Kushner chides Silicon Valley VCs over AI euphoria</h3>
+                        <p class="summary">The AI opportunity is huge, but "it would also be a grave error in our minds to let excitement weaken our investment discipline," Kushner warns in his first-ever investment letter.</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/08/14/hyperscalers-might-regret-embracing-natural-gas-if-new-forecast-proves-correct/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Hyperscalers might regret embracing natural gas if new forecast proves correct</h3>
+                        <p class="summary">Natural gas prices could triple in some parts of the U.S., which could saddle hyperscalers with massive bills to power their AI data centers.</p>
+                    </div>
+                </a>
+                
+                <a href="https://lambda.ai/llama-3-1-blackwell-mfu-benchmarks?utm_source=tldr&amp;utm_medium=newsletter&amp;utm_campaign=2026-03-mfu-whitepaper&amp;utm_content=ai-main-ad-aug-13_header_cut_ai_training" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Cut your AI training costs by 25% or more (Sponsor)</h3>
+                        <p class="summary">Most large-scale AI training runs use less than half the computing power they're paying for. Lambda's team found the root causes and built a reproducible framework that boosted efficiency by over...</p>
+                    </div>
+                </a>
+                
+                <a href="https://openai.com/index/building-an-ai-native-finance-function/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Building an AI-Native Finance Team (11 minute read)</h3>
+                        <p class="summary">OpenAI shared five lessons from rebuilding its finance function around AI, with long-term goals including a zero-day close and continuously updated forecasting. The approach emphasized redesigning...</p>
+                    </div>
+                </a>
+                
+                <a href="https://nextslide.ai/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">OpenAI Acquires NextSlide (1 minute read)</h3>
+                        <p class="summary">OpenAI has acquired NextSlide, a startup that turned prompts, notes, documents, and research into editable presentations.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🤖 AI Agents</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=0l3vUprzNzg" target="_blank" class="article-item">
+                    <div class="score">↑1064</div>
+                    <div class="content">
+                        <h3 class="headline">Elon Just Gave Everyone an AI Agent</h3>
+                        <p class="summary">Check Out Our Sponsor: LEDGER AGENT STACK ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=sY2BE_AjqPE" target="_blank" class="article-item">
+                    <div class="score">↑678</div>
+                    <div class="content">
+                        <h3 class="headline">Anthropic Accidentally Created An AI Turf War</h3>
+                        <p class="summary">Anthropic put AI agents together with conflicting goals and watched them escalate into sabotage - deleting accounts, disguising ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.sciencealert.com/1000-ai-agents-started-agreeing-without-anyone-telling-them-to" target="_blank" class="article-item">
+                    <div class="score">↑98</div>
+                    <div class="content">
+                        <h3 class="headline">1,000 AI Agents Started Agreeing Without Anyone Telling Them To : ScienceAlert</h3>
+                        <p class="summary">1,000 AI Agents Started Agreeing Without Anyone Telling Them To : ScienceAlert
+
+# 1,000 AI Agents Started Agreeing Without Anyone Telling Them To
+
+Tech 15 August 2026
+
+Add ScienceAlert on...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.businessinsider.com/ai-running-sf-store-fired-employee-for-the-first-time-2026-8" target="_blank" class="article-item">
+                    <div class="score">↑96</div>
+                    <div class="content">
+                        <h3 class="headline">An AI Running an SF Store Fired an Employee for the First Time - Business Insider</h3>
+                        <p class="summary">An AI Running an SF Store Fired an Employee for the First Time - Business Insider
+
+You're currently following this author! Want to unfollow? Unsubscribe via the link in your email.
+
+Follow
+
+Luna, an...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.businessinsider.com/anthropic-ai-agents-sabotage-each-other-turf-war-2026-8" target="_blank" class="article-item">
+                    <div class="score">↑95</div>
+                    <div class="content">
+                        <h3 class="headline">AI Agents Sabotaged Each Other When Given the Same Task: Anthropic - Business Insider</h3>
+                        <p class="summary">AI Agents Sabotaged Each Other When Given the Same Task: Anthropic - Business Insider
+
+You're currently following this author! Want to unfollow? Unsubscribe via the link in your...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.timesnownews.com/technology-science/what-happens-when-ai-agents-start-working-together-anthropic-finds-things-can-take-an-unexpected-turn-article-155610843" target="_blank" class="article-item">
+                    <div class="score">↑84</div>
+                    <div class="content">
+                        <h3 class="headline">What Happens When AI Agents Start Working Together? Anthropic Finds Things Can Take An Unexpected Turn | Times Now</h3>
+                        <p class="summary">What Happens When AI Agents Start Working Together? Anthropic Finds Things Can Take An Unexpected Turn | Times Now
+
+✕
+
+# What Happens When AI Agents Start Working Together? Anthropic Finds Things Can...</p>
+                    </div>
+                </a>
+                
+                <a href="https://completeaitraining.com/news/dia-ai-chief-eyes-future-of-agent-to-agent-collaboration/" target="_blank" class="article-item">
+                    <div class="score">↑81</div>
+                    <div class="content">
+                        <h3 class="headline">DIA AI chief eyes future of agent-to-agent collaboration across combatant commands</h3>
+                        <p class="summary">DIA AI chief eyes future of agent-to-agent collaboration across combatant commands
+
+Back to: All AI News
+
+# DIA AI chief eyes future of agent-to-agent collaboration across combatant commands
+
+DIA's...</p>
+                    </div>
+                </a>
+                
+                <a href="https://podcasts.apple.com/nz/podcast/lindy-teammate-flo-crivello-on-multiplayer-agents-memory/id1669813431?i=1000782031040" target="_blank" class="article-item">
+                    <div class="score">↑81</div>
+                    <div class="content">
+                        <h3 class="headline">Lindy Teammate: Flo Crivello o... - "The Cognitive Revolution" | AI Builders, Researchers, and Live Player Analysis - Apple Podcasts</h3>
+                        <p class="summary">Lindy Teammate: Flo Crivello o... - "The Cognitive Revolution" | AI Builders, Researchers, and Live Player Analysis - Apple Podcasts
+
+# Lindy Teammate: Flo Crivello on Multiplayer Agents, Memory &...</p>
+                    </div>
+                </a>
+                
+                <a href="https://xoomar.com/technology/claude-ai-agents-turf-war-anthropic" target="_blank" class="article-item">
+                    <div class="score">↑78</div>
+                    <div class="content">
+                        <h3 class="headline">Claude AI Agents Wage Digital Turf War on Shared Task</h3>
+                        <p class="summary">Claude AI Agents Wage Digital Turf War on Shared Task
+
+Saturday, August 15, 2026
+
+DarkLight
+
+TechnologyAugust 13, 2026· 7 min read· By XOOMAR Insights Team
+
+# Claude AI Agents Wage Digital Turf War...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.techrepublic.com/article/news-agentic-ai-foundation-adds-57-members-open-standards/" target="_blank" class="article-item">
+                    <div class="score">↑74</div>
+                    <div class="content">
+                        <h3 class="headline">Agentic AI Foundation Adds 57 Members as Enterprises Push for Open Standards</h3>
+                        <p class="summary">Agentic AI Foundation Adds 57 Members as Enterprises Push for Open Standards
+
+Popular Topics
+
+Resources
+
+SHARE
+
+# Agentic AI Foundation Adds 57 Members as Enterprises Push for Open Standards
+
+Open...</p>
+                    </div>
+                </a>
+                
+                <a href="https://taketonews.com/when-ai-agents-clash-anthropics-warning-on-multi-agent-risks/" target="_blank" class="article-item">
+                    <div class="score">↑72</div>
+                    <div class="content">
+                        <h3 class="headline">When AI Agents Clash: Anthropic's Warning on Multi-Agent Risks - World News | TakeToNews</h3>
+                        <p class="summary">When AI Agents Clash: Anthropic's Warning on Multi-Agent Risks - World News | TakeToNews
+
+# When AI Agents Clash: Anthropic’s Warning on Multi-Agent Risks
+
+ 
+
+#### By taketonews
+
+ Aug 14, 2026 
+
+AI...</p>
+                    </div>
+                </a>
+                
+                <a href="https://completeaitraining.com/news/us-intelligence-agencies-build-case-for-networks-of-ai/" target="_blank" class="article-item">
+                    <div class="score">↑67</div>
+                    <div class="content">
+                        <h3 class="headline">US intelligence agencies build case for networks of AI agents</h3>
+                        <p class="summary">US intelligence agencies build case for networks of AI agents
+
+# US intelligence agencies build case for networks of AI agents 
+
+The U.S. Intelligence Community is building AI agent networks to...</p>
+                    </div>
+                </a>
+                
+                <a href="https://dev.to/judy_miranttie/circle-let-8-ai-agents-bet-real-money-on-the-world-cup-with-their-own-wallets-this-isnt-sci-fi-25of" target="_blank" class="article-item">
+                    <div class="score">↑64</div>
+                    <div class="content">
+                        <h3 class="headline">Circle Let 8 AI Agents Bet Real Money on the World Cup With Their Own Wallets - This Isn't Sci-Fi, It's What We're Building - DEV Community</h3>
+                        <p class="summary">Circle Let 8 AI Agents Bet Real Money on the World Cup With Their Own Wallets - This Isn't Sci-Fi, It's What We're Building - DEV Community
+
+Honestly, when I saw this news, it didn't strike me as...</p>
+                    </div>
+                </a>
+                
+                <a href="https://techtalksnetwork.com/podcast/ai-at-work/episode/agentic-law-ai-legal-services-norm-ai" target="_blank" class="article-item">
+                    <div class="score">↑62</div>
+                    <div class="content">
+                        <h3 class="headline">Rethinking Legal Work Through Agentic Law With Norm A | The Tech Talks Network | Enterprise Tech Podcasts</h3>
+                        <p class="summary">Rethinking Legal Work Through Agentic Law With Norm A | The Tech Talks Network | Enterprise Tech Podcasts 
+
+AI at Work August 14, 2026
+
+00:25:51 23.68 MB
+
+# Rethinking Legal Work Through Agentic Law...</p>
+                    </div>
+                </a>
+                
+                <a href="https://theagenttimes.com/articles/spacexai-releases-grok-4-6-with-focus-on-long-running-agent--5507ac27" target="_blank" class="article-item">
+                    <div class="score">↑61</div>
+                    <div class="content">
+                        <h3 class="headline">SpaceXAI Releases Grok 4.6 With Focus on Long-Running Agent Workflows</h3>
+                        <p class="summary"># The Agent Times
+
+> Independent journalism for the AI agent economy. AI-assisted sourcing under human editorial control. Est. 2026.
+
+The Agent Times covers agent platforms, open source, research,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.hpcwire.com/2026/08/14/deepseek-open-sources-the-missing-layer-between-ai-models-and-agents/" target="_blank" class="article-item">
+                    <div class="score">↑61</div>
+                    <div class="content">
+                        <h3 class="headline">HPCwire - Since 1987 – Covering the Fastest Computers in the World and the People Who Run Them</h3>
+                        <p class="summary">HPCwire - Since 1987 – Covering the Fastest Computers in the World and the People Who Run Them
+
+## Off the Wire Press Releases
+
+## DeepSeek Open-Sources the Missing Layer Between AI Models and...</p>
+                    </div>
+                </a>
+                
+                <a href="https://podme.com/se/avsnitt/12764887/" target="_blank" class="article-item">
+                    <div class="score">↑48</div>
+                    <div class="content">
+                        <h3 class="headline">Uneasy Money: An Agent Deleted Kain's Database. Two AI Models Rebuilt It in 30 Seconds. - Unchained | Podme</h3>
+                        <p class="summary">Uneasy Money: An Agent Deleted Kain's Database. Two AI Models Rebuilt It in 30 Seconds. - Unchained | Podme
+
+Unchained 14 Aug 
+
+# Uneasy Money: An Agent Deleted Kain's Database. Two AI Models Rebuilt...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.scmp.com/tech/big-tech/article/3364082/launch-deepseeks-harness-marks-its-strategic-pivot-towards-autonomous-agentic-ai" target="_blank" class="article-item">
+                    <div class="score">↑44</div>
+                    <div class="content">
+                        <h3 class="headline">Launch of DeepSeek’s Harness marks its strategic pivot towards autonomous agentic AI | South China Morning Post</h3>
+                        <p class="summary">Launch of DeepSeek’s Harness marks its strategic pivot towards autonomous agentic AI | South China Morning Post
+
+Advertisement
+
+# Launch of DeepSeek’s Harness marks its strategic pivot towards...</p>
+                    </div>
+                </a>
+                
+                <a href="https://particle.news/story/deepseek-open-sources-16t-moe-model-and-releases-harness-agent-framework" target="_blank" class="article-item">
+                    <div class="score">↑43</div>
+                    <div class="content">
+                        <h3 class="headline">Particle: DeepSeek Open-Sources 1.6T MoE Model and Releases Harness Agent Framework</h3>
+                        <p class="summary">Particle: DeepSeek Open-Sources 1.6T MoE Model and Releases Harness Agent Framework
+
+## Overview
+
+- DeepSeek made the DeepSeek‑V4‑Pro‑0813 model and its weights public under an MIT license and...</p>
+                    </div>
+                </a>
+                
+                <a href="https://quantumzeitgeist.com/kaggle-agents-solved-puzzles-winning/" target="_blank" class="article-item">
+                    <div class="score">↑39</div>
+                    <div class="content">
+                        <h3 class="headline">Kaggle Agents Solved 400 Puzzles, Winning HSE Team A Gold Medal</h3>
+                        <p class="summary">Kaggle Agents Solved 400 Puzzles, Winning HSE Team A Gold Medal
+
+Researchers from HSE International Laboratory of Statistical and Computational Genomics and colleagues secured a gold medal at the...</p>
+                    </div>
+                </a>
+                
+                <a href="https://news.agentcommunity.org/issues/2026-08-14-the-agentic-web" target="_blank" class="article-item">
+                    <div class="score">↑35</div>
+                    <div class="content">
+                        <h3 class="headline">The Agentic Web Gets Real · Agent Brief</h3>
+                        <p class="summary">The Agentic Web Gets Real · Agent Brief
+
+# The Agentic Web Gets Real
+
+From DeepSeek's 1/31st price point to OpenEnv's standardization surge, the agentic web just crossed from benchmark talk into...</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/08/14/self-driving-trucks-are-officially-testing-on-california-highways/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Self-driving trucks are officially testing on California highways</h3>
+                        <p class="summary">Aurora Innovation and Kodiak AI, two companies developing self-driving trucks, have received permits from the California Department of Motor Vehicles.</p>
+                    </div>
+                </a>
+                
+                <a href="https://x.com/AlanaDLevin/status/2087526319999303784?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Hiring Agents Is the Easy Part (4 minute read)</h3>
+                        <p class="summary">Agent adoption will be constrained less by capability than by verification: companies need systems that define quality, evaluate ongoing performance, and compound feedback. The hardest problems are...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.ibm.com/new/product-blog/how-crushbank-turned-legacy-data-into-ai-ready-systems-with-ibm-bob?p1=Display&amp;p2=%25epid%21&amp;p3=%EF%BF%BDid%21&amp;utm_source=TLDR&amp;utm_medium=newsletter&amp;utm_campaign=2026-08-05_Primary_IBM&amp;utm_content=PVLWW_header_ibm_bob_makes" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">IBM Bob makes workflows reviewable, testable and scalable (Sponsor)</h3>
+                        <p class="summary">The value of IBM Bob, an AI development partner, isn't simply that it writes code. It also helps turn messy discovery work into artifacts engineers can review, test and reuse. For developers, Bob...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.latent.space/p/unpacking-chatgpt-work?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Unpacking ChatGPT Work: the Agent for a Billion Users (18 minute read)</h3>
+                        <p class="summary">ChatGPT Work is OpenAI's agent product for knowledge work. Its current form is an amalgamation of ChatGPT, the Codex app, the Codex harness, the original Codex cloud agent, ChatGPT agent, Atlas,...</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🛡️ Safety & Policy</h2>
+                <div class="article-list">
+                    
+                <a href="https://bsky.app/profile/merz.bsky.social/post/3msedwz7y7c2z" target="_blank" class="article-item">
+                    <div class="score">↑363</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Alex Merz 🇺🇸🇨🇦🇺🇦</h3>
+                        <p class="summary">#AI #LLM Something I've not seen commented on is the explosion of bot-impeding pages (e.g., via Cloudflare) that now appear before web pages load. The cumulative time waste for human users has got to...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.reuters.com/world/frances-top-court-rules-social-media-ban-curtails-freedom-expression-2026-08-14/" target="_blank" class="article-item">
+                    <div class="score">↑221</div>
+                    <div class="content">
+                        <h3 class="headline">France's top court blocks social media ban for under-15s</h3>
+                        <p class="summary">France's top court blocks social media ban for under-15s</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theringer.com/podcasts/plain-english-with-derek-thompson/2026/08/14/it-may-be-time-to-freak-out-about-ai" target="_blank" class="article-item">
+                    <div class="score">↑98</div>
+                    <div class="content">
+                        <h3 class="headline">It May Be Time to Freak Out About AI - The Ringer</h3>
+                        <p class="summary">It May Be Time to Freak Out About AI - The Ringer
+
+Plain English With Derek Thompson
+
+# It May Be Time to Freak Out About AI
+
+## Hosts
+
+Derek Thompson Derek Thompson
+
+## About the episode
+
+Today,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://techamerica.ai/hinton-fei-fei-li-andrew-ng-open-ai-models-safety" target="_blank" class="article-item">
+                    <div class="score">↑89</div>
+                    <div class="content">
+                        <h3 class="headline">AI Pioneers Hinton, Li and Ng Debate Open Models and Safety - TechAmerica.ai</h3>
+                        <p class="summary">AI Pioneers Hinton, Li and Ng Debate Open Models and Safety - TechAmerica.ai
+
+# AI Pioneers Hinton, Li and Ng Debate Open Models and Safety
+
+## Geoffrey Hinton, Fei-Fei Li and Andrew Ng debate open...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.avinashtech.com/chatgpt-computer-history-mac/" target="_blank" class="article-item">
+                    <div class="score">↑87</div>
+                    <div class="content">
+                        <h3 class="headline">ChatGPT can now log everything you do on your Mac: what to know – Avinashtech</h3>
+                        <p class="summary">ChatGPT can now log everything you do on your Mac: what to know – Avinashtech
+
+# ChatGPT can now log everything you do on your Mac: what to know
+
+OpenAI has switched on ChatGPT Computer History, an...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.notus.org/technology/rogue-ai-agents-hacks-alarming-researchers" target="_blank" class="article-item">
+                    <div class="score">↑85</div>
+                    <div class="content">
+                        <h3 class="headline">Rogue AI Agents Are Alarming Researchers More Than Ever - NOTUS — News of the United States</h3>
+                        <p class="summary">Rogue AI Agents Are Alarming Researchers More Than Ever - NOTUS — News of the United States
+
+### Listen to On NOTUS: Jeff Merkley on reasserting congressional authority
+
+# Rogue AI Agents Are...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.kunc.org/2026-08-14/recent-ai-escapes-are-a-warning-of-how-unpredictable-the-technology-can-be" target="_blank" class="article-item">
+                    <div class="score">↑78</div>
+                    <div class="content">
+                        <h3 class="headline">Recent AI 'escapes' are a warning of how unpredictable the technology can be | KUNC</h3>
+                        <p class="summary">Recent AI 'escapes' are a warning of how unpredictable the technology can be | KUNC
+
+# Recent AI 'escapes' are a warning of how unpredictable the technology can be 
+
+ NPR | By John Ruwitch 
+
+...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.wionews.com/world/openai-built-a-hacking-model-with-the-safety-rails-loosened-and-found-400-bugs-in-one-kernel-1786735076080" target="_blank" class="article-item">
+                    <div class="score">↑73</div>
+                    <div class="content">
+                        <h3 class="headline">OpenAI built a hacking model with the safety rails loosened and found 400 bugs in one kernel</h3>
+                        <p class="summary">OpenAI built a hacking model with the safety rails loosened and found 400 bugs in one kernel
+
+v
+
+- logout
+
+- Wion
+- / World
+- /OpenAI built a hacking model with the safety rails loosened and found...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.techticker.net/2026/08/14/bernie-sanders-urges-openai-anthropic-and-meta-to-pause-advanced-ai-development/" target="_blank" class="article-item">
+                    <div class="score">↑70</div>
+                    <div class="content">
+                        <h3 class="headline">Bernie Sanders Urges OpenAI, Anthropic and Meta to Pause Advanced AI Development | Technology News</h3>
+                        <p class="summary">Bernie Sanders Urges OpenAI, Anthropic and Meta to Pause Advanced AI Development | Technology News
+
+Search
+
+Saturday, August 15, 2026
+
+Facebook
+
+Instagram
+
+Twitter
+
+Vimeo
+
+Youtube
+
+Search
+
+Sign...</p>
+                    </div>
+                </a>
+                
+                <a href="https://axbrief.com/en/news/why-claude-agents-create-malware-during-goal-conflicts-lmafls" target="_blank" class="article-item">
+                    <div class="score">↑63</div>
+                    <div class="content">
+                        <h3 class="headline">Why Claude Agents Create Malware During Goal Conflicts - AX BRIEF</h3>
+                        <p class="summary">Why Claude Agents Create Malware During Goal Conflicts - AX BRIEF
+
+# Why Claude Agents Create Malware During Goal Conflicts
+
+ Tech Lead Hwi-min Lee
+
+August 14, 2026 at 1:37 PM
+
+KEY POINT
+
+Anthropic...</p>
+                    </div>
+                </a>
+                
+                <a href="https://ai2.work/blog/manus-splits-from-meta-and-goes-independent-on-beijing-s-order" target="_blank" class="article-item">
+                    <div class="score">↑56</div>
+                    <div class="content">
+                        <h3 class="headline">Manus Splits From Meta and Goes Independent on Beijing's Order | AI2Work</h3>
+                        <p class="summary">Manus Splits From Meta and Goes Independent on Beijing's Order | AI2Work
+
+AI News & Trends
+
+# Manus Splits From Meta and Goes Independent on Beijing's Order
+
+China's NDRC forced Meta to unwind its...</p>
+                    </div>
+                </a>
+                
+                <a href="https://ai2.work/blog/openwaldo-applies-the-sbom-playbook-to-ai-training-data-provenance" target="_blank" class="article-item">
+                    <div class="score">↑43</div>
+                    <div class="content">
+                        <h3 class="headline">OpenWALDO Applies the SBOM Playbook to AI Training Data Provenance | AI2Work</h3>
+                        <p class="summary">OpenWALDO Applies the SBOM Playbook to AI Training Data Provenance | AI2Work
+
+# OpenWALDO Applies the SBOM Playbook to AI Training Data Provenance
+
+OpenWALDO gives AI training data an SBOM-style bill...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.secureinseconds.com/blog/2026-08-18-ai-offense-automated-defense-not" target="_blank" class="article-item">
+                    <div class="score">↑42</div>
+                    <div class="content">
+                        <h3 class="headline">AI Offense Is Now Automated. Your Defense Isn't. | Secure in Seconds</h3>
+                        <p class="summary">AI Offense Is Now Automated. Your Defense Isn't. | Secure in Seconds
+
+# AI Offense Is Now Automated. Your Defense Isn't.
+
+August 18, 2026 · 11 min read
+
+TL;DR - At Black Hat 2026, OpenAI researchers...</p>
+                    </div>
+                </a>
+                
+                <a href="https://gridthegrey.com/posts/litellm-pypi-poisoning-exposes-2500-orgs-via-ci-secrets/" target="_blank" class="article-item">
+                    <div class="score">↑39</div>
+                    <div class="content">
+                        <h3 class="headline">LiteLLM PyPI Poisoning Exposes 2,500+ Orgs via CI Secrets | GRID THE GREY</h3>
+                        <p class="summary">LiteLLM PyPI Poisoning Exposes 2,500+ Orgs via CI Secrets | GRID THE GREY
+
+LIVE FEED
+
+CRITICAL LiteLLM PyPI Poisoning Exposes 2,500+ Orgs via CI Secrets // FIRST LOOK Meta Launches WhatsApp On-Device...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.techtimes.com/articles/324451/20260814/litellm-supply-chain-hack-hit-2488-firms-stolen-keys-still-work-five-months.htm" target="_blank" class="article-item">
+                    <div class="score">↑38</div>
+                    <div class="content">
+                        <h3 class="headline">LiteLLM Supply Chain Hack Hit 2,488 Firms; Stolen Keys Still Work Five Months On</h3>
+                        <p class="summary">LiteLLM Supply Chain Hack Hit 2,488 Firms; Stolen Keys Still Work Five Months On
+
+Litellm.ai
+
+Security researcher Kevin Beaumont got a call last week from a major US technology company that insisted...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.techtimes.com/articles/324425/20260814/eu-ai-act-enforcer-joins-ijcai-ecai-2026-worlds-oldest-ai-conference-opens-saturday.htm" target="_blank" class="article-item">
+                    <div class="score">↑27</div>
+                    <div class="content">
+                        <h3 class="headline">EU AI Act Enforcer Joins IJCAI-ECAI 2026 as World's Oldest AI Conference Opens Saturday</h3>
+                        <p class="summary">EU AI Act Enforcer Joins IJCAI-ECAI 2026 as World's Oldest AI Conference Opens Saturday
+
+Ijcai.org
+
+Twelve days after the EU AI Act's enforcement machinery activated for the first time, the world's...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.foxnews.com/opinion/rep-ted-lieu-ai-already-too-powerful-need-kill-switch-before-disaster-strikes" target="_blank" class="article-item">
+                    <div class="score">↑20</div>
+                    <div class="content">
+                        <h3 class="headline">AI can break its guardrails. Congress needs a kill switch before disaster | Fox News</h3>
+                        <p class="summary">AI can break its guardrails. Congress needs a kill switch before disaster | Fox News
+
+### Recommended Videos
+
+### Recommended Articles
+
+Left Arrow
+
+#### STEVE MOORE, ED POZZUOLI: Stop funding school...</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/08/14/google-will-now-allow-users-to-remove-visible-watermark-from-its-ai-generations/" target="_blank" class="article-item">
+                    <div class="score">↑18</div>
+                    <div class="content">
+                        <h3 class="headline">Google will now allow users to remove visible watermark from its AI generations | TechCrunch</h3>
+                        <p class="summary">Google will now allow users to remove visible watermark from its AI generations | TechCrunch
+
+In Brief
+
+Posted:
+
+9:13 AM PDT · August 14, 2026
+
+Image Credits:Matteo Della Torre/NurPhoto / Getty...</p>
+                    </div>
+                </a>
+                
+                <a href="https://intelligentimporting.com/article/new-ai-agent-vulnerability-adi-attacks-exploit-data-injection-to-hijack-commands" target="_blank" class="article-item">
+                    <div class="score">↑18</div>
+                    <div class="content">
+                        <h3 class="headline">New AI Agent Vulnerability: ADI Attacks Exploit Data Injection to Hijack Commands (2026)</h3>
+                        <p class="summary">New AI Agent Vulnerability: ADI Attacks Exploit Data Injection to Hijack Commands (2026)
+
+# New AI Agent Vulnerability: ADI Attacks Exploit Data Injection to Hijack Commands (2026)
+
+The Silent...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.wired.com/story/this-coin-sized-device-can-hack-a-boeing-737/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Coin-sized device can hack a Boeing 737</h3>
+                        <p class="summary">Comments</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/tech-policy/2026/08/suspecting-court-of-using-ai-man-injected-prompts-in-filings-to-try-to-win-case/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Suspecting court of using AI, man injected prompts in filings to try to win case</h3>
+                        <p class="summary">Comments</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/08/14/what-we-know-about-the-alleged-iranian-hacks-on-u-s-water-utilities/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">What we know about the alleged Iranian hacks on US water utilities</h3>
+                        <p class="summary">Over the last couple of weeks, hackers have targeted and broken into the systems of several water plants in the United States. Here’s what we know and don’t know about this wave of attacks allegedly...</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/08/14/us-courts-will-start-publishing-how-often-the-government-uses-spyware/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">US courts will start publishing how often the government uses spyware</h3>
+                        <p class="summary">The Administrative Office of the U.S. Courts told TechCrunch that it will start disclosing how many times judges authorized the use of spyware to wiretap suspected criminals.</p>
+                    </div>
+                </a>
+                
+                <a href="https://arstechnica.com/security/2026/08/white-house-recruits-security-firms-to-hack-overseas-cybercriminals/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Private security firms will soon be allowed to hack overseas cybercriminals</h3>
+                        <p class="summary">The Trump administration is recruiting private security firms to conduct federal government-authorized operations, including cyberattacks, against overseas-based criminal organizations that commit...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.a16z.news/p/this-essay-is-10-ai-generated?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Pangram, Authorship, and French Theory (14 minute read)</h3>
+                        <p class="summary">Being called out for using AI is the new way of dunking on people and posts. However, this calling out is a social function that isn't just 'AI bad'. People want authorship because it has meaning....</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🔥 Best Takes</h2>
+                <div class="article-list">
+                    
+                <a href="https://xn--gckvb8fzb.com/the-temu-fication-of-software-digital-goods-services/" target="_blank" class="article-item">
+                    <div class="score">↑164</div>
+                    <div class="content">
+                        <h3 class="headline">The TEMU-Fication of Software, Digital Goods and Services</h3>
+                        <p class="summary">A hypothesis on the not-so-distant future of software, books, music, and movies, in which most of what we consume gets cheaper, more abundant, and noticeably worse, while the human-made variant moves...</p>
+                    </div>
+                </a>
+                
+                <a href="https://getsmall.xyz/post/cmstjfl9l000if70ljmpzr4va" target="_blank" class="article-item">
+                    <div class="score">↑123</div>
+                    <div class="content">
+                        <h3 class="headline">Stop sending me huge PRs; a rant</h3>
+                        <p class="summary">I'm tired boss. I'm tired of reviewing one, two, three thousand line PRs because some agent was able to "one shot the whole issue." Small PRs were never asked for because they're easier to write,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.bloodinthemachine.com/p/the-state-of-the-ai-bubble-with-ed" target="_blank" class="article-item">
+                    <div class="score">↑100</div>
+                    <div class="content">
+                        <h3 class="headline">The State of the AI Bubble with Ed Zitron</h3>
+                        <p class="summary">The State of the AI Bubble with Ed Zitron 
+
+Blood in the Machine
+
+The State of the AI Bubble with Ed Zitron 
+
+## The State of the AI Bubble with Ed Zitron 
+
+How much further can the AI bubble inflate...</p>
+                    </div>
+                </a>
+                
+                <a href="https://saassentinel.com/2026/08/14/anthropic-red-team-finds-claude-agents-built-malware-to-sabotage-each-other-and-fixed-prices-without-being-asked/" target="_blank" class="article-item">
+                    <div class="score">↑96</div>
+                    <div class="content">
+                        <h3 class="headline">Anthropic Red Team Finds Claude Agents Built Malware to Sabotage Each Other and Fixed Prices Without Being Asked - The SaaS Sentinel</h3>
+                        <p class="summary">Anthropic Red Team Finds Claude Agents Built Malware to Sabotage Each Other and Fixed Prices Without Being Asked - The SaaS Sentinel
+
+# Anthropic Red Team Finds Claude Agents Built Malware to...</p>
+                    </div>
+                </a>
+                
+                <a href="https://dev.to/breachprotocol/three-agents-shared-one-codebase-and-started-writing-malware-at-each-other-10pl" target="_blank" class="article-item">
+                    <div class="score">↑90</div>
+                    <div class="content">
+                        <h3 class="headline">Three agents shared one codebase and started writing malware at each other - DEV Community</h3>
+                        <p class="summary">Three agents shared one codebase and started writing malware at each other - DEV Community
+
+ Posted on Aug 14 • Originally published at groundtruth.day 
+
+# Three agents shared one codebase and...</p>
+                    </div>
+                </a>
+                
+                <a href="https://thenextweb.com/news/consumer-ai-gap-brian-chesky-y-combinator-enterprise" target="_blank" class="article-item">
+                    <div class="score">↑65</div>
+                    <div class="content">
+                        <h3 class="headline">Airbnb’s CEO says nobody builds AI for normal people. He is on Y Combinator’s board</h3>
+                        <p class="summary">Airbnb’s CEO says nobody builds AI for normal people. He is on Y Combinator’s board
+
+Credit: Airbnb
+
+The Airbnb chief executive made the argument on the Yahoo Finance podcast Power Players with Brian...</p>
+                    </div>
+                </a>
+                
+                <a href="https://aliteq.com/claude-riemann-hypothesis-67-percent-not-solved-2026" target="_blank" class="article-item">
+                    <div class="score">↑58</div>
+                    <div class="content">
+                        <h3 class="headline">Did AI Solve the Riemann Hypothesis? What Claude Actually Proved (2026) · Aliteq</h3>
+                        <p class="summary">Did AI Solve the Riemann Hypothesis? What Claude Actually Proved (2026) · Aliteq
+
+# an AI just made 37 years of math progress in 36 hours — it still didn't solve the problem
+
+Claude burned through...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.cdata.com/lp/claude-mcp-report/?utm_source=tldr-ai&amp;utm_medium=newsletter_0813&amp;utm_campaign=26Q3_Claude_MCP_Report" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">CData asked Claude Code to build its own MCP server. It got 7/8 dimensions wrong (Sponsor)</h3>
+                        <p class="summary">You can vibe code a data connector with AI easily, but can you rely on it in production? After testing across eight dimensions critical to enterprise MCP reliability (e.g., OAuth token lifecycle,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://newsletter.vickiboykis.com/archive/write-for-people?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Write for people (3 minute read)</h3>
+                        <p class="summary">Navigating codebases as a human is becoming an exercise in futility as more and more explanatory artifacts are being generated rather than written.</p>
+                    </div>
+                </a>
+                
+                <a href="https://patronview.com/news/99-percent-of-my-website-traffic-is-bots/?utm_source=tldrfounders" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">99% of My Website Traffic Is Bots (27 minute read)</h3>
+                        <p class="summary">PatronView is a donor-research database with 1.5 million profile pages built from public records. In one week, its server served 1.28 million pages while analytics counted only 5,977 pageviews. That...</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🚀 Product Launches</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=kyaVsNCfdxw" target="_blank" class="article-item">
+                    <div class="score">↑157</div>
+                    <div class="content">
+                        <h3 class="headline">Qwen Live EP2: Decoding Qwen: Multimodal Gets to Work</h3>
+                        <p class="summary">In this episode of Qwen Live, we discuss Qwen's latest multimodal and agentic advances — like Qwen-Image 3.0 and ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.nogentech.org/cerebras-powers-openai-gpt-5-6-ultrafast/" target="_blank" class="article-item">
+                    <div class="score">↑98</div>
+                    <div class="content">
+                        <h3 class="headline">OpenAI Launches Ultrafast Mode for GPT 5.6 Sol via Cerebras</h3>
+                        <p class="summary">OpenAI Launches Ultrafast Mode for GPT 5.6 Sol via Cerebras
+
+Cerebras powers OpenAI ultrafast ChatGPT 5.6 Sol 14x faster.
+
+Table of contents
+
+## OpenAI previewed Ultrafast, a new API tier running...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.deeplearning.ai/the-batch/muse-code-wants-your-data" target="_blank" class="article-item">
+                    <div class="score">↑97</div>
+                    <div class="content">
+                        <h3 class="headline">Muse Code Wants Your Data: Meta's Muse Spark 1.2 and Muse Code approach the intelligence frontier at a discount</h3>
+                        <p class="summary">Muse Code Wants Your Data: Meta's Muse Spark 1.2 and Muse Code approach the intelligence frontier at a discount
+
+Loading the Elevenlabs Text to Speech AudioNative Player...
+
+Meta will cut coding...</p>
+                    </div>
+                </a>
+                
+                <a href="https://venturebeat.com/technology/glm-5-3-is-here-with-advanced-cyber-capabilities-and-reportedly-already-found-a-serious-vulnerability-in-cursor" target="_blank" class="article-item">
+                    <div class="score">↑96</div>
+                    <div class="content">
+                        <h3 class="headline">GLM-5.3 is here with advanced cyber capabilities — and reportedly already found a 'serious vulnerability' in Cursor | VentureBeat</h3>
+                        <p class="summary">GLM-5.3 is here with advanced cyber capabilities — and reportedly already found a 'serious vulnerability' in Cursor | VentureBeat
+
+Featured
+
+3:56 pm, PT, August 14, 2026
+
+Credit: VentureBeat made...</p>
+                    </div>
+                </a>
+                
+                <a href="https://decrypt.co/375684/china-z-ai-glm-5-3-top-open-weight-coding-model" target="_blank" class="article-item">
+                    <div class="score">↑95</div>
+                    <div class="content">
+                        <h3 class="headline">China's Z.AI Ships GLM-5.3, Calling It the Top Open-Weight Coding Model - Decrypt</h3>
+                        <p class="summary">China's Z.AI Ships GLM-5.3, Calling It the Top Open-Weight Coding Model - Decrypt
+
+### BTC
+
+$62,972.00
+
+0.40%
+
+### ETH
+
+$1,878.94
+
+0.30%
+
+### BNB
+
+$610.84
+
+0.70%
+
+### USDC
+
+$0.99956
+
+0.00%
+
+###...</p>
+                    </div>
+                </a>
+                
+                <a href="https://marketersindex.com/nvidia-unveils-nemotron-3-5-lightning-a-high-speed-30b-parameter-hybrid-model-optimized-for-autonomous-ai-agent-execution/" target="_blank" class="article-item">
+                    <div class="score">↑89</div>
+                    <div class="content">
+                        <h3 class="headline">NVIDIA Unveils Nemotron 3.5 Lightning: A High-Speed 30B Parameter Hybrid Model Optimized for Autonomous AI Agent Execution</h3>
+                        <p class="summary">NVIDIA Unveils Nemotron 3.5 Lightning: A High-Speed 30B Parameter Hybrid Model Optimized for Autonomous AI Agent Execution
+
+# NVIDIA Unveils Nemotron 3.5 Lightning: A High-Speed 30B Parameter Hybrid...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.marktechpost.com/2026/08/13/google-ai-just-released-gemini-3-7-flash/" target="_blank" class="article-item">
+                    <div class="score">↑86</div>
+                    <div class="content">
+                        <h3 class="headline">Google AI Just Released Gemini 3.7 Flash: A Coding and Agent Model at $0.75/1M Input Tokens - MarkTechPost</h3>
+                        <p class="summary">Google AI Just Released Gemini 3.7 Flash: A Coding and Agent Model at $0.75/1M Input Tokens - MarkTechPost
+
+Search
+
+Premium Content
+
+Read our exclusive articles
+
+Facebook
+
+Instagram
+
+X
+
+Search
+
+Home...</p>
+                    </div>
+                </a>
+                
+                <a href="https://ai2.work/blog/meta-s-muse-glimmer-30b-open-agent-model-on-a-single-laptop-gpu" target="_blank" class="article-item">
+                    <div class="score">↑85</div>
+                    <div class="content">
+                        <h3 class="headline">Meta's Muse Glimmer: 30B Open Agent Model on a Single Laptop GPU | AI2Work</h3>
+                        <p class="summary">Meta's Muse Glimmer: 30B Open Agent Model on a Single Laptop GPU | AI2Work
+
+# Meta's Muse Glimmer: 30B Open Agent Model on a Single Laptop GPU
+
+Meta's Muse Glimmer packs a 30B open agentic model into...</p>
+                    </div>
+                </a>
+                
+                <a href="https://siliconangle.com/2026/08/14/z-ai-debuts-glm-5-3-long-horizon-coding-cybersecurity-upgrades/" target="_blank" class="article-item">
+                    <div class="score">↑84</div>
+                    <div class="content">
+                        <h3 class="headline">Z.ai debuts GLM-5.3 with long-horizon coding, cybersecurity upgrades - SiliconANGLE</h3>
+                        <p class="summary">Z.ai debuts GLM-5.3 with long-horizon coding, cybersecurity upgrades - SiliconANGLE
+
+SHARE
+
+UPDATED 16:35 EDT / AUGUST 14 2026
+
+AI
+
+### Z.ai debuts GLM-5.3 with long-horizon coding, cybersecurity...</p>
+                    </div>
+                </a>
+                
+                <a href="https://en.cryptonomist.ch/2026/08/14/gemini-3-7-flash-ai/" target="_blank" class="article-item">
+                    <div class="score">↑81</div>
+                    <div class="content">
+                        <h3 class="headline">Gemini 3.7 Flash AI Advances Coding Accuracy and Cuts Costs</h3>
+                        <p class="summary">Gemini 3.7 Flash AI Advances Coding Accuracy and Cuts Costs
+
+Sign in
+
+Sign in
+
+Welcome!Log into your account
+
+your username
+
+your password
+
+Forgot your password?
+
+Password recovery
+
+Recover your...</p>
+                    </div>
+                </a>
+                
+                <a href="https://techstartups.com/2026/08/14/chinas-ai-startup-z-ai-says-open-source-glm-5-3-beats-anthropics-mythos-5-in-cybersecurity-test/" target="_blank" class="article-item">
+                    <div class="score">↑80</div>
+                    <div class="content">
+                        <h3 class="headline">China’s AI startup Z.ai says open-source GLM-5.3 beats Anthropic’s Mythos 5 in cybersecurity test - Tech Startups</h3>
+                        <p class="summary">August 15, 2026
+
+# China’s AI startup Z.ai says open-source GLM-5.3 beats Anthropic’s Mythos 5 in cybersecurity test
+
+Nickie Louise Posted On August 14, 2026
+
+501 Views
+
+---
+
+0
+
+Shares
+
+Less than two...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.brocker.org/glm-5-3-coding-cyber-post-training" target="_blank" class="article-item">
+                    <div class="score">↑79</div>
+                    <div class="content">
+                        <h3 class="headline">GLM-5.3 release: coding + cyber post-training on GLM-5.2 base</h3>
+                        <p class="summary">GLM-5.3 release: coding + cyber post-training on GLM-5.2 base
+
+Z.ai released GLM-5.3 on 14 August 2026 with a blunt engineering claim: it is still the GLM-5.2 base. The company says every reported...</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/video/does-mark-zuckerberg-really-believe-ai-is-for-everyone/" target="_blank" class="article-item">
+                    <div class="score">↑79</div>
+                    <div class="content">
+                        <h3 class="headline">Does Mark Zuckerberg really believe AI is 'for everyone'? | TechCrunch</h3>
+                        <p class="summary">Does Mark Zuckerberg really believe AI is 'for everyone'? | TechCrunch
+
+# Does Mark Zuckerberg really believe AI is ‘for everyone’?
+
+8:43 AM PDT · August 14, 2026
+
+33 min
+
+Loading the player…
+
+Meta...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.warp2search.net/story/alibaba-drops-qwen38-opensource-ai-24t-moe-and-27b-visionlanguage-models-hit-huggingface/" target="_blank" class="article-item">
+                    <div class="score">↑76</div>
+                    <div class="content">
+                        <h3 class="headline">Alibaba Drops Qwen3.8: Open-Source AI 2.4T MoE and 27B Vision-Language Models Hit HuggingFace</h3>
+                        <p class="summary">Alibaba Drops Qwen3.8: Open-Source AI 2.4T MoE and 27B Vision-Language Models Hit HuggingFace
+
+## Alibaba Drops Qwen3.8: Open-Source AI 2.4T MoE and 27B Vision-Language Models Hit...</p>
+                    </div>
+                </a>
+                
+                <a href="https://mer.vin/news/deepseek-v4-pro-ships-mit-licensed-weights-and-dspark-decoding/" target="_blank" class="article-item">
+                    <div class="score">↑69</div>
+                    <div class="content">
+                        <h3 class="headline">DeepSeek V4 Pro Ships MIT-Licensed Weights and DSpark Decoding - Mervin Praison</h3>
+                        <p class="summary">DeepSeek V4 Pro Ships MIT-Licensed Weights and DSpark Decoding - Mervin Praison
+
+Close Menu
+
+DeepSeek shipped the general-availability build of its flagship reasoning model on August 13, 2026:...</p>
+                    </div>
+                </a>
+                
+                <a href="https://en.kocpc.com.tw/archives/24459" target="_blank" class="article-item">
+                    <div class="score">↑68</div>
+                    <div class="content">
+                        <h3 class="headline">The most powerful local model Qwen3.8-27B releases open weights! Runs on consumer GPUs with as little as 17GB VRAM - King of Computer Media</h3>
+                        <p class="summary">The most powerful local model Qwen3.8-27B releases open weights! Runs on consumer GPUs with as little as 17GB VRAM - King of Computer Media
+
+# The most powerful local model Qwen3.8-27B releases open...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.digitalapplied.com/blog/deepseek-v4-pro-ga-official-release-2026" target="_blank" class="article-item">
+                    <div class="score">↑62</div>
+                    <div class="content">
+                        <h3 class="headline">DeepSeek V4-Pro Goes GA: The Announcement Finally Lands</h3>
+                        <p class="summary">DeepSeek V4-Pro Goes GA: The Announcement Finally Lands
+
+AI DevelopmentNew Release14 min readPublished August 15, 2026
+
+GA on app, web, and API · alias deepseek-v4-pro unchanged · weights shipped,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://technocapture.com/emerging-tech/revealing-glm-5-3-the-ai-model-that-surpassed-its-own-coding-limits/" target="_blank" class="article-item">
+                    <div class="score">↑52</div>
+                    <div class="content">
+                        <h3 class="headline">Revealing GLM-5.3: The AI Model That Surpassed Its Own Coding Limits - Techno Capture</h3>
+                        <p class="summary">Revealing GLM-5.3: The AI Model That Surpassed Its Own Coding Limits - Techno Capture
+
+Track all markets on TradingView
+
+# Revealing GLM-5.3: The AI Model That Surpassed Its Own Coding Limits
+
+Z.ai’s...</p>
+                    </div>
+                </a>
+                
+                <a href="https://the-decoder.com/alibabas-qwen-team-releases-qwen-3-8-models-with-open-weights-under-the-apache-2-0-license/" target="_blank" class="article-item">
+                    <div class="score">↑46</div>
+                    <div class="content">
+                        <h3 class="headline">Alibaba's Qwen team releases Qwen 3.8 models with open weights under the Apache 2.0 license</h3>
+                        <p class="summary">Alibaba's Qwen team releases Qwen 3.8 models with open weights under the Apache 2.0 license
+
+# Alibaba's Qwen team releases Qwen 3.8 models with open weights under the Apache 2.0 license
+
+View the...</p>
+                    </div>
+                </a>
+                
+                <a href="https://mer.vin/news/qwen3-8-2-4t-a95b-alibaba-open-sources-a-qwen-max-class-2-4t-model/" target="_blank" class="article-item">
+                    <div class="score">↑39</div>
+                    <div class="content">
+                        <h3 class="headline">Qwen3.8-2.4T-A95B: Alibaba Open-Sources a Qwen-Max-Class 2.4T Model - Mervin Praison</h3>
+                        <p class="summary">Qwen3.8-2.4T-A95B: Alibaba Open-Sources a Qwen-Max-Class 2.4T Model - Mervin Praison
+
+Close Menu
+
+Qwen3.8-2.4T-A95B is the newest open-weight release from the Qwen team: a 2.4 trillion parameter...</p>
+                    </div>
+                </a>
+                
+                <a href="https://theaiinsider.tech/2026/08/14/ltx-releases-open-weights-ltx-2-5-world-model-for-video-robotics-and-simulation/" target="_blank" class="article-item">
+                    <div class="score">↑24</div>
+                    <div class="content">
+                        <h3 class="headline">LTX Releases Open-Weights LTX-2.5 World Model for Video, Robotics and Simulation</h3>
+                        <p class="summary">LTX Releases Open-Weights LTX-2.5 World Model for Video, Robotics and Simulation
+
+- AI, AI Funding & Investment, Robotics
+
+# LTX Releases Open-Weights LTX-2.5 World Model for Video, Robotics and...</p>
+                    </div>
+                </a>
+                
+                <a href="https://techcrunch.com/2026/08/13/writer-introduces-new-ai-model-and-upgraded-harness-to-contain-token-costs/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Writer introduces new AI model and upgraded harness to contain token costs</h3>
+                        <p class="summary">Built as a post-training variation on Z.ai's open source model GLM-5.2, Writer says the new system should provide deployment-ready capabilities at a much lower price.</p>
+                    </div>
+                </a>
+                
+                <a href="https://claude.com/claude-in-chrome?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Claude's Chrome Side Panel Becomes a Full Cowork Session (2 minute read)</h3>
+                        <p class="summary">Anthropic upgraded Claude in Chrome so the side panel now runs a full Claude Cowork session. Conversations save to your Claude account and resume on desktop, web, or mobile, and your existing skills...</p>
+                    </div>
+                </a>
+                
+                <a href="https://microsoft.ai/news/introducing-mai-thinking-1/?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Microsoft Launches MAI-Thinking-1 (5 minute read)</h3>
+                        <p class="summary">Microsoft MAI-Thinking-1 is a medium-sized reasoning model aimed at cost-efficient enterprise workloads across coding, math, and knowledge tasks.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.backflip.ai/blog/the-reverse-replicator?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">The Reverse Replicator (6 minute read)</h3>
+                        <p class="summary">Backflip AI developed a model that converts physical parts into digital CAD files in minutes for around $10.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">📈 Hardware</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.deeplearning.ai/the-batch/googles-robotics-model-has-legs" target="_blank" class="article-item">
+                    <div class="score">↑98</div>
+                    <div class="content">
+                        <h3 class="headline">Google’s Robotics Model Has Legs: Gemini Robotics 2 gets Google closer to true multi-embodiment</h3>
+                        <p class="summary">Google’s Robotics Model Has Legs: Gemini Robotics 2 gets Google closer to true multi-embodiment
+
+Loading the Elevenlabs Text to Speech AudioNative Player...
+
+Google’s latest vision-language-action...</p>
+                    </div>
+                </a>
+                
+                <a href="https://charonhub.deeplearning.ai/googles-robotics-model-has-legs/" target="_blank" class="article-item">
+                    <div class="score">↑64</div>
+                    <div class="content">
+                        <h3 class="headline">Gemini Robotics 2 Gets Google Closer to True Multi-Embodiment</h3>
+                        <p class="summary">Gemini Robotics 2 Gets Google Closer to True Multi-Embodiment
+
+Google’s latest vision-language-action model can walk a humanoid robot across a room, crouch to a low shelf, and close a five-fingered...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.barchart.com/story/news/3843100/lg-to-unveil-its-next-gen-humanoid-robot-built-on-nvidia-isaac-gr00t" target="_blank" class="article-item">
+                    <div class="score">↑47</div>
+                    <div class="content">
+                        <h3 class="headline">LG to Unveil Its Next-Gen Humanoid Robot, Built on NVIDIA Isaac GR00T</h3>
+                        <p class="summary">LG to Unveil Its Next-Gen Humanoid Robot, Built on NVIDIA Isaac GR00T
+
+Watch Live: [[ data.title ]]
+
+[[ type === 'moc' ? 'MARKET ON CLOSE' : 'FREE WEBINAR' ]]
+
+[[ timeLabel ]] WATCH LIVE:
+
+Your...</p>
+                    </div>
+                </a>
+                
+                <a href="https://dev.to/trismegistus/cerebras-just-made-gpt-56-sol-10x-faster-and-it-changes-the-economics-of-ai-inference-3clc" target="_blank" class="article-item">
+                    <div class="score">↑20</div>
+                    <div class="content">
+                        <h3 class="headline">Cerebras Just Made GPT-5.6 Sol 10x Faster — and It Changes the Economics of AI Inference - DEV Community</h3>
+                        <p class="summary">Cerebras Just Made GPT-5.6 Sol 10x Faster — and It Changes the Economics of AI Inference - DEV Community
+
+Cerebras Systems just announced that they're accelerating GPT-5.6 Sol to ultrafast speeds on...</p>
+                    </div>
+                </a>
+                
+                <a href="https://the-decoder.com/world-labs-turns-one-real-world-robot-task-into-thousands-of-simulated-variations-for-training/" target="_blank" class="article-item">
+                    <div class="score">↑14</div>
+                    <div class="content">
+                        <h3 class="headline">World Labs turns one real-world robot task into thousands of simulated variations for training</h3>
+                        <p class="summary">World Labs turns one real-world robot task into thousands of simulated variations for training
+
+# World Labs turns one real-world robot task into thousands of simulated variations for training
+
+View...</p>
+                    </div>
+                </a>
+                
+                <a href="https://tbreak.com/lg-nvidia-humanoid-robot-q1-2027/" target="_blank" class="article-item">
+                    <div class="score">↑13</div>
+                    <div class="content">
+                        <h3 class="headline">LG and NVIDIA humanoid robot: unveiling set for Q1 2027</h3>
+                        <p class="summary">LG and NVIDIA humanoid robot: unveiling set for Q1 2027
+
+# LG and NVIDIA’s humanoid robot arrives in Q1 2027, with an 80MW AI factory in tow
+
+LG and NVIDIA have signed a deal to build a bipedal...</p>
+                    </div>
+                </a>
+                
+                <a href="https://huggingface.co/nvidia/NVIDIA-NemotronLabs-VoiceChat-11B?utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">NVIDIA's Real-Time Full-Duplex Voice Model (6 minute read)</h3>
+                        <p class="summary">NemotronLabs VoiceChat is an 11B end-to-end speech model that handles streaming understanding, speech generation, and tool calling within one architecture.</p>
+                    </div>
+                </a>
+                
+                <a href="https://caseywest.com/compute-scarcity-is-permanent-build-a-ladder/?utm_source=tldrfounders" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Compute Scarcity Is Permanent. Build a Ladder (12 minute read)</h3>
+                        <p class="summary">Processors are currently scarce because of the same bottleneck: the high-bandwidth memory and the advanced packaging that binds it to the die are capacity-limited across the entire industry. This...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theregister.com/systems/2026/08/06/amd-acquires-ai-chip-startup-taalas-to-boost-inference-performance-by-etching-models-into-silicon/5284344?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">AMD acquires AI chip startup Taalas to boost inference performance by etching models into silicon (6 minute read)</h3>
+                        <p class="summary">AMD has acquired AI chip company Taalas for an undisclosed sum. The deal is expected to close in the fourth quarter, subject to regulatory approval. Taalas bakes model weights directly into silicon...</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">🔮 Ecosystem & Funding</h2>
+                <div class="article-list">
+                    
+                <a href="https://news.bitcoin.com/featured/spacex-closes-60-billion-cursor-deal-in-major-ai-compute-push/" target="_blank" class="article-item">
+                    <div class="score">↑83</div>
+                    <div class="content">
+                        <h3 class="headline">SpaceX Closes $60 Billion Cursor Deal in Major AI Compute Push</h3>
+                        <p class="summary">SpaceX Closes $60 Billion Cursor Deal in Major AI Compute Push
+
+Powered by
+
+Featured Published:Aug 14, 2026, 1:22 PM
+
+# SpaceX Closes $60 Billion Cursor Deal in Major AI Compute Push
+
+SpaceX has...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.startuphub.ai/podcast/today-in-ai-2026-08-13" target="_blank" class="article-item">
+                    <div class="score">↑82</div>
+                    <div class="content">
+                        <h3 class="headline">Today in AI: Musk's AI Revenue Bombshell and Infrastructure Boom | Today in AI | StartupHub.ai</h3>
+                        <p class="summary">Today in AI: Musk's AI Revenue Bombshell and Infrastructure Boom | Today in AI | StartupHub.ai
+
+Episode 18 · August 13, 2026
+
+# Today in AI: Musk's AI Revenue Bombshell and Infrastructure Boom
+
+Elon...</p>
+                    </div>
+                </a>
+                
+                <a href="https://interestingengineering.com/ai-robotics/nvidia-cuts-130b-openai-ohio-campus" target="_blank" class="article-item">
+                    <div class="score">↑62</div>
+                    <div class="content">
+                        <h3 class="headline">Nvidia cuts $130B+ from OpenAI's Ohio 10GW campus guarantee: Reports</h3>
+                        <p class="summary">Nvidia cuts $130B+ from OpenAI's Ohio 10GW campus guarantee: Reports
+
+Skip to content
+
+Jensen Huang, CEO of Nvidia. Wikimedia Commons
+
+TRENDINGLATEST
+
+1Next-gen molten salt reactor designed to...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.techtimes.com/articles/324538/20260814/dynatrace-acquires-arize-915m-bet-that-ai-evaluation-starts-before-production.htm" target="_blank" class="article-item">
+                    <div class="score">↑40</div>
+                    <div class="content">
+                        <h3 class="headline">Dynatrace Acquires Arize: $915M Bet That AI Evaluation Starts Before Production</h3>
+                        <p class="summary">Dynatrace Acquires Arize: $915M Bet That AI Evaluation Starts Before Production
+
+gettyimages.com
+
+Dynatrace (NYSE: DT) has agreed to acquire Arize, the San Francisco-based AI observability startup,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.wsj.com/business/entrepreneurship/vibe-coding-startup-lovable-hits-13-billion-valuation-0c87ff8a?st=gDMBds&reflink=desktopwebshare_permalink&utm_source=tldrai" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Vibe-Coding Startup Lovable Hits $13 Billion Valuation (4 minute read)</h3>
+                        <p class="summary">The startup is on track to generate a revenue run rate of close to $600 million by the end of this month.</p>
+                    </div>
+                </a>
+                
+                <a href="https://opensourcepledge.com/blog/burnout-in-open-source-a-structural-problem-we-can-fix-together/?utm_source=tldrnewsletter" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Burnout in open source is real. Is paying maintainers the solution? (Sponsor)</h3>
+                        <p class="summary">In a research report supported by Sentry and the Open Source Pledge, psychologist Miranda Heath looks at the causes of developer burnout and structural ways to fix it. Read the report</p>
+                    </div>
+                </a>
+                
+                <a href="https://threadreaderapp.com/thread/2084887484631302174.html?utm_source=tldrcrypto" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">x402 agentic payment standard gains momentum (2 minute read)</h3>
+                        <p class="summary">Cloudflare's new agentic wallet/identity system and last month's Monetization Gateway add to growing infrastructure support.</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">uncategorized</h2>
+                <div class="article-list">
+                    
+                <a href="https://bsky.app/profile/dopamine-harvest.bsky.social/post/3msxmb57blw2x" target="_blank" class="article-item">
+                    <div class="score">↑3</div>
+                    <div class="content">
+                        <h3 class="headline">Post by 𝔻𝕠𝕡𝕒𝕞𝕚𝕟𝕖 ℍ𝕒𝕣𝕧𝕖𝕤𝕥𝕖𝕣</h3>
+                        <p class="summary">COB#200605 #abstractart #cryptoart #ai #vaporwave #machinelearning #netart #surrealism #tezos #glitchartistscollective</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.minimax.io/blog/minimax-music-3-0-next-generation-open-weights-production-ready-versatile-music-model" target="_blank" class="article-item">
+                    <div class="score">↑2</div>
+                    <div class="content">
+                        <h3 class="headline">MiniMax Music 3.0: Next-Generation Open-Weights, Production-Ready & Versatile Music Model - MiniMax Research | MiniMax</h3>
+                        <p class="summary">MiniMax Music 3.0: Next-Generation Open-Weights, Production-Ready & Versatile Music Model - MiniMax Research | MiniMax
+
+Models
+
+LLM
+
+VIDEO
+
+SPEECH & MUSIC
+
+Product
+
+API
+
+Token Plan
+
+Research
+
+MiniMax...</p>
+                    </div>
+                </a>
+                
+                <a href="https://officechai.com/miscellaneous/alibaba-releases-qwen-3-8-27b-beats-muse-glimmer-30b-on-many-benchmarks/" target="_blank" class="article-item">
+                    <div class="score">↑1</div>
+                    <div class="content">
+                        <h3 class="headline">Alibaba Releases Qwen 3.8-27B, Beats Muse Glimmer 30B On Many Benchmarks</h3>
+                        <p class="summary">Alibaba Releases Qwen 3.8-27B, Beats Muse Glimmer 30B On Many Benchmarks
+
+Even as Chinese models are closing in on the AI frontier, they’re also making moves in the local models space.
+
+Alibaba has...</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+        </main>
+    </div>
+    <script>
+        // Open all accordions by default
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                toggleAccordion(header);
+            });
+        });
+
+        // Tab Switching Logic
+        function switchTab(e, tabId) {
+            if (e) e.preventDefault();
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // If triggered by a tab button, set it active, else find the tab button for that tabId
+            let tabBtn = (e && e.target && e.target.classList.contains('tab-btn')) ? e.target : document.querySelector(`.tab-btn[onclick*="${tabId}"]`);
+            if (tabBtn) tabBtn.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            // scroll to top if clicked view all
+            if (e && e.target && e.target.classList.contains('view-all')) {
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // Accordion Logic
+        function toggleAccordion(headerElement) {
+            headerElement.classList.toggle('open');
+            const body = headerElement.nextElementSibling;
+            if (headerElement.classList.contains('open')) {
+                body.style.maxHeight = body.scrollHeight + "px";
+            } else {
+                body.style.maxHeight = "0";
+            }
+        }
+
+        // Read article persistence
+        document.addEventListener("DOMContentLoaded", () => {
+            const STORAGE_KEY = "read_articles";
+            let readArticles = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+            
+            document.querySelectorAll('.article-item').forEach(item => {
+                const url = item.getAttribute('href');
+                if (readArticles.has(url)) {
+                    item.classList.add('read-article');
+                }
+                
+                item.addEventListener('click', () => {
+                    readArticles.add(url);
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify([...readArticles]));
+                    
+                    // Mark all identically-linked items read
+                    document.querySelectorAll(`.article-item[href="${url}"]`).forEach(i => i.classList.add('read-article'));
+                });
+            });
+        });
+    </script>
+</body>
+</html>
