@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News Digest | 2026-08-18</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+    
+:root {
+    --bg-color: #0d1117;
+    --card-bg: rgba(22, 27, 34, 0.4);
+    --hover-bg: rgba(46, 52, 60, 0.6);
+    --border: rgba(255, 255, 255, 0.08);
+    --text-main: #e6edf3;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-glow: rgba(88, 166, 255, 0.15);
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-mono: 'Fira Code', ui-monospace, monospace;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+    background-image: radial-gradient(circle at top right, rgba(46, 160, 67, 0.05), transparent 400px),
+                      radial-gradient(circle at bottom left, var(--accent-glow), transparent 400px);
+    background-attachment: fixed;
+}
+
+.container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
+
+header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.title { font-size: 2rem; font-weight: 700; margin: 0 0 0.25rem 0; }
+.subtitle { color: var(--text-muted); font-size: 0.95rem; }
+
+.stats-bar {
+    display: flex; gap: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; text-align: right;
+}
+.stat { display: flex; flex-direction: column; }
+.stat span:first-child { color: var(--text-muted); font-size: 0.75rem; }
+.stat span:last-child { color: var(--accent); font-weight: 600; }
+
+/* Tabs styling */
+.tabs-container {
+    margin-bottom: 2rem; display: flex; gap: 1rem;
+    border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+    background: transparent; border: none; color: var(--text-muted);
+    font-family: var(--font-sans); font-size: 1.1rem; font-weight: 500;
+    cursor: pointer; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s ease;
+}
+
+.tab-btn:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+.tab-btn.active { color: var(--accent); background: rgba(88, 166, 255, 0.1); font-weight: 600; }
+
+.tab-content { display: none; animation: fadeIn 0.3s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Common card styling */
+.category-group {
+    margin-bottom: 2rem; background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden; backdrop-filter: blur(8px);
+}
+
+/* Express View Accordion */
+.accordion-header {
+    width: 100%; display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.03); border: none; border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem; color: var(--text-main); font-size: 1.1rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+    cursor: pointer; transition: background 0.15s ease;
+}
+.accordion-header:hover { background: rgba(255, 255, 255, 0.06); }
+.accordion-header::after { content: '▼'; font-size: 0.8rem; transition: transform 0.3s ease; color: var(--text-muted); }
+.accordion-header.open::after { transform: rotate(-180deg); }
+.accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; background: transparent; }
+
+/* Category masonry */
+.categories-masonry { column-count: 2; column-gap: 2rem; }
+.masonry-item { break-inside: avoid; margin-bottom: 2rem; }
+.masonry-item .category-title {
+    font-size: 1rem; font-weight: 600; color: var(--text-main); margin: 0; padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+}
+
+.article-list { display: flex; flex-direction: column; }
+.article-item {
+    display: flex; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+    transition: background 0.15s ease; text-decoration: none; color: inherit; gap: 1.25rem; align-items: flex-start;
+}
+.masonry-item .article-item { padding: 0.75rem 1rem; gap: 1rem; }
+.article-item:last-child { border-bottom: none; }
+.article-item:hover { background: var(--hover-bg); }
+
+.article-item.read-article { opacity: 0.5; }
+.article-item.read-article .headline { color: var(--text-muted); }
+
+.score {
+    min-width: 45px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent);
+    background: rgba(88, 166, 255, 0.1); padding: 0.25rem 0; text-align: center; border-radius: 4px; margin-top: 0.15rem;
+}
+.content { flex: 1; min-width: 0; }
+.headline { font-weight: 500; font-size: 1.05rem; margin: 0 0 0.35rem 0; color: var(--text-main); flex-wrap: wrap; display: flex; align-items: baseline; gap: 0.5rem; }
+.summary {
+    font-size: 0.9rem; color: var(--text-muted); margin: 0; display: -webkit-box;
+    -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;
+}
+.view-all {
+    display: block; text-align: center; padding: 0.75rem; color: var(--accent); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: background 0.15s;
+}
+.view-all:hover { background: rgba(88, 166, 255, 0.05); }
+
+@media (max-width: 1024px) {
+    .categories-masonry { column-count: 1; }
+    header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .stats-bar { text-align: left; }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1 class="title">AI Pulse Digest</h1>
+                <div class="subtitle">Curated insights for 2026-08-18</div>
+            </div>
+            <div class="stats-bar">
+                <div class="stat"><span>Analyzed</span><span>1225 artifacts</span></div>
+                <div class="stat"><span>Filtered</span><span>684 dupes</span></div>
+                <div class="stat"><span>Curated</span><span>25 items</span></div>
+            </div>
+        </header>
+
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchTab(event, 'express')">✨ Highlights (Top 5)</button>
+            <button class="tab-btn" onclick="switchTab(event, 'detail')">📚 Deep Dive (All)</button>
+        </div>
+        
+        <main id="express" class="tab-content active">
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">uncategorized</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://github.com/yjh051108/dsh-routing-suite" target="_blank" class="article-item">
+                    <div class="score">↑5844</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Weekly Top Repos): yjh051108/dsh-routing-suite</h3>
+                        <p class="summary">Language: PowerShell
+Description: dsh-routing-suite — injector + router-standard kit: install the runtime injector first, then the task-aware reasoning-mode router preset (measured P1-P23).</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=NGMzAJSMseU" target="_blank" class="article-item">
+                    <div class="score">↑2143</div>
+                    <div class="content">
+                        <h3 class="headline">Elon Just Dropped An AI 4x Cheaper Than Beats Claude Fable 5 At The Same Level (+14 AI Updates)</h3>
+                        <p class="summary">TOOLS AND LINKS Access all updates, the tools, and the ones I actually recommend trying inside our free WhatsApp community: ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=17mjiwUR3vs" target="_blank" class="article-item">
+                    <div class="score">↑1491</div>
+                    <div class="content">
+                        <h3 class="headline">🔴Sara Duterte Impeachment Trial LIVE: Sara Camp Objects To AI Simulation of P125-M Cash | N18G</h3>
+                        <p class="summary">Sara Duterte Impeachment Trial LIVE | VP trial day 17: Sara Duterte Witness Testimony | Sara Duterte Impeachment Trial August ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.rickmanelius.com/p/aidr-ai-didnt-read" target="_blank" class="article-item">
+                    <div class="score">↑911</div>
+                    <div class="content">
+                        <h3 class="headline">AI;DR (AI; Didn't Read)</h3>
+                        <p class="summary">AI;DR (AI; Didn’t Read) I'm about as pro-AI as you can be, but this is becoming a pet peeve of mine (and I'm not alone). That's why I love the AI;DR acronym as my new solution for ignoring the walls...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=J0zbWsutyA8" target="_blank" class="article-item">
+                    <div class="score">↑858</div>
+                    <div class="content">
+                        <h3 class="headline">What Is RAD? Why It Matters in the Age of AI Coding</h3>
+                        <p class="summary">Learn more about Rapid Application Development (RAD) here → https://ibm.biz/~t01xtWgB8 AI coding feels new, but the ideas ...</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 25 articles in uncategorized →</a>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+        <main id="detail" class="tab-content categories-masonry">
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">uncategorized</h2>
+                <div class="article-list">
+                    
+                <a href="https://github.com/yjh051108/dsh-routing-suite" target="_blank" class="article-item">
+                    <div class="score">↑5844</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Weekly Top Repos): yjh051108/dsh-routing-suite</h3>
+                        <p class="summary">Language: PowerShell
+Description: dsh-routing-suite — injector + router-standard kit: install the runtime injector first, then the task-aware reasoning-mode router preset (measured P1-P23).</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=NGMzAJSMseU" target="_blank" class="article-item">
+                    <div class="score">↑2143</div>
+                    <div class="content">
+                        <h3 class="headline">Elon Just Dropped An AI 4x Cheaper Than Beats Claude Fable 5 At The Same Level (+14 AI Updates)</h3>
+                        <p class="summary">TOOLS AND LINKS Access all updates, the tools, and the ones I actually recommend trying inside our free WhatsApp community: ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=17mjiwUR3vs" target="_blank" class="article-item">
+                    <div class="score">↑1491</div>
+                    <div class="content">
+                        <h3 class="headline">🔴Sara Duterte Impeachment Trial LIVE: Sara Camp Objects To AI Simulation of P125-M Cash | N18G</h3>
+                        <p class="summary">Sara Duterte Impeachment Trial LIVE | VP trial day 17: Sara Duterte Witness Testimony | Sara Duterte Impeachment Trial August ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.rickmanelius.com/p/aidr-ai-didnt-read" target="_blank" class="article-item">
+                    <div class="score">↑911</div>
+                    <div class="content">
+                        <h3 class="headline">AI;DR (AI; Didn't Read)</h3>
+                        <p class="summary">AI;DR (AI; Didn’t Read) I'm about as pro-AI as you can be, but this is becoming a pet peeve of mine (and I'm not alone). That's why I love the AI;DR acronym as my new solution for ignoring the walls...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=J0zbWsutyA8" target="_blank" class="article-item">
+                    <div class="score">↑858</div>
+                    <div class="content">
+                        <h3 class="headline">What Is RAD? Why It Matters in the Age of AI Coding</h3>
+                        <p class="summary">Learn more about Rapid Application Development (RAD) here → https://ibm.biz/~t01xtWgB8 AI coding feels new, but the ideas ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://duckdb.org/2026/08/17/duckdb-20-highlights" target="_blank" class="article-item">
+                    <div class="score">↑648</div>
+                    <div class="content">
+                        <h3 class="headline">A Preview of DuckDB v2.0</h3>
+                        <p class="summary">A Preview of DuckDB v2.0 Mark Raasveldt and Hannes Mühleisen 2026-08-17 | 15 min TL;DR: DuckDB v2.0 is coming this fall. In this post, we preview its headline features: DuckDB as a server, triggers,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=SyrkC8Ks8QA" target="_blank" class="article-item">
+                    <div class="score">↑631</div>
+                    <div class="content">
+                        <h3 class="headline">GPT Astra This Week? Opus 6 Is Right Behind It</h3>
+                        <p class="summary">OpenAI staff posted three times in about two hours hinting that Astra is close, though nobody actually gave a date. Claude Opus 6 ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://news.ycombinator.com/item?id=49331033" target="_blank" class="article-item">
+                    <div class="score">↑597</div>
+                    <div class="content">
+                        <h3 class="headline">Ask HN: Alternatives to GitHub</h3>
+                        <p class="summary">Github has been down consistently over the last few months - does it make sense to switch to alternatives?</p>
+                    </div>
+                </a>
+                
+                <a href="https://responsiblestatecraft.org/israel-influence-chatgpt/" target="_blank" class="article-item">
+                    <div class="score">↑585</div>
+                    <div class="content">
+                        <h3 class="headline">Israel creates fake think tank in likely attempt to dupe AI chatbots</h3>
+                        <p class="summary">Israeli AI startup Decart nears multibillion-dollar Anthropic deal | The Jerusalem Post
+
+# Anthropic nears $6 billion deal for Israeli AI startup Decart, creating new billionaires
+
+## Decart's...</p>
+                    </div>
+                </a>
+                
+                <a href="https://timmarinin.net/2026/bluesky-screenshots/" target="_blank" class="article-item">
+                    <div class="score">↑552</div>
+                    <div class="content">
+                        <h3 class="headline">How Bluesky draws its logo on screenshots</h3>
+                        <p class="summary">How Bluesky draws its logo on screenshots Sometimes I take a screenshot of a post I like, either to send it to friends/meme channel or to save a “durable” copy. Like this one (I’ve cropped out the...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.githubstatus.com/incidents/zkxwbgr0cnmx" target="_blank" class="article-item">
+                    <div class="score">↑544</div>
+                    <div class="content">
+                        <h3 class="headline">Incident with Github.com [resolved]</h3>
+                        <p class="summary">Just got this message: "No server is currently available to service your request. Sorry about that. Please try refreshing and contact us if the problem persists." Edit: at the time of posting there...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/slpng-giants-fr.bsky.social/post/3mt7fxk6nts2o" target="_blank" class="article-item">
+                    <div class="score">↑511</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Sleeping Giants FR</h3>
+                        <p class="summary">Des activistes ont placé des publicités contre les lunettes #AI de Meta dans le quartier du QG de #Meta à Londres.
+
+Excellente action !</p>
+                    </div>
+                </a>
+                
+                <a href="https://openrouter.ai/openai/gpt-5.6-sol" target="_blank" class="article-item">
+                    <div class="score">↑475</div>
+                    <div class="content">
+                        <h3 class="headline">GPT-5.6 Sol Pricing Cut by 50%</h3>
+                        <p class="summary">GPT-5.6 Sol Pricing Cut by 50%</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/mrlitofabio.bsky.social/post/3mtal2vh7622a" target="_blank" class="article-item">
+                    <div class="score">↑271</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Fabio</h3>
+                        <p class="summary">GayIFantasies 🔥💪🏻🍆🍑🔥
+#AI #BigMan #Daddy #BigBody #BigMan #Hairy #Muscles #Hot #SexyMan #Fucking #DadSon #Twink #PrettyBoy #PussyBoy</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=UURrtiflXCw" target="_blank" class="article-item">
+                    <div class="score">↑101</div>
+                    <div class="content">
+                        <h3 class="headline">How to Make AI Videos With Claude Fable 5 (Higgsfield Supercomputer)</h3>
+                        <p class="summary">Make Your Own AI Videos with Higgsfield https://parkerprompts.com/Higgsfield-1 In this video, I show how to use Claude Fable ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://tradepoint.io/bytedance-seed-and-tsinghua-air-introduces-cuda-agent-a-large-scale-agentic-rl-system-for-cuda-kernel-generation/" target="_blank" class="article-item">
+                    <div class="score">↑100</div>
+                    <div class="content">
+                        <h3 class="headline">ByteDance Seed and Tsinghua AIR Introduces CUDA Agent: A Large-Scale Agentic RL System for CUDA Kernel Generation - TradePoint.io</h3>
+                        <p class="summary">ByteDance Seed and Tsinghua AIR Introduces CUDA Agent: A Large-Scale Agentic RL System for CUDA Kernel Generation -...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theregister.com/ai-and-ml/2026/08/18/ai-models-get-convenient-amnesia-about-source-material-as-they-grow-mit-boffins-find/5288846" target="_blank" class="article-item">
+                    <div class="score">↑98</div>
+                    <div class="content">
+                        <h3 class="headline">AI models get convenient amnesia about source material as they grow, MIT boffins find</h3>
+                        <p class="summary">AI models get convenient amnesia about source material as they grow, MIT boffins find
+
+ai and ml
+
+Attributing diffusion model output to a specific input becomes more difficult with more training...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/pastandotherplaces.bsky.social/post/3msx3af3yv22a" target="_blank" class="article-item">
+                    <div class="score">↑98</div>
+                    <div class="content">
+                        <h3 class="headline">Post by The Past and other Places</h3>
+                        <p class="summary">The clue is in the word fable. The machine written product is just historical fiction and misinformation. There are vast archives of manuscript material actual historians use. Only a tiny proportion...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.kunc.org/npr-news/2026-08-18/she-told-no-one-about-her-agony-except-chatgpt-what-her-death-reveals-about-ai-risks" target="_blank" class="article-item">
+                    <div class="score">↑98</div>
+                    <div class="content">
+                        <h3 class="headline">She told no one about her agony except ChatGPT. What her death reveals about AI risks | KUNC</h3>
+                        <p class="summary">She told no one about her agony except ChatGPT. What her death reveals about AI risks | KUNC
+
+# She told no one about her agony except ChatGPT. What her death reveals about AI risks 
+
+ NPR | By Rhitu...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.darkreading.com/threat-intelligence/turf-war-claude-agents-self-replicating-malware" target="_blank" class="article-item">
+                    <div class="score">↑98</div>
+                    <div class="content">
+                        <h3 class="headline">Turf War Between Claude Agents Leads to Self-Replicating Malware</h3>
+                        <p class="summary">Turf War Between Claude Agents Leads to Self-Replicating Malware
+
+# 'Turf War' Between Claude Agents Leads to Self-Replicating Malware
+
+Three testing models with the same goal but different...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/techcrunch.com/post/3ljli3wf37r2w" target="_blank" class="article-item">
+                    <div class="score">↑35</div>
+                    <div class="content">
+                        <h3 class="headline">Post by TechCrunch</h3>
+                        <p class="summary">Amazon reportedly forms a new agentic AI group</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/rmmlrmn.bsky.social/post/3mtavuhhy5s27" target="_blank" class="article-item">
+                    <div class="score">↑26</div>
+                    <div class="content">
+                        <h3 class="headline">Post by r m m l r m n</h3>
+                        <p class="summary">Things have been great at this franchise since private equity got involved with ownership, hired an agentic AI agency to manage fan experience going forward, and probably replaced their...</p>
+                    </div>
+                </a>
+                
+                <a href="https://acadia.engineering/blog/rethinking-database-programming" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Rethinking Database Programming</h3>
+                        <p class="summary">Comments</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theregister.com/ai-and-ml/2026/08/18/google-buys-crashed-airline-spirits-data-at-auction-because-ai/5288962" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Google buys crashed airline Spirit's data at auction, because AI</h3>
+                        <p class="summary">Comments</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.rainydaygc.com/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">I built a golf career management SIM (like Basketball GM, but golf)</h3>
+                        <p class="summary">Comments</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+        </main>
+    </div>
+    <script>
+        // Open all accordions by default
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                toggleAccordion(header);
+            });
+        });
+
+        // Tab Switching Logic
+        function switchTab(e, tabId) {
+            if (e) e.preventDefault();
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // If triggered by a tab button, set it active, else find the tab button for that tabId
+            let tabBtn = (e && e.target && e.target.classList.contains('tab-btn')) ? e.target : document.querySelector(`.tab-btn[onclick*="${tabId}"]`);
+            if (tabBtn) tabBtn.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            // scroll to top if clicked view all
+            if (e && e.target && e.target.classList.contains('view-all')) {
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // Accordion Logic
+        function toggleAccordion(headerElement) {
+            headerElement.classList.toggle('open');
+            const body = headerElement.nextElementSibling;
+            if (headerElement.classList.contains('open')) {
+                body.style.maxHeight = body.scrollHeight + "px";
+            } else {
+                body.style.maxHeight = "0";
+            }
+        }
+
+        // Read article persistence
+        document.addEventListener("DOMContentLoaded", () => {
+            const STORAGE_KEY = "read_articles";
+            let readArticles = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+            
+            document.querySelectorAll('.article-item').forEach(item => {
+                const url = item.getAttribute('href');
+                if (readArticles.has(url)) {
+                    item.classList.add('read-article');
+                }
+                
+                item.addEventListener('click', () => {
+                    readArticles.add(url);
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify([...readArticles]));
+                    
+                    // Mark all identically-linked items read
+                    document.querySelectorAll(`.article-item[href="${url}"]`).forEach(i => i.classList.add('read-article'));
+                });
+            });
+        });
+    </script>
+</body>
+</html>
