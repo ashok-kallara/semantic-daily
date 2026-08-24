@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News Digest | 2026-08-24</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+    
+:root {
+    --bg-color: #0d1117;
+    --card-bg: rgba(22, 27, 34, 0.4);
+    --hover-bg: rgba(46, 52, 60, 0.6);
+    --border: rgba(255, 255, 255, 0.08);
+    --text-main: #e6edf3;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-glow: rgba(88, 166, 255, 0.15);
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-mono: 'Fira Code', ui-monospace, monospace;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+    background-image: radial-gradient(circle at top right, rgba(46, 160, 67, 0.05), transparent 400px),
+                      radial-gradient(circle at bottom left, var(--accent-glow), transparent 400px);
+    background-attachment: fixed;
+}
+
+.container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
+
+header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.title { font-size: 2rem; font-weight: 700; margin: 0 0 0.25rem 0; }
+.subtitle { color: var(--text-muted); font-size: 0.95rem; }
+
+.stats-bar {
+    display: flex; gap: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; text-align: right;
+}
+.stat { display: flex; flex-direction: column; }
+.stat span:first-child { color: var(--text-muted); font-size: 0.75rem; }
+.stat span:last-child { color: var(--accent); font-weight: 600; }
+
+/* Tabs styling */
+.tabs-container {
+    margin-bottom: 2rem; display: flex; gap: 1rem;
+    border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+    background: transparent; border: none; color: var(--text-muted);
+    font-family: var(--font-sans); font-size: 1.1rem; font-weight: 500;
+    cursor: pointer; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s ease;
+}
+
+.tab-btn:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+.tab-btn.active { color: var(--accent); background: rgba(88, 166, 255, 0.1); font-weight: 600; }
+
+.tab-content { display: none; animation: fadeIn 0.3s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Common card styling */
+.category-group {
+    margin-bottom: 2rem; background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden; backdrop-filter: blur(8px);
+}
+
+/* Express View Accordion */
+.accordion-header {
+    width: 100%; display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.03); border: none; border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem; color: var(--text-main); font-size: 1.1rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+    cursor: pointer; transition: background 0.15s ease;
+}
+.accordion-header:hover { background: rgba(255, 255, 255, 0.06); }
+.accordion-header::after { content: '▼'; font-size: 0.8rem; transition: transform 0.3s ease; color: var(--text-muted); }
+.accordion-header.open::after { transform: rotate(-180deg); }
+.accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; background: transparent; }
+
+/* Category masonry */
+.categories-masonry { column-count: 2; column-gap: 2rem; }
+.masonry-item { break-inside: avoid; margin-bottom: 2rem; }
+.masonry-item .category-title {
+    font-size: 1rem; font-weight: 600; color: var(--text-main); margin: 0; padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+}
+
+.article-list { display: flex; flex-direction: column; }
+.article-item {
+    display: flex; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+    transition: background 0.15s ease; text-decoration: none; color: inherit; gap: 1.25rem; align-items: flex-start;
+}
+.masonry-item .article-item { padding: 0.75rem 1rem; gap: 1rem; }
+.article-item:last-child { border-bottom: none; }
+.article-item:hover { background: var(--hover-bg); }
+
+.article-item.read-article { opacity: 0.5; }
+.article-item.read-article .headline { color: var(--text-muted); }
+
+.score {
+    min-width: 45px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent);
+    background: rgba(88, 166, 255, 0.1); padding: 0.25rem 0; text-align: center; border-radius: 4px; margin-top: 0.15rem;
+}
+.content { flex: 1; min-width: 0; }
+.headline { font-weight: 500; font-size: 1.05rem; margin: 0 0 0.35rem 0; color: var(--text-main); flex-wrap: wrap; display: flex; align-items: baseline; gap: 0.5rem; }
+.summary {
+    font-size: 0.9rem; color: var(--text-muted); margin: 0; display: -webkit-box;
+    -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;
+}
+.view-all {
+    display: block; text-align: center; padding: 0.75rem; color: var(--accent); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: background 0.15s;
+}
+.view-all:hover { background: rgba(88, 166, 255, 0.05); }
+
+@media (max-width: 1024px) {
+    .categories-masonry { column-count: 1; }
+    header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .stats-bar { text-align: left; }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1 class="title">AI Pulse Digest</h1>
+                <div class="subtitle">Curated insights for 2026-08-24</div>
+            </div>
+            <div class="stats-bar">
+                <div class="stat"><span>Analyzed</span><span>1014 artifacts</span></div>
+                <div class="stat"><span>Filtered</span><span>490 dupes</span></div>
+                <div class="stat"><span>Curated</span><span>25 items</span></div>
+            </div>
+        </header>
+
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchTab(event, 'express')">✨ Highlights (Top 5)</button>
+            <button class="tab-btn" onclick="switchTab(event, 'detail')">📚 Deep Dive (All)</button>
+        </div>
+        
+        <main id="express" class="tab-content active">
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">uncategorized</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=KJ_dtGyqNP8" target="_blank" class="article-item">
+                    <div class="score">↑3636</div>
+                    <div class="content">
+                        <h3 class="headline">Robinhood CEO&#39;s Shocking Prediction On Stocks, The AI Bubble, &amp; Gambling Controversy | Vlad Tenev</h3>
+                        <p class="summary">Northwest Registered Agent: Start Your LLC Today at https://www.northwestregisteredagent.com/ich Claude: Get started with ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=FoSLsvUKvws" target="_blank" class="article-item">
+                    <div class="score">↑2679</div>
+                    <div class="content">
+                        <h3 class="headline">The AI Crypto Macro Nexus Point: Why Bitcoin Matters to Investors</h3>
+                        <p class="summary">Visit ai.22vresearch.com or visser-labs.com for more info Email Mark Whaling mwhaling@22vresearch.com In this week's video, ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=KigvpgOdICs" target="_blank" class="article-item">
+                    <div class="score">↑2575</div>
+                    <div class="content">
+                        <h3 class="headline">This Week with George Stephanopoulos Full Broadcast - Sunday, August 23, 2026</h3>
+                        <p class="summary">Texas Gov. Greg Abbott sits down with ABC News' Jonathan Karl in an exclusive interview to discuss data centers, the Texas ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/artistseanm.bsky.social/post/3mnzdtnv2f22v" target="_blank" class="article-item">
+                    <div class="score">↑2273</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Sean M</h3>
+                        <p class="summary">#datacenters are billionaire cash grabs at the cost of the local communities who will pay higher utilities costs, have water resources comprised and on top of it, #CEOs want us to fund it through...</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/wang2122/sprix-sage-router" target="_blank" class="article-item">
+                    <div class="score">↑1753</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Weekly Top Repos): wang2122/sprix-sage-router</h3>
+                        <p class="summary">Language: Python
+Description: Sprix AI at 屿智同行 — state-aware SELF/COLLABORATE/HANDOFF routing for A2A agent networks.</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 25 articles in uncategorized →</a>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+        <main id="detail" class="tab-content categories-masonry">
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">uncategorized</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=KJ_dtGyqNP8" target="_blank" class="article-item">
+                    <div class="score">↑3636</div>
+                    <div class="content">
+                        <h3 class="headline">Robinhood CEO&#39;s Shocking Prediction On Stocks, The AI Bubble, &amp; Gambling Controversy | Vlad Tenev</h3>
+                        <p class="summary">Northwest Registered Agent: Start Your LLC Today at https://www.northwestregisteredagent.com/ich Claude: Get started with ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=FoSLsvUKvws" target="_blank" class="article-item">
+                    <div class="score">↑2679</div>
+                    <div class="content">
+                        <h3 class="headline">The AI Crypto Macro Nexus Point: Why Bitcoin Matters to Investors</h3>
+                        <p class="summary">Visit ai.22vresearch.com or visser-labs.com for more info Email Mark Whaling mwhaling@22vresearch.com In this week's video, ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=KigvpgOdICs" target="_blank" class="article-item">
+                    <div class="score">↑2575</div>
+                    <div class="content">
+                        <h3 class="headline">This Week with George Stephanopoulos Full Broadcast - Sunday, August 23, 2026</h3>
+                        <p class="summary">Texas Gov. Greg Abbott sits down with ABC News' Jonathan Karl in an exclusive interview to discuss data centers, the Texas ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/artistseanm.bsky.social/post/3mnzdtnv2f22v" target="_blank" class="article-item">
+                    <div class="score">↑2273</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Sean M</h3>
+                        <p class="summary">#datacenters are billionaire cash grabs at the cost of the local communities who will pay higher utilities costs, have water resources comprised and on top of it, #CEOs want us to fund it through...</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/wang2122/sprix-sage-router" target="_blank" class="article-item">
+                    <div class="score">↑1753</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Weekly Top Repos): wang2122/sprix-sage-router</h3>
+                        <p class="summary">Language: Python
+Description: Sprix AI at 屿智同行 — state-aware SELF/COLLABORATE/HANDOFF routing for A2A agent networks.</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/keithwilson.eu/post/3loi7nlk63s2e" target="_blank" class="article-item">
+                    <div class="score">↑1752</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Dr Keith Wilson 💭</h3>
+                        <p class="summary">Bizarrely framed article about the people (all women) who ‘refuse to use AI’. And a #philosophy professor who says “The moment to opt out of #AI has already passed”. Oh well. That’s that then. 🤷‍♂️...</p>
+                    </div>
+                </a>
+                
+                <a href="https://schlarp.com/posts/everything-i-own-owned/" target="_blank" class="article-item">
+                    <div class="score">↑1000</div>
+                    <div class="content">
+                        <h3 class="headline">Everything I own, owned</h3>
+                        <p class="summary">https://web.archive.org/web/20260823225933/https://schlarp.c...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=0kYksiSWrCA" target="_blank" class="article-item">
+                    <div class="score">↑998</div>
+                    <div class="content">
+                        <h3 class="headline">Fish Audio Raised $52 Million to Destroy ElevenLabs</h3>
+                        <p class="summary">Fish Audio just demonstrated something that makes the AI voice race a lot more interesting. In this demo, an AI voice agent ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://ericpardee.github.io/fire-hd-ownership/" target="_blank" class="article-item">
+                    <div class="score">↑660</div>
+                    <div class="content">
+                        <h3 class="headline">I spent $266 and four AI models to own my tablet. GLM-5.3 finished it in a day</h3>
+                        <p class="summary">Amazon kept shutting down my tablet, so I spent $266 on four AI models to own it My Amazon Fire HD tablet cost $114.26 on eBay in November 2022, new and sealed. Owning it for real cost another...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.ft.com/content/5ee49718-c258-4f01-aa32-7e5b76ae5245" target="_blank" class="article-item">
+                    <div class="score">↑558</div>
+                    <div class="content">
+                        <h3 class="headline">Anthropic's best AI model struggles to attract users as cheaper tools thrive</h3>
+                        <p class="summary">Anthropic's best AI model struggles to attract users as cheaper tools thrive</p>
+                    </div>
+                </a>
+                
+                <a href="https://earendil.com/posts/what-is-a-harness/" target="_blank" class="article-item">
+                    <div class="score">↑468</div>
+                    <div class="content">
+                        <h3 class="headline">What Is a Harness?</h3>
+                        <p class="summary">What is a Harness? Date: Thu, 20 Aug 2026 From: Earendil Product < rfc@earendil.com > To: You Subject: What is a Harness? Harness – definition by the Cambridge Dictionary Noun. a piece of equipment...</p>
+                    </div>
+                </a>
+                
+                <a href="https://nappertime.com/the-golden-rule-of-becoming-a-better-writer/" target="_blank" class="article-item">
+                    <div class="score">↑456</div>
+                    <div class="content">
+                        <h3 class="headline">To become a better writer, read as much as you can</h3>
+                        <p class="summary">I’m obsessed with the craft of writing. I write every day, I read about the craft often, and in my spare time I like to unwind by… watching interviews where authors talk about their writing process....</p>
+                    </div>
+                </a>
+                
+                <a href="https://lalitm.com/post/find-problems-staff-engineer/" target="_blank" class="article-item">
+                    <div class="score">↑427</div>
+                    <div class="content">
+                        <h3 class="headline">How I find problems to solve as a staff engineer</h3>
+                        <p class="summary">Discussed on lobste.rs . Note: this post was revised after publishing for increased clarity, based on reader feedback . “How do you find problems worth working on?” a senior engineer I mentor asked...</p>
+                    </div>
+                </a>
+                
+                <a href="https://risky.biz/risky-bulletin-slovakia-finds-russian-backdoor-in-traffic-speed-cameras/" target="_blank" class="article-item">
+                    <div class="score">↑378</div>
+                    <div class="content">
+                        <h3 class="headline">Slovakia finds Russian backdoor in traffic speed cameras</h3>
+                        <p class="summary">Risky Bulletin Newsletter August 19, 2026 Risky Bulletin: Slovakia finds Russian backdoor in traffic speed cameras Written by Catalin Cimpanu News Editor This newsletter is brought to you by Socket...</p>
+                    </div>
+                </a>
+                
+                <a href="https://debloat.dev/" target="_blank" class="article-item">
+                    <div class="score">↑352</div>
+                    <div class="content">
+                        <h3 class="headline">A website for debloated open source alternatives</h3>
+                        <p class="summary">debloat.dev — replace the junk de bl o at replace the junk home new top rated requests publish sign in Categories Peripherals (38) Laptops & desktops (25) Audio (21) Networking (20) Smart home (20)...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.xda-developers.com/qwen-3-8-27b-reverse-engineering-job-frontier-model/" target="_blank" class="article-item">
+                    <div class="score">↑347</div>
+                    <div class="content">
+                        <h3 class="headline">I gave Qwen 3.8 27B a reverse-engineering job and it finished in 30 minutes</h3>
+                        <p class="summary">By Adam Conway Published Aug 22, 2026, 7:00 PM EDT I’m Adam Conway, an Irish technology fanatic with a BSc in Computer Science and I'm XDA’s Lead Technical Editor. My Bachelor’s thesis was conducted...</p>
+                    </div>
+                </a>
+                
+                <a href="https://how.complexsystems.fail/" target="_blank" class="article-item">
+                    <div class="score">↑329</div>
+                    <div class="content">
+                        <h3 class="headline">How Complex Systems Fail (1998)</h3>
+                        <p class="summary">How Complex Systems Fail Complex systems are intrinsically hazardous systems. All of the interesting systems (e.g. transportation, healthcare, power generation) are inherently and unavoidably...</p>
+                    </div>
+                </a>
+                
+                <a href="https://fabiensanglard.net/agent.md/index.html" target="_blank" class="article-item">
+                    <div class="score">↑327</div>
+                    <div class="content">
+                        <h3 class="headline">My agent.md to improve LLM-assisted code quality</h3>
+                        <p class="summary">My agent.md to improve LLM-assisted code quality Fabien Sanglard - WEBSITE Aug 21, 2026 My agent.md to improve LLM-assisted code quality The first time I tried to use an LLM to speed up coding was in...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=xmoCRrW0HPo" target="_blank" class="article-item">
+                    <div class="score">↑321</div>
+                    <div class="content">
+                        <h3 class="headline">We’re Entering the Age of AI</h3>
+                        <p class="summary">Welcome to MEVESA — a channel about AI, technology, automation, software, crypto, and the tools shaping the future. Here you'll ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.xda-developers.com/wi-fi-8-first-wireless-upgrade-years-isnt-chasing-speed-home-networks-need-it/" target="_blank" class="article-item">
+                    <div class="score">↑321</div>
+                    <div class="content">
+                        <h3 class="headline">Wi-Fi 8 is the first wireless upgrade in years that isn't chasing speed</h3>
+                        <p class="summary">By João Carrasqueira Published Aug 22, 2026, 1:00 PM EDT João has been covering the tech world for over 7 years, with a heavy focus on laptops and the Windows ecosystem. I also love all things tech...</p>
+                    </div>
+                </a>
+                
+                <a href="https://blog.elis.cc/articles/google-workspace-thinks-my-domain-is-an-email-provider/" target="_blank" class="article-item">
+                    <div class="score">↑315</div>
+                    <div class="content">
+                        <h3 class="headline">Google Workspace thinks my domain is an email provider (2025)</h3>
+                        <p class="summary">Google Workspace thinks my domain is an email provider Published Oct 7, 2025 | Updated Aug 23, 2026 Read by ... Update: As of August 2026, this issue is still present. I was creating a Google...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=aVj9pkUZaQk" target="_blank" class="article-item">
+                    <div class="score">↑276</div>
+                    <div class="content">
+                        <h3 class="headline">I Made a Cinematic AI Video With Seedance 2.5 for Just $0.036/Second</h3>
+                        <p class="summary">https://www.runninghub.ai?inviteCode=jmc8mcf0. Register and get 1000 RH coins, and you can generate a large number of ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=2WyA89kLkYw" target="_blank" class="article-item">
+                    <div class="score">↑271</div>
+                    <div class="content">
+                        <h3 class="headline">US-Canada Tariffs, Bessent&#39;s Bond Plan, China&#39;s AI Push | Bloomberg This Weekend: Aug 22, 2026</h3>
+                        <p class="summary">Listen to Bloomberg This Weekend for unique conversations spanning news, politics, lifestyle and culture. David Gura, Christina ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://medicine.washu.edu/news/fda-clears-blood-test-to-aid-evaluation-for-alzheimers-disease/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">FDA clears blood test to aid evaluation for Alzheimer's disease</h3>
+                        <p class="summary">Comments</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/thiagotigaz/ocr-it" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">OCR It – pull text out of un-copyable documents for your LLM</h3>
+                        <p class="summary">Comments</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+        </main>
+    </div>
+    <script>
+        // Open all accordions by default
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                toggleAccordion(header);
+            });
+        });
+
+        // Tab Switching Logic
+        function switchTab(e, tabId) {
+            if (e) e.preventDefault();
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // If triggered by a tab button, set it active, else find the tab button for that tabId
+            let tabBtn = (e && e.target && e.target.classList.contains('tab-btn')) ? e.target : document.querySelector(`.tab-btn[onclick*="${tabId}"]`);
+            if (tabBtn) tabBtn.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            // scroll to top if clicked view all
+            if (e && e.target && e.target.classList.contains('view-all')) {
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // Accordion Logic
+        function toggleAccordion(headerElement) {
+            headerElement.classList.toggle('open');
+            const body = headerElement.nextElementSibling;
+            if (headerElement.classList.contains('open')) {
+                body.style.maxHeight = body.scrollHeight + "px";
+            } else {
+                body.style.maxHeight = "0";
+            }
+        }
+
+        // Read article persistence
+        document.addEventListener("DOMContentLoaded", () => {
+            const STORAGE_KEY = "read_articles";
+            let readArticles = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+            
+            document.querySelectorAll('.article-item').forEach(item => {
+                const url = item.getAttribute('href');
+                if (readArticles.has(url)) {
+                    item.classList.add('read-article');
+                }
+                
+                item.addEventListener('click', () => {
+                    readArticles.add(url);
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify([...readArticles]));
+                    
+                    // Mark all identically-linked items read
+                    document.querySelectorAll(`.article-item[href="${url}"]`).forEach(i => i.classList.add('read-article'));
+                });
+            });
+        });
+    </script>
+</body>
+</html>
