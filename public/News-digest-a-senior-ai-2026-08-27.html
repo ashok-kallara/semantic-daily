@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News Digest | 2026-08-27</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+    
+:root {
+    --bg-color: #0d1117;
+    --card-bg: rgba(22, 27, 34, 0.4);
+    --hover-bg: rgba(46, 52, 60, 0.6);
+    --border: rgba(255, 255, 255, 0.08);
+    --text-main: #e6edf3;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-glow: rgba(88, 166, 255, 0.15);
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-mono: 'Fira Code', ui-monospace, monospace;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+    background-image: radial-gradient(circle at top right, rgba(46, 160, 67, 0.05), transparent 400px),
+                      radial-gradient(circle at bottom left, var(--accent-glow), transparent 400px);
+    background-attachment: fixed;
+}
+
+.container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
+
+header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.title { font-size: 2rem; font-weight: 700; margin: 0 0 0.25rem 0; }
+.subtitle { color: var(--text-muted); font-size: 0.95rem; }
+
+.stats-bar {
+    display: flex; gap: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; text-align: right;
+}
+.stat { display: flex; flex-direction: column; }
+.stat span:first-child { color: var(--text-muted); font-size: 0.75rem; }
+.stat span:last-child { color: var(--accent); font-weight: 600; }
+
+/* Tabs styling */
+.tabs-container {
+    margin-bottom: 2rem; display: flex; gap: 1rem;
+    border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+    background: transparent; border: none; color: var(--text-muted);
+    font-family: var(--font-sans); font-size: 1.1rem; font-weight: 500;
+    cursor: pointer; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s ease;
+}
+
+.tab-btn:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+.tab-btn.active { color: var(--accent); background: rgba(88, 166, 255, 0.1); font-weight: 600; }
+
+.tab-content { display: none; animation: fadeIn 0.3s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Common card styling */
+.category-group {
+    margin-bottom: 2rem; background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden; backdrop-filter: blur(8px);
+}
+
+/* Express View Accordion */
+.accordion-header {
+    width: 100%; display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.03); border: none; border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem; color: var(--text-main); font-size: 1.1rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+    cursor: pointer; transition: background 0.15s ease;
+}
+.accordion-header:hover { background: rgba(255, 255, 255, 0.06); }
+.accordion-header::after { content: '▼'; font-size: 0.8rem; transition: transform 0.3s ease; color: var(--text-muted); }
+.accordion-header.open::after { transform: rotate(-180deg); }
+.accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; background: transparent; }
+
+/* Category masonry */
+.categories-masonry { column-count: 2; column-gap: 2rem; }
+.masonry-item { break-inside: avoid; margin-bottom: 2rem; }
+.masonry-item .category-title {
+    font-size: 1rem; font-weight: 600; color: var(--text-main); margin: 0; padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+}
+
+.article-list { display: flex; flex-direction: column; }
+.article-item {
+    display: flex; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+    transition: background 0.15s ease; text-decoration: none; color: inherit; gap: 1.25rem; align-items: flex-start;
+}
+.masonry-item .article-item { padding: 0.75rem 1rem; gap: 1rem; }
+.article-item:last-child { border-bottom: none; }
+.article-item:hover { background: var(--hover-bg); }
+
+.article-item.read-article { opacity: 0.5; }
+.article-item.read-article .headline { color: var(--text-muted); }
+
+.score {
+    min-width: 45px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent);
+    background: rgba(88, 166, 255, 0.1); padding: 0.25rem 0; text-align: center; border-radius: 4px; margin-top: 0.15rem;
+}
+.content { flex: 1; min-width: 0; }
+.headline { font-weight: 500; font-size: 1.05rem; margin: 0 0 0.35rem 0; color: var(--text-main); flex-wrap: wrap; display: flex; align-items: baseline; gap: 0.5rem; }
+.summary {
+    font-size: 0.9rem; color: var(--text-muted); margin: 0; display: -webkit-box;
+    -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;
+}
+.view-all {
+    display: block; text-align: center; padding: 0.75rem; color: var(--accent); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: background 0.15s;
+}
+.view-all:hover { background: rgba(88, 166, 255, 0.05); }
+
+@media (max-width: 1024px) {
+    .categories-masonry { column-count: 1; }
+    header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .stats-bar { text-align: left; }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1 class="title">AI Pulse Digest</h1>
+                <div class="subtitle">Curated insights for 2026-08-27</div>
+            </div>
+            <div class="stats-bar">
+                <div class="stat"><span>Analyzed</span><span>1100 artifacts</span></div>
+                <div class="stat"><span>Filtered</span><span>521 dupes</span></div>
+                <div class="stat"><span>Curated</span><span>25 items</span></div>
+            </div>
+        </header>
+
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchTab(event, 'express')">✨ Highlights (Top 5)</button>
+            <button class="tab-btn" onclick="switchTab(event, 'detail')">📚 Deep Dive (All)</button>
+        </div>
+        
+        <main id="express" class="tab-content active">
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">uncategorized</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=NYFGCESmikA" target="_blank" class="article-item">
+                    <div class="score">↑8351</div>
+                    <div class="content">
+                        <h3 class="headline">DHH: Future of Programming, AI, Agentic Engineering, Vibe Coding &amp; Linux | Lex Fridman Podcast #501</h3>
+                        <p class="summary">DHH is the creator of Ruby on Rails, Omarchy Linux, CTO of 37signals, and a racecar driver. Thank you for listening ❤ Check out ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=5r5uhGjST7s" target="_blank" class="article-item">
+                    <div class="score">↑3928</div>
+                    <div class="content">
+                        <h3 class="headline">&#39;THIS IS INSANE&#39;: Bill Gates DIRE WARNING Of AI Jobless Future</h3>
+                        <p class="summary">Ryan and Saagar take a look at Bill Gate's warning about AI disruption. Sign up for a PREMIUM Breaking Points subscriptions for ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=U4zGLSlLo5A" target="_blank" class="article-item">
+                    <div class="score">↑2196</div>
+                    <div class="content">
+                        <h3 class="headline">Bill Gates Changes His Mind on AI</h3>
+                        <p class="summary">Bill Gates has generally been an AI optimist. Three years ago, he wrote that AI had downsides, but the risks were “manageable.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=1kvmZZ8peBQ" target="_blank" class="article-item">
+                    <div class="score">↑2111</div>
+                    <div class="content">
+                        <h3 class="headline">Nothing In This Video Was Filmed. One AI Agent Made It All. (Full Workflow)</h3>
+                        <p class="summary">Try invideo agent: https://invideo.io/i/VAIBHAVS FREE templates, the Director's Bible structure and the prompts are in my ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=rKo9iLGjUbs" target="_blank" class="article-item">
+                    <div class="score">↑2028</div>
+                    <div class="content">
+                        <h3 class="headline">I Built a FREE App That Runs Your Entire Business</h3>
+                        <p class="summary">I vibe coded a free productivity app that keeps my entire business in one place, and I built it so anyone can download and ...</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 25 articles in uncategorized →</a>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+        <main id="detail" class="tab-content categories-masonry">
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">uncategorized</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=NYFGCESmikA" target="_blank" class="article-item">
+                    <div class="score">↑8351</div>
+                    <div class="content">
+                        <h3 class="headline">DHH: Future of Programming, AI, Agentic Engineering, Vibe Coding &amp; Linux | Lex Fridman Podcast #501</h3>
+                        <p class="summary">DHH is the creator of Ruby on Rails, Omarchy Linux, CTO of 37signals, and a racecar driver. Thank you for listening ❤ Check out ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=5r5uhGjST7s" target="_blank" class="article-item">
+                    <div class="score">↑3928</div>
+                    <div class="content">
+                        <h3 class="headline">&#39;THIS IS INSANE&#39;: Bill Gates DIRE WARNING Of AI Jobless Future</h3>
+                        <p class="summary">Ryan and Saagar take a look at Bill Gate's warning about AI disruption. Sign up for a PREMIUM Breaking Points subscriptions for ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=U4zGLSlLo5A" target="_blank" class="article-item">
+                    <div class="score">↑2196</div>
+                    <div class="content">
+                        <h3 class="headline">Bill Gates Changes His Mind on AI</h3>
+                        <p class="summary">Bill Gates has generally been an AI optimist. Three years ago, he wrote that AI had downsides, but the risks were “manageable.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=1kvmZZ8peBQ" target="_blank" class="article-item">
+                    <div class="score">↑2111</div>
+                    <div class="content">
+                        <h3 class="headline">Nothing In This Video Was Filmed. One AI Agent Made It All. (Full Workflow)</h3>
+                        <p class="summary">Try invideo agent: https://invideo.io/i/VAIBHAVS FREE templates, the Director's Bible structure and the prompts are in my ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=rKo9iLGjUbs" target="_blank" class="article-item">
+                    <div class="score">↑2028</div>
+                    <div class="content">
+                        <h3 class="headline">I Built a FREE App That Runs Your Entire Business</h3>
+                        <p class="summary">I vibe coded a free productivity app that keeps my entire business in one place, and I built it so anyone can download and ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=mHqSBCHEZOY" target="_blank" class="article-item">
+                    <div class="score">↑1812</div>
+                    <div class="content">
+                        <h3 class="headline">NEW ChatGPT Sites Just Changed Everything (Builds Anything)</h3>
+                        <p class="summary">I built an app that replaced 3 SaaS tools I was paying thousands of dollars for in just 3 prompts inside ChatGPT. Join the WebMCP ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.businessinsider.com/nvidia-in-talks-to-buy-hugging-face-13-billion-dollars-2026-8" target="_blank" class="article-item">
+                    <div class="score">↑1782</div>
+                    <div class="content">
+                        <h3 class="headline">Nvidia agrees to acquire Hugging Face for $13B</h3>
+                        <p class="summary">https://www.theinformation.com/articles/nvidia-agrees-buy-op... (paywalled) https://techcrunch.com/2026/08/24/hugging-face-reportedly-in...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/go4know.com/post/3maswx7u5gc2u" target="_blank" class="article-item">
+                    <div class="score">↑1570</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Go4Know</h3>
+                        <p class="summary">🔥 What Does a Fox Conversation Sound Like, and Why Do We Hear It So Rarely?
+👉 patreon.com/go4know
+
+🔥 Learn how to create Midjourney images for FREE! Get prompts, art styles & tutorials. Join me:
+👉...</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/duty1g/x64dbg-mcp-server" target="_blank" class="article-item">
+                    <div class="score">↑1540</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Weekly Top Repos): duty1g/x64dbg-mcp-server</h3>
+                        <p class="summary">Language: Zig
+Description: x64dbg-MCP Server is a native MCP (Model Context Protocol) plugin for x64dbg that exposes the debugger's full functionality over HTTP. Connect any MCP-compatible AI...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/acyn.bsky.social/post/3mn6m24usol2y" target="_blank" class="article-item">
+                    <div class="score">↑1507</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Acyn</h3>
+                        <p class="summary">Khanna: We need to be taxing agentic AI more than we are taxing human workers. </p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=tBjgCj_dGZM" target="_blank" class="article-item">
+                    <div class="score">↑1479</div>
+                    <div class="content">
+                        <h3 class="headline">The mathematics of AI uncertainty</h3>
+                        <p class="summary">Long before the current wave of large language models, one academic researcher was trying to give machines a sense of their ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=EoNH3Tn8wYE" target="_blank" class="article-item">
+                    <div class="score">↑1172</div>
+                    <div class="content">
+                        <h3 class="headline">WebMCP: Let AI Agents pay you money</h3>
+                        <p class="summary">Vinny is back on the pod, and he explains WebMCP. WebMCP puts MCP tools inside the browser UI, so any agent that you bring ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://z.ai/blog/glm-5.3-flash" target="_blank" class="article-item">
+                    <div class="score">↑1103</div>
+                    <div class="content">
+                        <h3 class="headline">GLM-5.3-Flash</h3>
+                        <p class="summary">https://news.ycombinator.com/item?id=49450353</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/nateherkai/scroll-craft" target="_blank" class="article-item">
+                    <div class="score">↑1091</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Weekly Top Repos): nateherkai/scroll-craft</h3>
+                        <p class="summary">Language: JavaScript
+Description: Claude Code skill for premium scroll-driven websites. Scroll becomes the timeline, on a real design floor, verified by screenshotting its own scroll.</p>
+                    </div>
+                </a>
+                
+                <a href="https://ducklabs.com/news/2026/08/26/ducklabs-to-join-aws" target="_blank" class="article-item">
+                    <div class="score">↑1077</div>
+                    <div class="content">
+                        <h3 class="headline">AWS Acquires DuckLabs</h3>
+                        <p class="summary">DuckLabs to Join AWS, Projects to Remain Open Source Mark Raasveldt and Hannes Mühleisen 2026-08-26 | 10 min Today, we’re announcing that DuckLabs will join Amazon Web Services (AWS) , which is...</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/HEJustinSun/my-girlfriend-jingtian-latex" target="_blank" class="article-item">
+                    <div class="score">↑1001</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Daily Top Repos): HEJustinSun/my-girlfriend-jingtian-latex</h3>
+                        <p class="summary">Language: TeX
+Description: No description provided.</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/SenteLabsAI/OpenExecutive" target="_blank" class="article-item">
+                    <div class="score">↑909</div>
+                    <div class="content">
+                        <h3 class="headline">CEO fired developers to make room for AI. Developers create open source AI CEO</h3>
+                        <p class="summary">Open Executive An AI system that acts as your company's virtual executive team — a senior advisor with Harvard MBA-level knowledge, customized for your specific business. Demo A walkthrough of Open...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=4JJCXSTjy_8" target="_blank" class="article-item">
+                    <div class="score">↑841</div>
+                    <div class="content">
+                        <h3 class="headline">Anthropic CEO on &#39;Saaspocalypse&#39;: We&#39;re not interested in destroying anyone</h3>
+                        <p class="summary">Marc Benioff, Salesforce chair and CEO and Dario Amodei, Anthropic co-founder and CEO joins 'Mad Money' host Jim Cramer to ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.wsj.com/politics/policy/u-s-state-department-pauses-immigrant-visa-applications-25b31b23" target="_blank" class="article-item">
+                    <div class="score">↑777</div>
+                    <div class="content">
+                        <h3 class="headline">U.S. State Department pauses immigrant visa applications</h3>
+                        <p class="summary">U.S. State Department pauses immigrant visa applications</p>
+                    </div>
+                </a>
+                
+                <a href="https://qwen.ai/blog?id=qwen3.8-flash-next" target="_blank" class="article-item">
+                    <div class="score">↑686</div>
+                    <div class="content">
+                        <h3 class="headline">Qwen3.8-Flash-Next</h3>
+                        <p class="summary">https://imageat.com/models/qwen-3-8-27b-uncensored</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/tailscale/tailcat" target="_blank" class="article-item">
+                    <div class="score">↑644</div>
+                    <div class="content">
+                        <h3 class="headline">Tailcat – Like netcat, but over Tailscale’s data plane</h3>
+                        <p class="summary">"Tailscale without Tailscale, by Tailscale" Tailcat Tailcat is a remix of Tailscale open source pieces to act like netcat , but over Tailscale's data plane, without Tailscale's control plane....</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.mturk.com/" target="_blank" class="article-item">
+                    <div class="score">↑515</div>
+                    <div class="content">
+                        <h3 class="headline">Mechanical Turk shutting down September 30</h3>
+                        <p class="summary">Amazon Mechanical Turk Access a global, on-demand, 24x7 workforce Amazon Mechanical Turk (MTurk) is a crowdsourcing marketplace that makes it easier for individuals and businesses to outsource their...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/fsfe.org/post/3mtvnayokss2o" target="_blank" class="article-item">
+                    <div class="score">↑16</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Free Software Foundation Europe (FSFE)</h3>
+                        <p class="summary">Are you using LLMs to write #FreeSoftware?
+
+Find out whether your software is copyrightable, when you can license it, and what risks it may pose to maintainers.
+
+Our new Legal Corner explains what...</p>
+                    </div>
+                </a>
+                
+                <a href="https://news.bgov.com/bloomberg-government-news/nvidia-starts-a-pac-as-ai-chip-maker-buids-influence-force-in-dc" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Nvidia Starts Pac as AI Chip Maker Builds DC Influence Force</h3>
+                        <p class="summary">Comments</p>
+                    </div>
+                </a>
+                
+                <a href="https://code.ffmpeg.org/FFmpeg/FFmpeg/issues/24290" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">We found a division by zero bug in FFmpeg with a vibecoded fuzzer</h3>
+                        <p class="summary">Comments</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+        </main>
+    </div>
+    <script>
+        // Open all accordions by default
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                toggleAccordion(header);
+            });
+        });
+
+        // Tab Switching Logic
+        function switchTab(e, tabId) {
+            if (e) e.preventDefault();
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // If triggered by a tab button, set it active, else find the tab button for that tabId
+            let tabBtn = (e && e.target && e.target.classList.contains('tab-btn')) ? e.target : document.querySelector(`.tab-btn[onclick*="${tabId}"]`);
+            if (tabBtn) tabBtn.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            // scroll to top if clicked view all
+            if (e && e.target && e.target.classList.contains('view-all')) {
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // Accordion Logic
+        function toggleAccordion(headerElement) {
+            headerElement.classList.toggle('open');
+            const body = headerElement.nextElementSibling;
+            if (headerElement.classList.contains('open')) {
+                body.style.maxHeight = body.scrollHeight + "px";
+            } else {
+                body.style.maxHeight = "0";
+            }
+        }
+
+        // Read article persistence
+        document.addEventListener("DOMContentLoaded", () => {
+            const STORAGE_KEY = "read_articles";
+            let readArticles = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+            
+            document.querySelectorAll('.article-item').forEach(item => {
+                const url = item.getAttribute('href');
+                if (readArticles.has(url)) {
+                    item.classList.add('read-article');
+                }
+                
+                item.addEventListener('click', () => {
+                    readArticles.add(url);
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify([...readArticles]));
+                    
+                    // Mark all identically-linked items read
+                    document.querySelectorAll(`.article-item[href="${url}"]`).forEach(i => i.classList.add('read-article'));
+                });
+            });
+        });
+    </script>
+</body>
+</html>
