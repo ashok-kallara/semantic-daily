@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News Digest | 2026-08-30</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+    
+:root {
+    --bg-color: #0d1117;
+    --card-bg: rgba(22, 27, 34, 0.4);
+    --hover-bg: rgba(46, 52, 60, 0.6);
+    --border: rgba(255, 255, 255, 0.08);
+    --text-main: #e6edf3;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-glow: rgba(88, 166, 255, 0.15);
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-mono: 'Fira Code', ui-monospace, monospace;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+    background-image: radial-gradient(circle at top right, rgba(46, 160, 67, 0.05), transparent 400px),
+                      radial-gradient(circle at bottom left, var(--accent-glow), transparent 400px);
+    background-attachment: fixed;
+}
+
+.container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
+
+header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.title { font-size: 2rem; font-weight: 700; margin: 0 0 0.25rem 0; }
+.subtitle { color: var(--text-muted); font-size: 0.95rem; }
+
+.stats-bar {
+    display: flex; gap: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; text-align: right;
+}
+.stat { display: flex; flex-direction: column; }
+.stat span:first-child { color: var(--text-muted); font-size: 0.75rem; }
+.stat span:last-child { color: var(--accent); font-weight: 600; }
+
+/* Tabs styling */
+.tabs-container {
+    margin-bottom: 2rem; display: flex; gap: 1rem;
+    border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+    background: transparent; border: none; color: var(--text-muted);
+    font-family: var(--font-sans); font-size: 1.1rem; font-weight: 500;
+    cursor: pointer; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s ease;
+}
+
+.tab-btn:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+.tab-btn.active { color: var(--accent); background: rgba(88, 166, 255, 0.1); font-weight: 600; }
+
+.tab-content { display: none; animation: fadeIn 0.3s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Common card styling */
+.category-group {
+    margin-bottom: 2rem; background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden; backdrop-filter: blur(8px);
+}
+
+/* Express View Accordion */
+.accordion-header {
+    width: 100%; display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.03); border: none; border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem; color: var(--text-main); font-size: 1.1rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+    cursor: pointer; transition: background 0.15s ease;
+}
+.accordion-header:hover { background: rgba(255, 255, 255, 0.06); }
+.accordion-header::after { content: '▼'; font-size: 0.8rem; transition: transform 0.3s ease; color: var(--text-muted); }
+.accordion-header.open::after { transform: rotate(-180deg); }
+.accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; background: transparent; }
+
+/* Category masonry */
+.categories-masonry { column-count: 2; column-gap: 2rem; }
+.masonry-item { break-inside: avoid; margin-bottom: 2rem; }
+.masonry-item .category-title {
+    font-size: 1rem; font-weight: 600; color: var(--text-main); margin: 0; padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+}
+
+.article-list { display: flex; flex-direction: column; }
+.article-item {
+    display: flex; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+    transition: background 0.15s ease; text-decoration: none; color: inherit; gap: 1.25rem; align-items: flex-start;
+}
+.masonry-item .article-item { padding: 0.75rem 1rem; gap: 1rem; }
+.article-item:last-child { border-bottom: none; }
+.article-item:hover { background: var(--hover-bg); }
+
+.article-item.read-article { opacity: 0.5; }
+.article-item.read-article .headline { color: var(--text-muted); }
+
+.score {
+    min-width: 45px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent);
+    background: rgba(88, 166, 255, 0.1); padding: 0.25rem 0; text-align: center; border-radius: 4px; margin-top: 0.15rem;
+}
+.content { flex: 1; min-width: 0; }
+.headline { font-weight: 500; font-size: 1.05rem; margin: 0 0 0.35rem 0; color: var(--text-main); flex-wrap: wrap; display: flex; align-items: baseline; gap: 0.5rem; }
+.summary {
+    font-size: 0.9rem; color: var(--text-muted); margin: 0; display: -webkit-box;
+    -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;
+}
+.view-all {
+    display: block; text-align: center; padding: 0.75rem; color: var(--accent); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: background 0.15s;
+}
+.view-all:hover { background: rgba(88, 166, 255, 0.05); }
+
+@media (max-width: 1024px) {
+    .categories-masonry { column-count: 1; }
+    header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .stats-bar { text-align: left; }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1 class="title">AI Pulse Digest</h1>
+                <div class="subtitle">Curated insights for 2026-08-30</div>
+            </div>
+            <div class="stats-bar">
+                <div class="stat"><span>Analyzed</span><span>877 artifacts</span></div>
+                <div class="stat"><span>Filtered</span><span>406 dupes</span></div>
+                <div class="stat"><span>Curated</span><span>25 items</span></div>
+            </div>
+        </header>
+
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchTab(event, 'express')">✨ Highlights (Top 5)</button>
+            <button class="tab-btn" onclick="switchTab(event, 'detail')">📚 Deep Dive (All)</button>
+        </div>
+        
+        <main id="express" class="tab-content active">
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">uncategorized</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://bsky.app/profile/lion-c.bsky.social/post/3lcpc4ztcmk2n" target="_blank" class="article-item">
+                    <div class="score">↑5838</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Lion Cassens</h3>
+                        <p class="summary">Bsky is being flooded with German speaking AI powered bots.
+A thread on why this is important, ultimately making all social media is unusable. #deutschland #trolls #AI #election
+
+1/ What happened?...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=-uEvDLjTIZc" target="_blank" class="article-item">
+                    <div class="score">↑3284</div>
+                    <div class="content">
+                        <h3 class="headline">‘F**k Flock’: Is the backlash to surveillance cameras winning?</h3>
+                        <p class="summary">Flock cameras have sparked a nationwide debate over privacy and public safety, as law enforcement says the technology is an ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/theoddkepple.bsky.social/post/3llikq5vyzs27" target="_blank" class="article-item">
+                    <div class="score">↑2164</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Andrew "TmsT" Kepple</h3>
+                        <p class="summary">#cowtools #ghibli #farside #hayaomiyazaki #garylarson #ai</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=alRkqZxcpnc" target="_blank" class="article-item">
+                    <div class="score">↑2090</div>
+                    <div class="content">
+                        <h3 class="headline">Mallory Aurichio Exit Interview | BB28 Week 7</h3>
+                        <p class="summary">Big Brother 28 fans, buckle up for a revealing exit interview with host Taran Armstrong and evicted houseguest Mallory. The fallout ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=TWCSvvTfJNU" target="_blank" class="article-item">
+                    <div class="score">↑1496</div>
+                    <div class="content">
+                        <h3 class="headline">Top 10 Repos: 2,282 Claude plugins, free codex, &amp; 8 more.</h3>
+                        <p class="summary">Resources: https://thenextnewthing.ai/l/github-repos-aug28 Presented by Zapier: https://zapier.com/ Andrew Warner and Adam ...</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 25 articles in uncategorized →</a>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+        <main id="detail" class="tab-content categories-masonry">
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">uncategorized</h2>
+                <div class="article-list">
+                    
+                <a href="https://bsky.app/profile/lion-c.bsky.social/post/3lcpc4ztcmk2n" target="_blank" class="article-item">
+                    <div class="score">↑5838</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Lion Cassens</h3>
+                        <p class="summary">Bsky is being flooded with German speaking AI powered bots.
+A thread on why this is important, ultimately making all social media is unusable. #deutschland #trolls #AI #election
+
+1/ What happened?...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=-uEvDLjTIZc" target="_blank" class="article-item">
+                    <div class="score">↑3284</div>
+                    <div class="content">
+                        <h3 class="headline">‘F**k Flock’: Is the backlash to surveillance cameras winning?</h3>
+                        <p class="summary">Flock cameras have sparked a nationwide debate over privacy and public safety, as law enforcement says the technology is an ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/theoddkepple.bsky.social/post/3llikq5vyzs27" target="_blank" class="article-item">
+                    <div class="score">↑2164</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Andrew "TmsT" Kepple</h3>
+                        <p class="summary">#cowtools #ghibli #farside #hayaomiyazaki #garylarson #ai</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=alRkqZxcpnc" target="_blank" class="article-item">
+                    <div class="score">↑2090</div>
+                    <div class="content">
+                        <h3 class="headline">Mallory Aurichio Exit Interview | BB28 Week 7</h3>
+                        <p class="summary">Big Brother 28 fans, buckle up for a revealing exit interview with host Taran Armstrong and evicted houseguest Mallory. The fallout ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=TWCSvvTfJNU" target="_blank" class="article-item">
+                    <div class="score">↑1496</div>
+                    <div class="content">
+                        <h3 class="headline">Top 10 Repos: 2,282 Claude plugins, free codex, &amp; 8 more.</h3>
+                        <p class="summary">Resources: https://thenextnewthing.ai/l/github-repos-aug28 Presented by Zapier: https://zapier.com/ Andrew Warner and Adam ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/XiaoDuoYa/codex-with-chatgpt" target="_blank" class="article-item">
+                    <div class="score">↑1266</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Weekly Top Repos): XiaoDuoYa/codex-with-chatgpt</h3>
+                        <p class="summary">Language: TypeScript
+Description: ChatGPT thinks. Codex works. Use ChatGPT as the planning brain while keeping the Codex harness.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=Wr_tz54sSPY" target="_blank" class="article-item">
+                    <div class="score">↑943</div>
+                    <div class="content">
+                        <h3 class="headline">The AI revolution didn’t happen overnight—here’s why | Michael Wooldridge | TEDxManchester</h3>
+                        <p class="summary">In this insightful talk, Professor Michael Wooldridge of Oxford University pulls back the curtain on the "overnight" AI revolution.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=IyaPJtR3-00" target="_blank" class="article-item">
+                    <div class="score">↑697</div>
+                    <div class="content">
+                        <h3 class="headline">24hrs Inside the $300M Startup Building the Infrastructure Layer for AI Agents</h3>
+                        <p class="summary">In this episode, I go behind the scenes with James Everingham, Chris Waterson and the team at Guild.ai. Guild.ai is building the ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.tomshardware.com/software/linux/california-lawmakers-unanimously-pass-linux-exemption-from-age-verification-law-software-distributed-under-the-gpl-mit-bsd-and-apache-licenses-are-exempt" target="_blank" class="article-item">
+                    <div class="score">↑507</div>
+                    <div class="content">
+                        <h3 class="headline">California lawmakers unanimously pass Linux exemption from age-verification law</h3>
+                        <p class="summary">(Image credit: Getty Images) Copy link Facebook X Whatsapp Reddit Pinterest Flipboard Email Share this article 19 Join the conversation Follow us Add us as a preferred source on Google Newsletter...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=gROKrW59Mn4" target="_blank" class="article-item">
+                    <div class="score">↑438</div>
+                    <div class="content">
+                        <h3 class="headline">Something Is Going Very Wrong With Google’s AI</h3>
+                        <p class="summary">Learn AI With Me For Free - https://www.skool.com/the-aigrid-community-1726 Subscribe To My Newsletter ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://newsletter.eng-leadership.com/p/good-culture-is-the-biggest-productivity" target="_blank" class="article-item">
+                    <div class="score">↑420</div>
+                    <div class="content">
+                        <h3 class="headline">Good Culture Is the Biggest Productivity Hack, Not AI</h3>
+                        <p class="summary">Good Culture is the Biggest Productivity Hack, Not AI AI definitely helps with productivity, but only when you have the right culture in place first! Gregor Ojstersek Aug 24, 2026 79 6 18 Share This...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.theguardian.com/us-news/2026/aug/29/trump-dhs-1509-summons-records-journalists-nonprofits" target="_blank" class="article-item">
+                    <div class="score">↑420</div>
+                    <div class="content">
+                        <h3 class="headline">DHS is using obscure law to snoop on journalists, non-profits, unions</h3>
+                        <p class="summary">Federal agents in Newark, New Jersey, on 30 May. Photograph: Julius Constantine Motal/The Guardian View image in fullscreen Federal agents in Newark, New Jersey, on 30 May. Photograph: Julius...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.texastribune.org/2026/08/28/texas-flock-cameras-auto-insurance-fee-mvcpa-grants/" target="_blank" class="article-item">
+                    <div class="score">↑368</div>
+                    <div class="content">
+                        <h3 class="headline">Lawmakers added $1 to car insurance policies. That money paid for Flock cameras</h3>
+                        <p class="summary">Never miss a story! The Texas Tribune's daily newsletter gives readers the most essential Texas news. Sign up for The Brief. Audio recording is automated for accessibility. Humans wrote and edited...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.tencent.com/tencent-releases-and-open-sources-tencent-hy4-preview/" target="_blank" class="article-item">
+                    <div class="score">↑355</div>
+                    <div class="content">
+                        <h3 class="headline">Hy4 preview</h3>
+                        <p class="summary">Ranked among the top tier of open-source models, Hy4 preview is built for real-world productivity tasks, delivering outstanding performance across coding, office work, and scientific research Tencent...</p>
+                    </div>
+                </a>
+                
+                <a href="https://danluu.com/bug-blind/" target="_blank" class="article-item">
+                    <div class="score">↑328</div>
+                    <div class="content">
+                        <h3 class="headline">Bug Blindness</h3>
+                        <p class="summary">I used to wonder why I see so many more bugs than most people. I easily observe hundreds to thousands of bugs per week and nothing seems to work , but most people I talk to don't see anything like...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=gvPMjz08DDA" target="_blank" class="article-item">
+                    <div class="score">↑304</div>
+                    <div class="content">
+                        <h3 class="headline">AI Agent Builds My Game in a Loop Until It&#39;s Done - Tesana AI</h3>
+                        <p class="summary">What if you pack the best AI models into one agent, give it game-dev skills, animation libraries, 2D and 3D generation, and let it ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=gbxbx71nppg" target="_blank" class="article-item">
+                    <div class="score">↑291</div>
+                    <div class="content">
+                        <h3 class="headline">Gemini Notebook OS Could Replace Every AI Tool You Use</h3>
+                        <p class="summary">Get the Agent OS & Gemini Notebook Masterclass https://www.skool.com/ai-profit-lab-7462/about Want to make money and ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/techcrunch.com/post/3ljsv4gd2ft23" target="_blank" class="article-item">
+                    <div class="score">↑244</div>
+                    <div class="content">
+                        <h3 class="headline">Post by TechCrunch</h3>
+                        <p class="summary">Signal President Meredith Whittaker calls out agentic AI as having ‘profound’ security and privacy issues</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/hey.paris/post/3lkuelbujdk2v" target="_blank" class="article-item">
+                    <div class="score">↑197</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Dr Paris Buttfield-Addison</h3>
+                        <p class="summary">with apologies, but #gdc25 has led to another rant
+
+hey.paris/posts/constr...
+
+#gdc2025 #gdc #ai #llm #narrative #writing #gamedev</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/hypervisible.blacksky.app/post/3ljszbjx67s2c" target="_blank" class="article-item">
+                    <div class="score">↑134</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Hypervisible </h3>
+                        <p class="summary">“With agentic AI, Whittaker warned we’d further undermine privacy and security in the name of a ‘magic genie bot that’s going to take care of the exigencies of life…’”</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/danicedmarshall.bsky.social/post/3lih72toepl2s" target="_blank" class="article-item">
+                    <div class="score">↑132</div>
+                    <div class="content">
+                        <h3 class="headline">Post by DaNice D Marshall    (pronounced duh-NYSE)</h3>
+                        <p class="summary">Surely there’s a lawyer who’s willing to take this case?
+
+A class action lawsuit against #elonwithanF
+
+An immigrant rummaging through Americans’ data has to be illegal in at least one forwarding...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=qV27D0ApzR0" target="_blank" class="article-item">
+                    <div class="score">↑113</div>
+                    <div class="content">
+                        <h3 class="headline">How To Start Making YouTube Shorts Using AI</h3>
+                        <p class="summary">YouTube Shorts Automation has Never been easier! Try Higgsfield: https://higgsfield.ai/ai-video?fpr=utm&fp_sid=skai Hey Friends ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/mahmoudhajri.bsky.social/post/3lbod2vwve22v" target="_blank" class="article-item">
+                    <div class="score">↑97</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Mahmoud Hajri</h3>
+                        <p class="summary">Machine Learning Hyperparameters
+#machinelearning #datascience #artificialintelligence #python</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/AlexTam930/crossPlatformAi" target="_blank" class="article-item">
+                    <div class="score">↑21</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Daily Top Repos): AlexTam930/crossPlatformAi</h3>
+                        <p class="summary">Language: HTML
+Description: An extensible cross-industry data fusion AI platform based on user profile modeling. Built with Python and Flask, featuring multi-source data integration, custom fusion...</p>
+                    </div>
+                </a>
+                
+                <a href="https://people.kernel.org/monsieuricon/creepy-crawlies" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Creepy Crawlies</h3>
+                        <p class="summary">Comments</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+        </main>
+    </div>
+    <script>
+        // Open all accordions by default
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                toggleAccordion(header);
+            });
+        });
+
+        // Tab Switching Logic
+        function switchTab(e, tabId) {
+            if (e) e.preventDefault();
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // If triggered by a tab button, set it active, else find the tab button for that tabId
+            let tabBtn = (e && e.target && e.target.classList.contains('tab-btn')) ? e.target : document.querySelector(`.tab-btn[onclick*="${tabId}"]`);
+            if (tabBtn) tabBtn.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            // scroll to top if clicked view all
+            if (e && e.target && e.target.classList.contains('view-all')) {
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // Accordion Logic
+        function toggleAccordion(headerElement) {
+            headerElement.classList.toggle('open');
+            const body = headerElement.nextElementSibling;
+            if (headerElement.classList.contains('open')) {
+                body.style.maxHeight = body.scrollHeight + "px";
+            } else {
+                body.style.maxHeight = "0";
+            }
+        }
+
+        // Read article persistence
+        document.addEventListener("DOMContentLoaded", () => {
+            const STORAGE_KEY = "read_articles";
+            let readArticles = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+            
+            document.querySelectorAll('.article-item').forEach(item => {
+                const url = item.getAttribute('href');
+                if (readArticles.has(url)) {
+                    item.classList.add('read-article');
+                }
+                
+                item.addEventListener('click', () => {
+                    readArticles.add(url);
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify([...readArticles]));
+                    
+                    // Mark all identically-linked items read
+                    document.querySelectorAll(`.article-item[href="${url}"]`).forEach(i => i.classList.add('read-article'));
+                });
+            });
+        });
+    </script>
+</body>
+</html>
