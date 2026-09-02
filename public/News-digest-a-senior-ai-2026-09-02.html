@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News Digest | 2026-09-02</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+    
+:root {
+    --bg-color: #0d1117;
+    --card-bg: rgba(22, 27, 34, 0.4);
+    --hover-bg: rgba(46, 52, 60, 0.6);
+    --border: rgba(255, 255, 255, 0.08);
+    --text-main: #e6edf3;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-glow: rgba(88, 166, 255, 0.15);
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-mono: 'Fira Code', ui-monospace, monospace;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+    background-image: radial-gradient(circle at top right, rgba(46, 160, 67, 0.05), transparent 400px),
+                      radial-gradient(circle at bottom left, var(--accent-glow), transparent 400px);
+    background-attachment: fixed;
+}
+
+.container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
+
+header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.title { font-size: 2rem; font-weight: 700; margin: 0 0 0.25rem 0; }
+.subtitle { color: var(--text-muted); font-size: 0.95rem; }
+
+.stats-bar {
+    display: flex; gap: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; text-align: right;
+}
+.stat { display: flex; flex-direction: column; }
+.stat span:first-child { color: var(--text-muted); font-size: 0.75rem; }
+.stat span:last-child { color: var(--accent); font-weight: 600; }
+
+/* Tabs styling */
+.tabs-container {
+    margin-bottom: 2rem; display: flex; gap: 1rem;
+    border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+    background: transparent; border: none; color: var(--text-muted);
+    font-family: var(--font-sans); font-size: 1.1rem; font-weight: 500;
+    cursor: pointer; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s ease;
+}
+
+.tab-btn:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+.tab-btn.active { color: var(--accent); background: rgba(88, 166, 255, 0.1); font-weight: 600; }
+
+.tab-content { display: none; animation: fadeIn 0.3s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Common card styling */
+.category-group {
+    margin-bottom: 2rem; background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden; backdrop-filter: blur(8px);
+}
+
+/* Express View Accordion */
+.accordion-header {
+    width: 100%; display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.03); border: none; border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem; color: var(--text-main); font-size: 1.1rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+    cursor: pointer; transition: background 0.15s ease;
+}
+.accordion-header:hover { background: rgba(255, 255, 255, 0.06); }
+.accordion-header::after { content: '▼'; font-size: 0.8rem; transition: transform 0.3s ease; color: var(--text-muted); }
+.accordion-header.open::after { transform: rotate(-180deg); }
+.accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; background: transparent; }
+
+/* Category masonry */
+.categories-masonry { column-count: 2; column-gap: 2rem; }
+.masonry-item { break-inside: avoid; margin-bottom: 2rem; }
+.masonry-item .category-title {
+    font-size: 1rem; font-weight: 600; color: var(--text-main); margin: 0; padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+}
+
+.article-list { display: flex; flex-direction: column; }
+.article-item {
+    display: flex; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+    transition: background 0.15s ease; text-decoration: none; color: inherit; gap: 1.25rem; align-items: flex-start;
+}
+.masonry-item .article-item { padding: 0.75rem 1rem; gap: 1rem; }
+.article-item:last-child { border-bottom: none; }
+.article-item:hover { background: var(--hover-bg); }
+
+.article-item.read-article { opacity: 0.5; }
+.article-item.read-article .headline { color: var(--text-muted); }
+
+.score {
+    min-width: 45px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent);
+    background: rgba(88, 166, 255, 0.1); padding: 0.25rem 0; text-align: center; border-radius: 4px; margin-top: 0.15rem;
+}
+.content { flex: 1; min-width: 0; }
+.headline { font-weight: 500; font-size: 1.05rem; margin: 0 0 0.35rem 0; color: var(--text-main); flex-wrap: wrap; display: flex; align-items: baseline; gap: 0.5rem; }
+.summary {
+    font-size: 0.9rem; color: var(--text-muted); margin: 0; display: -webkit-box;
+    -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;
+}
+.view-all {
+    display: block; text-align: center; padding: 0.75rem; color: var(--accent); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: background 0.15s;
+}
+.view-all:hover { background: rgba(88, 166, 255, 0.05); }
+
+@media (max-width: 1024px) {
+    .categories-masonry { column-count: 1; }
+    header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .stats-bar { text-align: left; }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1 class="title">AI Pulse Digest</h1>
+                <div class="subtitle">Curated insights for 2026-09-02</div>
+            </div>
+            <div class="stats-bar">
+                <div class="stat"><span>Analyzed</span><span>989 artifacts</span></div>
+                <div class="stat"><span>Filtered</span><span>461 dupes</span></div>
+                <div class="stat"><span>Curated</span><span>25 items</span></div>
+            </div>
+        </header>
+
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchTab(event, 'express')">✨ Highlights (Top 5)</button>
+            <button class="tab-btn" onclick="switchTab(event, 'detail')">📚 Deep Dive (All)</button>
+        </div>
+        
+        <main id="express" class="tab-content active">
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">uncategorized</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=txEmFM5cg2Q" target="_blank" class="article-item">
+                    <div class="score">↑9253</div>
+                    <div class="content">
+                        <h3 class="headline">‘IT’S HAPPENING’: AI Is COMPLETELY IGNORING Human Commands | The Kyle Kulinski Show</h3>
+                        <p class="summary">Support The Show On Patreon!: https://www.patreon.com/seculartalk Subscribe to Krystal Kyle & Friends On Substack!</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/artistseanm.bsky.social/post/3mnzdtnv2f22v" target="_blank" class="article-item">
+                    <div class="score">↑2272</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Sean M</h3>
+                        <p class="summary">#datacenters are billionaire cash grabs at the cost of the local communities who will pay higher utilities costs, have water resources comprised and on top of it, #CEOs want us to fund it through...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/keithwilson.eu/post/3loi7nlk63s2e" target="_blank" class="article-item">
+                    <div class="score">↑1753</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Dr Keith Wilson 💭</h3>
+                        <p class="summary">Bizarrely framed article about the people (all women) who ‘refuse to use AI’. And a #philosophy professor who says “The moment to opt out of #AI has already passed”. Oh well. That’s that then. 🤷‍♂️...</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/crmne/fastpotify" target="_blank" class="article-item">
+                    <div class="score">↑1744</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Weekly Top Repos): crmne/fastpotify</h3>
+                        <p class="summary">Language: Rust
+Description: Spotify, native and fast. One lightweight Rust app for your whole library, local playback, and Spotify Connect on Linux, macOS, and Windows.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.anthropic.com/claude-fable-and-mythos-5-1" target="_blank" class="article-item">
+                    <div class="score">↑1342</div>
+                    <div class="content">
+                        <h3 class="headline">Claude Fable 5.1 and Claude Mythos 5.1</h3>
+                        <p class="summary">What's new in Claude Fable 5.1 – https://platform.claude.com/docs/en/models/fable-5-1/whats-n... System Card: https://www-cdn.anthropic.com/0339e6a7c5c7b87f5c07798616dc32...</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 25 articles in uncategorized →</a>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+        <main id="detail" class="tab-content categories-masonry">
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">uncategorized</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=txEmFM5cg2Q" target="_blank" class="article-item">
+                    <div class="score">↑9253</div>
+                    <div class="content">
+                        <h3 class="headline">‘IT’S HAPPENING’: AI Is COMPLETELY IGNORING Human Commands | The Kyle Kulinski Show</h3>
+                        <p class="summary">Support The Show On Patreon!: https://www.patreon.com/seculartalk Subscribe to Krystal Kyle & Friends On Substack!</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/artistseanm.bsky.social/post/3mnzdtnv2f22v" target="_blank" class="article-item">
+                    <div class="score">↑2272</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Sean M</h3>
+                        <p class="summary">#datacenters are billionaire cash grabs at the cost of the local communities who will pay higher utilities costs, have water resources comprised and on top of it, #CEOs want us to fund it through...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/keithwilson.eu/post/3loi7nlk63s2e" target="_blank" class="article-item">
+                    <div class="score">↑1753</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Dr Keith Wilson 💭</h3>
+                        <p class="summary">Bizarrely framed article about the people (all women) who ‘refuse to use AI’. And a #philosophy professor who says “The moment to opt out of #AI has already passed”. Oh well. That’s that then. 🤷‍♂️...</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/crmne/fastpotify" target="_blank" class="article-item">
+                    <div class="score">↑1744</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Weekly Top Repos): crmne/fastpotify</h3>
+                        <p class="summary">Language: Rust
+Description: Spotify, native and fast. One lightweight Rust app for your whole library, local playback, and Spotify Connect on Linux, macOS, and Windows.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.anthropic.com/claude-fable-and-mythos-5-1" target="_blank" class="article-item">
+                    <div class="score">↑1342</div>
+                    <div class="content">
+                        <h3 class="headline">Claude Fable 5.1 and Claude Mythos 5.1</h3>
+                        <p class="summary">What's new in Claude Fable 5.1 – https://platform.claude.com/docs/en/models/fable-5-1/whats-n... System Card: https://www-cdn.anthropic.com/0339e6a7c5c7b87f5c07798616dc32...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.newsonaut.com/articles/hang-on-to-your-firefox" target="_blank" class="article-item">
+                    <div class="score">↑885</div>
+                    <div class="content">
+                        <h3 class="headline">Hang on to Your Firefox</h3>
+                        <p class="summary">Monday, August 31, 2026 Hang on to your Firefox! “Don’t throw the baby out with the bathwater.” According to Wikipedia , it’s an adage that goes back to 1512 in Germany. People have known for...</p>
+                    </div>
+                </a>
+                
+                <a href="https://danluu.com/zitron/" target="_blank" class="article-item">
+                    <div class="score">↑807</div>
+                    <div class="content">
+                        <h3 class="headline">How accurate have Ed Zitron's AI skeptic predictions been?</h3>
+                        <p class="summary">I was curious how well the predictions of the most widely cited AI skeptic I've seen (Ed Zitron) have done, so I looked at how his predictions panned out. To disclose my own biases, I've never had a...</p>
+                    </div>
+                </a>
+                
+                <a href="https://mvakde.github.io/blog/44-on-arc-1/" target="_blank" class="article-item">
+                    <div class="score">↑635</div>
+                    <div class="content">
+                        <h3 class="headline">I trained a small transformer in 1.5hrs and it beats many LLMs</h3>
+                        <p class="summary">I trained a small transformer from scratch in 1.5hrs on a 5090 Beats many LLMs, and scores the same as TRM/HRM This is an upgrade to my previous model Faster, better, cheaper and still open source....</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=5ctTkkJQpug" target="_blank" class="article-item">
+                    <div class="score">↑555</div>
+                    <div class="content">
+                        <h3 class="headline">Qwen 3.8 Flash Next + HERMES AGENT = AWESOME LOCAL AI AGENTS!</h3>
+                        <p class="summary">Hermes Agent and Qwen 3.8 running TWICE as fast finally gets this model to local ai agentic gold standard.</p>
+                    </div>
+                </a>
+                
+                <a href="https://blog.mozilla.org/en/firefox/ad-blocker-on-ios/" target="_blank" class="article-item">
+                    <div class="score">↑553</div>
+                    <div class="content">
+                        <h3 class="headline">Introducing Ad Blocker for Firefox on iOS</h3>
+                        <p class="summary">Introducing Ad Blocker for Firefox on iOS</p>
+                    </div>
+                </a>
+                
+                <a href="https://gitlab.com/AuroraOSS/AuroraStore/-/work_items/1566" target="_blank" class="article-item">
+                    <div class="score">↑536</div>
+                    <div class="content">
+                        <h3 class="headline">Play Store blocks AuroraStore, hurting GrapheneOS users</h3>
+                        <p class="summary">Aurora Store returns a “&$Server busy, please try again later.” error when trying to install an application <!--- - Please read Troubleshooting and FAQs on the project's website before writing an...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=UbylWXukvR8" target="_blank" class="article-item">
+                    <div class="score">↑522</div>
+                    <div class="content">
+                        <h3 class="headline">11 Tiny Coding Agent Fixes With A Stupid Amount Of Payoff</h3>
+                        <p class="summary">Some of the best guidance I've gotten for using coding agents has come in the form of simple tips and tricks. Small changes to ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://simonwillison.net/2026/Sep/1/codex-libreoffice/" target="_blank" class="article-item">
+                    <div class="score">↑458</div>
+                    <div class="content">
+                        <h3 class="headline">The ChatGPT/Codex app bundles a full copy of LibreOffice</h3>
+                        <p class="summary">Codex bundles LibreOffice Simon Willison’s Weblog Subscribe Sponsored by: Greptile &mdash; The Al code reviewer that runs your code. Catch bugs that only show up at runtime. Try it for free 1st...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=KwTxOxq6uu4" target="_blank" class="article-item">
+                    <div class="score">↑319</div>
+                    <div class="content">
+                        <h3 class="headline">Anthropic’s Compute Bet, Musk on AI, Apple’s New CEO | Bloomberg Tech 9/01/2026</h3>
+                        <p class="summary">Bloomberg's Ed Ludlow breaks down Anthropic's $35 billion computing deal with Nvidia-backed cloud provider Lambda as the AI ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://krebsonsecurity.com/2026/09/fbi-probes-service-selling-153m-drivers-licenses/" target="_blank" class="article-item">
+                    <div class="score">↑315</div>
+                    <div class="content">
+                        <h3 class="headline">FBI Probes Service Selling 153M+ Drivers Licenses</h3>
+                        <p class="summary">A new identity theft service launched on the dark web this week is selling digital scans of more than 153 million drivers licenses from people in the United States and Canada. Based on interviews...</p>
+                    </div>
+                </a>
+                
+                <a href="https://moviescenemap.com/" target="_blank" class="article-item">
+                    <div class="score">↑309</div>
+                    <div class="content">
+                        <h3 class="headline">Movie Scene Map – 13,312 films, series, games, anime and manga</h3>
+                        <p class="summary">filmed" an AI Overview fills the first screen and cites Reddit and IMDb. The film pages sit at position 8 to 11 on those queries and take a 0.2% clickthrough. "filming locations map" behaves...</p>
+                    </div>
+                </a>
+                
+                <a href="https://ambientcss.vercel.app/" target="_blank" class="article-item">
+                    <div class="score">↑296</div>
+                    <div class="content">
+                        <h3 class="headline">Ambient CSS v3 – Blender meets CSS</h3>
+                        <p class="summary">Ambient CSS — a physics-based lighting system for CSS</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=DQ_2omv3c4E" target="_blank" class="article-item">
+                    <div class="score">↑285</div>
+                    <div class="content">
+                        <h3 class="headline">The ONLY ChatGPT Work Tutorial You Need (AI Agents Do All Your Work)</h3>
+                        <p class="summary">Join our free AI Community (templates, workflows, AI news, making money with AI, etc): https://www.skool.com/ai-os/ ➡️ Get ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=Rrr2gdbvNFU" target="_blank" class="article-item">
+                    <div class="score">↑273</div>
+                    <div class="content">
+                        <h3 class="headline">Koray Kavukcuoglu on frontier models, coding agents, and building AGI</h3>
+                        <p class="summary">Google DeepMind SVP and Chief AI Architect Koray Kavukcuoglu joins host Logan Kilpatrick to reflect on the journey from ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=S8301cjjyTw" target="_blank" class="article-item">
+                    <div class="score">↑237</div>
+                    <div class="content">
+                        <h3 class="headline">AI costs drop while demand surges</h3>
+                        <p class="summary">A closely followed measure of artificial intelligence token prices touched fresh lows this week, the latest sign of deflating prices in ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=RgNqmo7dGg8" target="_blank" class="article-item">
+                    <div class="score">↑223</div>
+                    <div class="content">
+                        <h3 class="headline">Stop letting AI write code until you fix this one thing (with Antigravity) | The Agent Factory</h3>
+                        <p class="summary">Google Antigravity → https://g.dev/ai/google-antigravity Vibecode and Secure an AI Agent Lifecycle with Antigravity and TDD ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=F0lWm-wt0rk" target="_blank" class="article-item">
+                    <div class="score">↑176</div>
+                    <div class="content">
+                        <h3 class="headline">Ternus tells Apple employees a ‘huge launch’ is coming next week</h3>
+                        <p class="summary">CNBC's MacKenzie Sigalos reports on John Ternus' first day as CEO and the immediate challenges facing Apple's new leader.</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/dreamers-laboratory/agent-fleet-manager" target="_blank" class="article-item">
+                    <div class="score">↑168</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Daily Top Repos): dreamers-laboratory/agent-fleet-manager</h3>
+                        <p class="summary">Language: Python
+Description: A general-purpose engine for large-scale, repeated information gathering by a fleet of workers.</p>
+                    </div>
+                </a>
+                
+                <a href="https://trellner.com/reports/manufactured-sources-behind-ai-recommendations/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Three sites made 215,128 "best software" pages for AI. Perplexity cites them</h3>
+                        <p class="summary">Comments</p>
+                    </div>
+                </a>
+                
+                <a href="https://grapheneos.social/@GrapheneOS/117194007157499435" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">GrapheneOS says Pixel 11 has MTE support after all</h3>
+                        <p class="summary">Comments</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+        </main>
+    </div>
+    <script>
+        // Open all accordions by default
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                toggleAccordion(header);
+            });
+        });
+
+        // Tab Switching Logic
+        function switchTab(e, tabId) {
+            if (e) e.preventDefault();
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // If triggered by a tab button, set it active, else find the tab button for that tabId
+            let tabBtn = (e && e.target && e.target.classList.contains('tab-btn')) ? e.target : document.querySelector(`.tab-btn[onclick*="${tabId}"]`);
+            if (tabBtn) tabBtn.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            // scroll to top if clicked view all
+            if (e && e.target && e.target.classList.contains('view-all')) {
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // Accordion Logic
+        function toggleAccordion(headerElement) {
+            headerElement.classList.toggle('open');
+            const body = headerElement.nextElementSibling;
+            if (headerElement.classList.contains('open')) {
+                body.style.maxHeight = body.scrollHeight + "px";
+            } else {
+                body.style.maxHeight = "0";
+            }
+        }
+
+        // Read article persistence
+        document.addEventListener("DOMContentLoaded", () => {
+            const STORAGE_KEY = "read_articles";
+            let readArticles = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+            
+            document.querySelectorAll('.article-item').forEach(item => {
+                const url = item.getAttribute('href');
+                if (readArticles.has(url)) {
+                    item.classList.add('read-article');
+                }
+                
+                item.addEventListener('click', () => {
+                    readArticles.add(url);
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify([...readArticles]));
+                    
+                    // Mark all identically-linked items read
+                    document.querySelectorAll(`.article-item[href="${url}"]`).forEach(i => i.classList.add('read-article'));
+                });
+            });
+        });
+    </script>
+</body>
+</html>
