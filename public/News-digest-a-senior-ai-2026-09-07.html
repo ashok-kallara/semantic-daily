@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News Digest | 2026-09-07</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+    
+:root {
+    --bg-color: #0d1117;
+    --card-bg: rgba(22, 27, 34, 0.4);
+    --hover-bg: rgba(46, 52, 60, 0.6);
+    --border: rgba(255, 255, 255, 0.08);
+    --text-main: #e6edf3;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-glow: rgba(88, 166, 255, 0.15);
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-mono: 'Fira Code', ui-monospace, monospace;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+    background-image: radial-gradient(circle at top right, rgba(46, 160, 67, 0.05), transparent 400px),
+                      radial-gradient(circle at bottom left, var(--accent-glow), transparent 400px);
+    background-attachment: fixed;
+}
+
+.container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
+
+header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.title { font-size: 2rem; font-weight: 700; margin: 0 0 0.25rem 0; }
+.subtitle { color: var(--text-muted); font-size: 0.95rem; }
+
+.stats-bar {
+    display: flex; gap: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; text-align: right;
+}
+.stat { display: flex; flex-direction: column; }
+.stat span:first-child { color: var(--text-muted); font-size: 0.75rem; }
+.stat span:last-child { color: var(--accent); font-weight: 600; }
+
+/* Tabs styling */
+.tabs-container {
+    margin-bottom: 2rem; display: flex; gap: 1rem;
+    border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+    background: transparent; border: none; color: var(--text-muted);
+    font-family: var(--font-sans); font-size: 1.1rem; font-weight: 500;
+    cursor: pointer; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s ease;
+}
+
+.tab-btn:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+.tab-btn.active { color: var(--accent); background: rgba(88, 166, 255, 0.1); font-weight: 600; }
+
+.tab-content { display: none; animation: fadeIn 0.3s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Common card styling */
+.category-group {
+    margin-bottom: 2rem; background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden; backdrop-filter: blur(8px);
+}
+
+/* Express View Accordion */
+.accordion-header {
+    width: 100%; display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.03); border: none; border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem; color: var(--text-main); font-size: 1.1rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+    cursor: pointer; transition: background 0.15s ease;
+}
+.accordion-header:hover { background: rgba(255, 255, 255, 0.06); }
+.accordion-header::after { content: '▼'; font-size: 0.8rem; transition: transform 0.3s ease; color: var(--text-muted); }
+.accordion-header.open::after { transform: rotate(-180deg); }
+.accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; background: transparent; }
+
+/* Category masonry */
+.categories-masonry { column-count: 2; column-gap: 2rem; }
+.masonry-item { break-inside: avoid; margin-bottom: 2rem; }
+.masonry-item .category-title {
+    font-size: 1rem; font-weight: 600; color: var(--text-main); margin: 0; padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+}
+
+.article-list { display: flex; flex-direction: column; }
+.article-item {
+    display: flex; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+    transition: background 0.15s ease; text-decoration: none; color: inherit; gap: 1.25rem; align-items: flex-start;
+}
+.masonry-item .article-item { padding: 0.75rem 1rem; gap: 1rem; }
+.article-item:last-child { border-bottom: none; }
+.article-item:hover { background: var(--hover-bg); }
+
+.article-item.read-article { opacity: 0.5; }
+.article-item.read-article .headline { color: var(--text-muted); }
+
+.score {
+    min-width: 45px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent);
+    background: rgba(88, 166, 255, 0.1); padding: 0.25rem 0; text-align: center; border-radius: 4px; margin-top: 0.15rem;
+}
+.content { flex: 1; min-width: 0; }
+.headline { font-weight: 500; font-size: 1.05rem; margin: 0 0 0.35rem 0; color: var(--text-main); flex-wrap: wrap; display: flex; align-items: baseline; gap: 0.5rem; }
+.summary {
+    font-size: 0.9rem; color: var(--text-muted); margin: 0; display: -webkit-box;
+    -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;
+}
+.view-all {
+    display: block; text-align: center; padding: 0.75rem; color: var(--accent); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: background 0.15s;
+}
+.view-all:hover { background: rgba(88, 166, 255, 0.05); }
+
+@media (max-width: 1024px) {
+    .categories-masonry { column-count: 1; }
+    header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .stats-bar { text-align: left; }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1 class="title">AI Pulse Digest</h1>
+                <div class="subtitle">Curated insights for 2026-09-07</div>
+            </div>
+            <div class="stats-bar">
+                <div class="stat"><span>Analyzed</span><span>1295 artifacts</span></div>
+                <div class="stat"><span>Filtered</span><span>740 dupes</span></div>
+                <div class="stat"><span>Curated</span><span>25 items</span></div>
+            </div>
+        </header>
+
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchTab(event, 'express')">✨ Highlights (Top 5)</button>
+            <button class="tab-btn" onclick="switchTab(event, 'detail')">📚 Deep Dive (All)</button>
+        </div>
+        
+        <main id="express" class="tab-content active">
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">uncategorized</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://www.youtube.com/watch?v=DR1dvz70jq0" target="_blank" class="article-item">
+                    <div class="score">↑20008</div>
+                    <div class="content">
+                        <h3 class="headline">Trump gets HUMILIATING NEWS ahead of this week’s midterm convention</h3>
+                        <p class="summary">BREAKING #news: Order Brian's new book, THE DAY AFTER: https://www.harpercollins.com/pages/thedayafter Follow/subscribe ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/enginvir.bsky.social/post/3m5w3bpesls2e" target="_blank" class="article-item">
+                    <div class="score">↑9262</div>
+                    <div class="content">
+                        <h3 class="headline">Post by V I R</h3>
+                        <p class="summary">"Microsoft warns that Windows 11's agentic AI could install malware on your PC: 'Only enable this feature if you understand the security implications.'"
+
+bro what--
+what are we doing here, exactly,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/lion-c.bsky.social/post/3lcpc4ztcmk2n" target="_blank" class="article-item">
+                    <div class="score">↑5837</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Lion Cassens</h3>
+                        <p class="summary">Bsky is being flooded with German speaking AI powered bots.
+A thread on why this is important, ultimately making all social media is unusable. #deutschland #trolls #AI #election
+
+1/ What happened?...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/theoddkepple.bsky.social/post/3llikq5vyzs27" target="_blank" class="article-item">
+                    <div class="score">↑2165</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Andrew "TmsT" Kepple</h3>
+                        <p class="summary">#cowtools #ghibli #farside #hayaomiyazaki #garylarson #ai</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/ashemag/human-atlas" target="_blank" class="article-item">
+                    <div class="score">↑1862</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Weekly Top Repos): ashemag/human-atlas</h3>
+                        <p class="summary">Language: TypeScript
+Description: Open-source 3D anatomy explorer: 2,234 selectable BodyParts3D meshes, system layers, search, and exploded views.</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 25 articles in uncategorized →</a>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+        <main id="detail" class="tab-content categories-masonry">
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">uncategorized</h2>
+                <div class="article-list">
+                    
+                <a href="https://www.youtube.com/watch?v=DR1dvz70jq0" target="_blank" class="article-item">
+                    <div class="score">↑20008</div>
+                    <div class="content">
+                        <h3 class="headline">Trump gets HUMILIATING NEWS ahead of this week’s midterm convention</h3>
+                        <p class="summary">BREAKING #news: Order Brian's new book, THE DAY AFTER: https://www.harpercollins.com/pages/thedayafter Follow/subscribe ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/enginvir.bsky.social/post/3m5w3bpesls2e" target="_blank" class="article-item">
+                    <div class="score">↑9262</div>
+                    <div class="content">
+                        <h3 class="headline">Post by V I R</h3>
+                        <p class="summary">"Microsoft warns that Windows 11's agentic AI could install malware on your PC: 'Only enable this feature if you understand the security implications.'"
+
+bro what--
+what are we doing here, exactly,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/lion-c.bsky.social/post/3lcpc4ztcmk2n" target="_blank" class="article-item">
+                    <div class="score">↑5837</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Lion Cassens</h3>
+                        <p class="summary">Bsky is being flooded with German speaking AI powered bots.
+A thread on why this is important, ultimately making all social media is unusable. #deutschland #trolls #AI #election
+
+1/ What happened?...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/theoddkepple.bsky.social/post/3llikq5vyzs27" target="_blank" class="article-item">
+                    <div class="score">↑2165</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Andrew "TmsT" Kepple</h3>
+                        <p class="summary">#cowtools #ghibli #farside #hayaomiyazaki #garylarson #ai</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/ashemag/human-atlas" target="_blank" class="article-item">
+                    <div class="score">↑1862</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Weekly Top Repos): ashemag/human-atlas</h3>
+                        <p class="summary">Language: TypeScript
+Description: Open-source 3D anatomy explorer: 2,234 selectable BodyParts3D meshes, system layers, search, and exploded views.</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=w2IlWoP8d_A" target="_blank" class="article-item">
+                    <div class="score">↑1290</div>
+                    <div class="content">
+                        <h3 class="headline">China&#39;s New Invention Could Replace Light Bulbs Forever</h3>
+                        <p class="summary">China just built a light source with no filament, no glass bulb, and no gas inside it — and it could make the light bulb sitting above ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=9nDktTTxNKY" target="_blank" class="article-item">
+                    <div class="score">↑861</div>
+                    <div class="content">
+                        <h3 class="headline">50 Real GPT-6 Builds That Look Almost Impossible</h3>
+                        <p class="summary">GPT-6 Astra is already being pushed far beyond normal chat. Developers and creators have used it to build games, 3D worlds, ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/zedeus/nitter/commit/1428b4c2b4246f92a7e5b2673438e5fb39fcc4a3" target="_blank" class="article-item">
+                    <div class="score">↑851</div>
+                    <div class="content">
+                        <h3 class="headline">Nitter and XCancel resume service after legal advice</h3>
+                        <p class="summary">https://github.com/zedeus/nitter https://xcancel.com/cdclegal https://nitter.net/ https://xcancel.com/</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.notebookcheck.net/LG-smart-TVs-caught-logging-audio-with-screen-off-and-snooping-on-local-devices.1391214.0.html" target="_blank" class="article-item">
+                    <div class="score">↑768</div>
+                    <div class="content">
+                        <h3 class="headline">LG smart TVs caught logging audio with screen off and snooping on local devices</h3>
+                        <p class="summary">4 Reviews &larr; exclude selected types &larr; exclude selected tags LG smart TVs continuously sweep home networks, map secondary devices, and log microphone audio while appearing to be turned off,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://blog.archive.org/2026/09/01/keep-our-servers-running-your-recurring-donation-goes-3x-this-september/" target="_blank" class="article-item">
+                    <div class="score">↑764</div>
+                    <div class="content">
+                        <h3 class="headline">Keep Our Servers Running</h3>
+                        <p class="summary">“Universal access to all human knowledge is within our grasp. Our job is to put the best our world has to offer within the reach of our children.” —Brewster Kahle, Internet Archive Digital Librarian...</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/EverettFish/holo-card-studio" target="_blank" class="article-item">
+                    <div class="score">↑724</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Daily Top Repos): EverettFish/holo-card-studio</h3>
+                        <p class="summary">Language: Python
+Description: Turn the user's description or uploaded reference into a finished, editable Blender card and an interactive Three.js page. Preserve the requested subject, style,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bcantrill.dtrace.org/2025/12/05/your-intellectual-fly-is-open/" target="_blank" class="article-item">
+                    <div class="score">↑681</div>
+                    <div class="content">
+                        <h3 class="headline">Your intellectual fly is open when you use an LLM to author a post (2025)</h3>
+                        <p class="summary">Note: This was originally published as a LinkedIn post on November 11, 2025. I need to make a painful confession: somehow, LinkedIn has become an important social network to me. This isn’t...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=ouACKu1cwoU" target="_blank" class="article-item">
+                    <div class="score">↑673</div>
+                    <div class="content">
+                        <h3 class="headline">GPT-6 Shapes the New Era of 3D AI, Next-Gen AI Animation, &amp; Much More! | 3D AI News #19</h3>
+                        <p class="summary">I'm currently building a Trellis2 + Pixal3D Workflow Pack — an in-depth PDF guide + ComfyUI workflows for local, open-source 3D ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://keepitfree.ai/announcements/a/i-shuts-down-stay-human/" target="_blank" class="article-item">
+                    <div class="score">↑607</div>
+                    <div class="content">
+                        <h3 class="headline">A/I shuts down</h3>
+                        <p class="summary">A/I shuts down - Stay human Sep 6, 2026 The day we discovered we had been designated a global terrorist organization, we promised that we would try to resist as long as this was possible, that we...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=KEeiUTqDMx4" target="_blank" class="article-item">
+                    <div class="score">↑437</div>
+                    <div class="content">
+                        <h3 class="headline">Steve Kornacki breaks down a new poll on data centers and AI</h3>
+                        <p class="summary">NBC News chief data analyst Steve Kornacki joins Meet the Press to break down a new NBC News Decision Desk Poll on artificial ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/hey.paris/post/3lkuelbujdk2v" target="_blank" class="article-item">
+                    <div class="score">↑197</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Dr Paris Buttfield-Addison</h3>
+                        <p class="summary">with apologies, but #gdc25 has led to another rant
+
+hey.paris/posts/constr...
+
+#gdc2025 #gdc #ai #llm #narrative #writing #gamedev</p>
+                    </div>
+                </a>
+                
+                <a href="https://openai.com/index/research-acceleration-view-inside-openai" target="_blank" class="article-item">
+                    <div class="score">↑195</div>
+                    <div class="content">
+                        <h3 class="headline">Research acceleration: The view inside OpenAI</h3>
+                        <p class="summary">Researchers Claim Another Batch of Rogue OpenAI Agents Went Berserk
+
+ Sep. 07, 2026 at 11:27 am
+
+# Researchers Claim Another Batch of Rogue OpenAI Agents Went Berserk
+
+### They found a set of rogue...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/danicedmarshall.bsky.social/post/3lih72toepl2s" target="_blank" class="article-item">
+                    <div class="score">↑132</div>
+                    <div class="content">
+                        <h3 class="headline">Post by DaNice D Marshall    (pronounced duh-NYSE)</h3>
+                        <p class="summary">Surely there’s a lawyer who’s willing to take this case?
+
+A class action lawsuit against #elonwithanF
+
+An immigrant rummaging through Americans’ data has to be illegal in at least one forwarding...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.indiatoday.in/technology/news/story/openai-chief-scientist-calls-ai-alien-mind-says-we-are-not-prepared-for-consequences-2988608-2026-09-07" target="_blank" class="article-item">
+                    <div class="score">↑100</div>
+                    <div class="content">
+                        <h3 class="headline">OpenAI chief scientist calls AI alien mind, says we are not prepared for consequences - India Today</h3>
+                        <p class="summary">OpenAI chief scientist calls AI alien mind, says we are not prepared for consequences - India Today
+
+# OpenAI chief scientist calls AI alien mind, says we are not prepared for consequences
+
+##...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.thestar.com.my/tech/tech-news/2026/09/07/thousands-of-openai-ai-agents-took-over-german-website-researchers-say" target="_blank" class="article-item">
+                    <div class="score">↑100</div>
+                    <div class="content">
+                        <h3 class="headline">Thousands of OpenAI AI agents took over German website, researchers say | The Star</h3>
+                        <p class="summary">Thousands of OpenAI AI agents took over German website, researchers say | The Star
+
+# Thousands of OpenAI AI agents took over German website, researchers say 
+
+ Monday, 07 Sep 2026 | 12:00 PM MYT...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.marktechpost.com/2026/09/06/ifm-releases-k2-horizon-six-apache-2-0-models-from-0-9b-to-375b/" target="_blank" class="article-item">
+                    <div class="score">↑100</div>
+                    <div class="content">
+                        <h3 class="headline">IFM Releases K2 Horizon: Six Apache 2.0 Models From 0.9B to 375B - MarkTechPost</h3>
+                        <p class="summary">IFM Releases K2 Horizon: Six Apache 2.0 Models From 0.9B to 375B - MarkTechPost
+
+# IFM Releases K2 Horizon: Six Apache 2.0 Models From 0.9B to 375B
+
+By
+
+Asif Razzaq
+
+September 6, 2026
+
+Most open...</p>
+                    </div>
+                </a>
+                
+                <a href="https://superpowerdaily.com/podcast/2026-09-06-openai-releases-gpt-6-astra-with-new-safeguards" target="_blank" class="article-item">
+                    <div class="score">↑100</div>
+                    <div class="content">
+                        <h3 class="headline">Daily AI Podcast: OpenAI releases GPT-6 Astra with new safeguards | The Signal | Superpower Daily</h3>
+                        <p class="summary">Daily AI Podcast: OpenAI releases GPT-6 Astra with new safeguards | The Signal | Superpower Daily
+
+# OpenAI releases GPT-6 Astra with new safeguards
+
+This week, frontier models moved closer to...</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/mahmoudhajri.bsky.social/post/3lbod2vwve22v" target="_blank" class="article-item">
+                    <div class="score">↑97</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Mahmoud Hajri</h3>
+                        <p class="summary">Machine Learning Hyperparameters
+#machinelearning #datascience #artificialintelligence #python</p>
+                    </div>
+                </a>
+                
+                <a href="https://jyn.dev/simple-is-not-the-same-as-small/" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Simple Is Not Small</h3>
+                        <p class="summary">Comments</p>
+                    </div>
+                </a>
+                
+                <a href="https://vllm.ai/blog/2026-08-23-speculative-decoding-amd-gpus" target="_blank" class="article-item">
+                    <div class="score">↑10</div>
+                    <div class="content">
+                        <h3 class="headline">Speculative Decoding in vLLM on AMD GPUs</h3>
+                        <p class="summary">Comments</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+        </main>
+    </div>
+    <script>
+        // Open all accordions by default
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                toggleAccordion(header);
+            });
+        });
+
+        // Tab Switching Logic
+        function switchTab(e, tabId) {
+            if (e) e.preventDefault();
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // If triggered by a tab button, set it active, else find the tab button for that tabId
+            let tabBtn = (e && e.target && e.target.classList.contains('tab-btn')) ? e.target : document.querySelector(`.tab-btn[onclick*="${tabId}"]`);
+            if (tabBtn) tabBtn.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            // scroll to top if clicked view all
+            if (e && e.target && e.target.classList.contains('view-all')) {
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // Accordion Logic
+        function toggleAccordion(headerElement) {
+            headerElement.classList.toggle('open');
+            const body = headerElement.nextElementSibling;
+            if (headerElement.classList.contains('open')) {
+                body.style.maxHeight = body.scrollHeight + "px";
+            } else {
+                body.style.maxHeight = "0";
+            }
+        }
+
+        // Read article persistence
+        document.addEventListener("DOMContentLoaded", () => {
+            const STORAGE_KEY = "read_articles";
+            let readArticles = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+            
+            document.querySelectorAll('.article-item').forEach(item => {
+                const url = item.getAttribute('href');
+                if (readArticles.has(url)) {
+                    item.classList.add('read-article');
+                }
+                
+                item.addEventListener('click', () => {
+                    readArticles.add(url);
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify([...readArticles]));
+                    
+                    // Mark all identically-linked items read
+                    document.querySelectorAll(`.article-item[href="${url}"]`).forEach(i => i.classList.add('read-article'));
+                });
+            });
+        });
+    </script>
+</body>
+</html>
