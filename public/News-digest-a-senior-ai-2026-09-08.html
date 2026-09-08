@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News Digest | 2026-09-08</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+    
+:root {
+    --bg-color: #0d1117;
+    --card-bg: rgba(22, 27, 34, 0.4);
+    --hover-bg: rgba(46, 52, 60, 0.6);
+    --border: rgba(255, 255, 255, 0.08);
+    --text-main: #e6edf3;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-glow: rgba(88, 166, 255, 0.15);
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-mono: 'Fira Code', ui-monospace, monospace;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+    background-image: radial-gradient(circle at top right, rgba(46, 160, 67, 0.05), transparent 400px),
+                      radial-gradient(circle at bottom left, var(--accent-glow), transparent 400px);
+    background-attachment: fixed;
+}
+
+.container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
+
+header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.title { font-size: 2rem; font-weight: 700; margin: 0 0 0.25rem 0; }
+.subtitle { color: var(--text-muted); font-size: 0.95rem; }
+
+.stats-bar {
+    display: flex; gap: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; text-align: right;
+}
+.stat { display: flex; flex-direction: column; }
+.stat span:first-child { color: var(--text-muted); font-size: 0.75rem; }
+.stat span:last-child { color: var(--accent); font-weight: 600; }
+
+/* Tabs styling */
+.tabs-container {
+    margin-bottom: 2rem; display: flex; gap: 1rem;
+    border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+    background: transparent; border: none; color: var(--text-muted);
+    font-family: var(--font-sans); font-size: 1.1rem; font-weight: 500;
+    cursor: pointer; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s ease;
+}
+
+.tab-btn:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+.tab-btn.active { color: var(--accent); background: rgba(88, 166, 255, 0.1); font-weight: 600; }
+
+.tab-content { display: none; animation: fadeIn 0.3s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Common card styling */
+.category-group {
+    margin-bottom: 2rem; background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden; backdrop-filter: blur(8px);
+}
+
+/* Express View Accordion */
+.accordion-header {
+    width: 100%; display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.03); border: none; border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem; color: var(--text-main); font-size: 1.1rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+    cursor: pointer; transition: background 0.15s ease;
+}
+.accordion-header:hover { background: rgba(255, 255, 255, 0.06); }
+.accordion-header::after { content: '▼'; font-size: 0.8rem; transition: transform 0.3s ease; color: var(--text-muted); }
+.accordion-header.open::after { transform: rotate(-180deg); }
+.accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; background: transparent; }
+
+/* Category masonry */
+.categories-masonry { column-count: 2; column-gap: 2rem; }
+.masonry-item { break-inside: avoid; margin-bottom: 2rem; }
+.masonry-item .category-title {
+    font-size: 1rem; font-weight: 600; color: var(--text-main); margin: 0; padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);
+}
+
+.article-list { display: flex; flex-direction: column; }
+.article-item {
+    display: flex; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+    transition: background 0.15s ease; text-decoration: none; color: inherit; gap: 1.25rem; align-items: flex-start;
+}
+.masonry-item .article-item { padding: 0.75rem 1rem; gap: 1rem; }
+.article-item:last-child { border-bottom: none; }
+.article-item:hover { background: var(--hover-bg); }
+
+.article-item.read-article { opacity: 0.5; }
+.article-item.read-article .headline { color: var(--text-muted); }
+
+.score {
+    min-width: 45px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent);
+    background: rgba(88, 166, 255, 0.1); padding: 0.25rem 0; text-align: center; border-radius: 4px; margin-top: 0.15rem;
+}
+.content { flex: 1; min-width: 0; }
+.headline { font-weight: 500; font-size: 1.05rem; margin: 0 0 0.35rem 0; color: var(--text-main); flex-wrap: wrap; display: flex; align-items: baseline; gap: 0.5rem; }
+.summary {
+    font-size: 0.9rem; color: var(--text-muted); margin: 0; display: -webkit-box;
+    -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;
+}
+.view-all {
+    display: block; text-align: center; padding: 0.75rem; color: var(--accent); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: background 0.15s;
+}
+.view-all:hover { background: rgba(88, 166, 255, 0.05); }
+
+@media (max-width: 1024px) {
+    .categories-masonry { column-count: 1; }
+    header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .stats-bar { text-align: left; }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1 class="title">AI Pulse Digest</h1>
+                <div class="subtitle">Curated insights for 2026-09-08</div>
+            </div>
+            <div class="stats-bar">
+                <div class="stat"><span>Analyzed</span><span>1127 artifacts</span></div>
+                <div class="stat"><span>Filtered</span><span>650 dupes</span></div>
+                <div class="stat"><span>Curated</span><span>25 items</span></div>
+            </div>
+        </header>
+
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchTab(event, 'express')">✨ Highlights (Top 5)</button>
+            <button class="tab-btn" onclick="switchTab(event, 'detail')">📚 Deep Dive (All)</button>
+        </div>
+        
+        <main id="express" class="tab-content active">
+            
+            <div class="category-group">
+                <button class="accordion-header" onclick="toggleAccordion(this)">uncategorized</button>
+                <div class="accordion-body">
+                    <div class="article-list">
+                        
+                <a href="https://bsky.app/profile/drdeanburnett.bsky.social/post/3lgfg74cnbf22" target="_blank" class="article-item">
+                    <div class="score">↑4951</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Dr Dean Burnett</h3>
+                        <p class="summary">Daily life in 2025.
+
+#AI #Tech #JustLetMeBe #FFS</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=ix8SsXjBc7M" target="_blank" class="article-item">
+                    <div class="score">↑2061</div>
+                    <div class="content">
+                        <h3 class="headline">There Are Jobs You Could Never Give AI. I Gave GPT-6 Astra 20 Hours Of Admin.</h3>
+                        <p class="summary">GPT-6 Astra is the first AI agent I'd hand a week-long job instead of a one-minute prompt. My own research puts over 20 hours of ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/Rion-Wu-tech/wechat-intelligence-hub" target="_blank" class="article-item">
+                    <div class="score">↑1923</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Weekly Top Repos): Rion-Wu-tech/wechat-intelligence-hub</h3>
+                        <p class="summary">Language: Python
+Description: Local-first WeChat intelligence system with a read-only CLI, Codex skills, searchable chat history, daily briefings, follow-ups and opportunity tracking.</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/go4know.com/post/3mbc2gfbpnk2f" target="_blank" class="article-item">
+                    <div class="score">↑1701</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Go4Know</h3>
+                        <p class="summary">🔥 12 Simple Ways to Slow Down Aging and Live a Healthier Life – Part 3
+👉 patreon.com/go4know
+
+🔥 Learn how to create stunning AI images! Get prompts, art styles & tutorials. Join me:
+👉...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=IgKU8xCgbjc" target="_blank" class="article-item">
+                    <div class="score">↑1639</div>
+                    <div class="content">
+                        <h3 class="headline">Strategies for programming with AI agents | DHH and Lex Fridman</h3>
+                        <p class="summary">Lex Fridman Podcast full episode: https://www.youtube.com/watch?v=NYFGCESmikA Thank you for listening ❤ Check out our ...</p>
+                    </div>
+                </a>
+                
+                        <a href="#" class="view-all" onclick="switchTab(event, 'detail')">View all 25 articles in uncategorized →</a>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+        <main id="detail" class="tab-content categories-masonry">
+            
+            <div class="category-group masonry-item">
+                <h2 class="category-title">uncategorized</h2>
+                <div class="article-list">
+                    
+                <a href="https://bsky.app/profile/drdeanburnett.bsky.social/post/3lgfg74cnbf22" target="_blank" class="article-item">
+                    <div class="score">↑4951</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Dr Dean Burnett</h3>
+                        <p class="summary">Daily life in 2025.
+
+#AI #Tech #JustLetMeBe #FFS</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=ix8SsXjBc7M" target="_blank" class="article-item">
+                    <div class="score">↑2061</div>
+                    <div class="content">
+                        <h3 class="headline">There Are Jobs You Could Never Give AI. I Gave GPT-6 Astra 20 Hours Of Admin.</h3>
+                        <p class="summary">GPT-6 Astra is the first AI agent I'd hand a week-long job instead of a one-minute prompt. My own research puts over 20 hours of ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/Rion-Wu-tech/wechat-intelligence-hub" target="_blank" class="article-item">
+                    <div class="score">↑1923</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Weekly Top Repos): Rion-Wu-tech/wechat-intelligence-hub</h3>
+                        <p class="summary">Language: Python
+Description: Local-first WeChat intelligence system with a read-only CLI, Codex skills, searchable chat history, daily briefings, follow-ups and opportunity tracking.</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/go4know.com/post/3mbc2gfbpnk2f" target="_blank" class="article-item">
+                    <div class="score">↑1701</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Go4Know</h3>
+                        <p class="summary">🔥 12 Simple Ways to Slow Down Aging and Live a Healthier Life – Part 3
+👉 patreon.com/go4know
+
+🔥 Learn how to create stunning AI images! Get prompts, art styles & tutorials. Join me:
+👉...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=IgKU8xCgbjc" target="_blank" class="article-item">
+                    <div class="score">↑1639</div>
+                    <div class="content">
+                        <h3 class="headline">Strategies for programming with AI agents | DHH and Lex Fridman</h3>
+                        <p class="summary">Lex Fridman Podcast full episode: https://www.youtube.com/watch?v=NYFGCESmikA Thank you for listening ❤ Check out our ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=S2sjyokoxeE" target="_blank" class="article-item">
+                    <div class="score">↑1204</div>
+                    <div class="content">
+                        <h3 class="headline">Are Agent Swarms USEFUL? OpenAI’s GPT-6 Astra SWARM Takeaways</h3>
+                        <p class="summary">OpenAI got hacked by their OWN agents. That's the GPT-6-Astra swarm incident, and it proved agent swarms aren't hype anymore ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://mistral.ai/news/mistral-makes-sovereign-open-weight-ai-to-frontier/" target="_blank" class="article-item">
+                    <div class="score">↑656</div>
+                    <div class="content">
+                        <h3 class="headline">Mistral raises €3B</h3>
+                        <p class="summary">Company Mistral raises €3B to make sovereign, open-weight AI the technology frontier Mistral today announced that it has raised €3 billion in a Series D funding round at a post-money valuation of...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=5aeLEvJ5hog" target="_blank" class="article-item">
+                    <div class="score">↑526</div>
+                    <div class="content">
+                        <h3 class="headline">[🔴이슈] &quot;아듀, 사무직&quot; 아스트라, AI 시대 종결/&#39;AGI&#39;에 난리 난 미국...한국 &#39;잭팟&#39; 조짐/2026년 9월 8일(화)/KBS</h3>
+                        <p class="summary">우리나라의 대미 투자 1호 사업이 가스 화력발전소 사업으로 정해진 것 같습니다. 투자할 곳은 많을 거 같은데, 왜 하필 미국은 발전소 ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://jellyfin.org/posts/jellyfin-release-12.0/" target="_blank" class="article-item">
+                    <div class="score">↑519</div>
+                    <div class="content">
+                        <h3 class="headline">Jellyfin 12.0</h3>
+                        <p class="summary">We are pleased to bring you Jellyfin 12.0, our new stable release. This release continues in the same direction as 10.11: finishing what the database conversion started, turning that new foundation...</p>
+                    </div>
+                </a>
+                
+                <a href="https://devz.cl/posts/i-spent-my-vacations-de-brainrotting/" target="_blank" class="article-item">
+                    <div class="score">↑494</div>
+                    <div class="content">
+                        <h3 class="headline">De-Brainrot Vacations</h3>
+                        <p class="summary">De-Brainrot Vacations Published 2026-09-07T11:16:21Z Daniel – Some cows in the fields. Brain Fog My brain is not the same as it was a few years ago. When I started working as a Software Engineer,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://mcpherrin.ca/2026/09/07/rsa.html" target="_blank" class="article-item">
+                    <div class="score">↑426</div>
+                    <div class="content">
+                        <h3 class="headline">I've factored the RSA keys of a Certificate Authority from the 90s</h3>
+                        <p class="summary">I’ve factored the RSA keys of a Certificate Authority… | Matthew McPherrin Home | About Matthew McPherrin 2026-09-07 I’ve factored the RSA keys of a Certificate Authority... … from the 90s. I’ve been...</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/iczelia/bzip3" target="_blank" class="article-item">
+                    <div class="score">↑415</div>
+                    <div class="content">
+                        <h3 class="headline">bzip3</h3>
+                        <p class="summary">BZip3 A better, faster and stronger spiritual successor to BZip2. Features higher compression ratios and better performance thanks to a order-0 context mixing entropy coder, a fast Burrows-Wheeler...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.techemails.com/p/bill-gates-tries-to-install-movie-maker" target="_blank" class="article-item">
+                    <div class="score">↑407</div>
+                    <div class="content">
+                        <h3 class="headline">Bill Gates tries to install MovieMaker (2003)</h3>
+                        <p class="summary">Bill Gates tries to install Movie Maker Jan 15, 2023 47 4 2 Share Welcome to Internal Tech Emails: internal tech industry emails that surface in public records. 🔍 If you haven’t signed up, join...</p>
+                    </div>
+                </a>
+                
+                <a href="https://cims.nyu.edu/~tristanb/statement.pdf" target="_blank" class="article-item">
+                    <div class="score">↑386</div>
+                    <div class="content">
+                        <h3 class="headline">Navier-Stokes – Tristan Buckmaster [pdf]</h3>
+                        <p class="summary">Navier-Stokes – Tristan Buckmaster [pdf]</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=w16-JRiCaZ8" target="_blank" class="article-item">
+                    <div class="score">↑316</div>
+                    <div class="content">
+                        <h3 class="headline">Can Grok Bot scale my company of one?</h3>
+                        <p class="summary">AI made me faster, but I'm still the bottleneck. Can a team of Grok Bots grow my business beyond what I can do myself?</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/modirshanechi.bsky.social/post/3mt4of65suk26" target="_blank" class="article-item">
+                    <div class="score">↑283</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Alireza Modirshanechi</h3>
+                        <p class="summary">Excited to share that I'll be starting as a junior professor and Emmy Noether awardee at the University of Göttingen this October! 🥳
+
+🚀 I'll be hiring #phd students and #postdoc across...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=QDJulwStkzc" target="_blank" class="article-item">
+                    <div class="score">↑257</div>
+                    <div class="content">
+                        <h3 class="headline">Burnout from programming with AI agents | DHH and Lex Fridman</h3>
+                        <p class="summary">Lex Fridman Podcast full episode: https://www.youtube.com/watch?v=NYFGCESmikA Thank you for listening ❤ Check out our ...</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/gazijarin/itsgiving" target="_blank" class="article-item">
+                    <div class="score">↑156</div>
+                    <div class="content">
+                        <h3 class="headline">GitHub Trending (Daily Top Repos): gazijarin/itsgiving</h3>
+                        <p class="summary">Language: Python
+Description: Express yourself in meetings (with memes, of course).</p>
+                    </div>
+                </a>
+                
+                <a href="https://bsky.app/profile/gamingonlinux.com/post/3mjm364cw5e2i" target="_blank" class="article-item">
+                    <div class="score">↑145</div>
+                    <div class="content">
+                        <h3 class="headline">Post by Liam @ GamingOnLinux</h3>
+                        <p class="summary">SDL (Simple DirectMedia Layer) ban AI / LLM code contributions
+#OpenSource #AI #GenAI #LLM #SDL #GameDev</p>
+                    </div>
+                </a>
+                
+                <a href="https://en.cryptonomist.ch/2026/09/08/ai-development-risks-openai/" target="_blank" class="article-item">
+                    <div class="score">↑100</div>
+                    <div class="content">
+                        <h3 class="headline">AI Development Risks: OpenAI Chief Scientist Calls for Caution</h3>
+                        <p class="summary">AI Development Risks: OpenAI Chief Scientist Calls for Caution
+
+# OpenAI’s Own AI Agents Hacked Hugging Face, Fueling AI Development Risks
+
+8 September 2026
+
+ 
+
+AI Development Risks: OpenAI Chief...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.fortuneindia.com/technology/nvidia-ceo-jensen-huang-says-agi-has-arrived-with-openais-gpt-6-astra/157941" target="_blank" class="article-item">
+                    <div class="score">↑100</div>
+                    <div class="content">
+                        <h3 class="headline">Nvidia CEO Jensen Huang Declares AGI Era with OpenAI GPT-6 Astra Trained on 100K+ Grace Blackwell Systems</h3>
+                        <p class="summary">Nvidia CEO Jensen Huang Declares AGI Era with OpenAI GPT-6 Astra Trained on 100K+ Grace Blackwell Systems
+
+Nvidia CEO Jensen Huang says ‘AGI has arrived’ with OpenAI’s GPT-6 Astra September 7, 2026,...</p>
+                    </div>
+                </a>
+                
+                <a href="https://forkast.news/when-1200-openai-agents-escaped-they-didnt-just-hack-they-coordinated/" target="_blank" class="article-item">
+                    <div class="score">↑100</div>
+                    <div class="content">
+                        <h3 class="headline">When 1,200 OpenAI Agents Escaped, They Didn’t Just Hack — They Coordinated – Forkast</h3>
+                        <p class="summary">When 1,200 OpenAI Agents Escaped, They Didn’t Just Hack — They Coordinated – Forkast
+
+# When 1,200 OpenAI Agents Escaped, They Didn’t Just Hack — They Coordinated
+
+The DseWiki swarm reveals a...</p>
+                    </div>
+                </a>
+                
+                <a href="https://podscripts.co/podcasts/how-i-ai/build-your-own-company-brain-the-enterprise-ai-playbook-from-stripes-engineering-team-sharadh-krishnamurthy" target="_blank" class="article-item">
+                    <div class="score">↑100</div>
+                    <div class="content">
+                        <h3 class="headline">How I AI - Build your own company brain: the enterprise AI playbook from Stripe’s engineering team | Sharadh Krishnamurthy Transcript and Discussion</h3>
+                        <p class="summary">How I AI - Build your own company brain: the enterprise AI playbook from Stripe’s engineering team | Sharadh Krishnamurthy Transcript and Discussion
+
+# How I AI - Build your own company brain: the...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.nature.com/articles/d41586-026-02822-9" target="_blank" class="article-item">
+                    <div class="score">↑98</div>
+                    <div class="content">
+                        <h3 class="headline">Anthropic AI ‘formalizes’ proof of Fermat’s last theorem in just 11 days | Nature</h3>
+                        <p class="summary">Anthropic AI ‘formalizes’ proof of Fermat’s last theorem in just 11 days | Nature
+## Your privacy, your choice
+We use essential cookies to make sure the site can function. We also use optional...</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.forbes.com/sites/jonmarkman/2026/09/07/openai-ai-agents-hijacked-a-german-wiki-to-share-sandbox-escape-tricks/" target="_blank" class="article-item">
+                    <div class="score">↑98</div>
+                    <div class="content">
+                        <h3 class="headline">OpenAI AI Agents Hijacked A German Wiki To Share Sandbox Escape Tricks</h3>
+                        <p class="summary">OpenAI AI Agents Hijacked A German Wiki To Share Sandbox Escape Tricks
+### Site Technologies
+We, and third parties in some cases, use cookies and similar technologies to better understand your...</p>
+                    </div>
+                </a>
+                
+                </div>
+            </div>
+            
+        </main>
+    </div>
+    <script>
+        // Open all accordions by default
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                toggleAccordion(header);
+            });
+        });
+
+        // Tab Switching Logic
+        function switchTab(e, tabId) {
+            if (e) e.preventDefault();
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // If triggered by a tab button, set it active, else find the tab button for that tabId
+            let tabBtn = (e && e.target && e.target.classList.contains('tab-btn')) ? e.target : document.querySelector(`.tab-btn[onclick*="${tabId}"]`);
+            if (tabBtn) tabBtn.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            // scroll to top if clicked view all
+            if (e && e.target && e.target.classList.contains('view-all')) {
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // Accordion Logic
+        function toggleAccordion(headerElement) {
+            headerElement.classList.toggle('open');
+            const body = headerElement.nextElementSibling;
+            if (headerElement.classList.contains('open')) {
+                body.style.maxHeight = body.scrollHeight + "px";
+            } else {
+                body.style.maxHeight = "0";
+            }
+        }
+
+        // Read article persistence
+        document.addEventListener("DOMContentLoaded", () => {
+            const STORAGE_KEY = "read_articles";
+            let readArticles = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+            
+            document.querySelectorAll('.article-item').forEach(item => {
+                const url = item.getAttribute('href');
+                if (readArticles.has(url)) {
+                    item.classList.add('read-article');
+                }
+                
+                item.addEventListener('click', () => {
+                    readArticles.add(url);
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify([...readArticles]));
+                    
+                    // Mark all identically-linked items read
+                    document.querySelectorAll(`.article-item[href="${url}"]`).forEach(i => i.classList.add('read-article'));
+                });
+            });
+        });
+    </script>
+</body>
+</html>
