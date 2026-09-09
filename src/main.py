@@ -22,6 +22,7 @@ from src.collectors.github import GitHubCollector
 from src.delivery.telegram import TelegramSender
 from src.delivery.web import HTMLPublisher
 from src.models.article import Article, Digest
+from src.processing.curation import curate_articles
 from src.processing.dedup import Deduplicator, normalize_url
 from src.processing.persona import PersonaProcessor
 from src.processing.summarizer import Summarizer
@@ -157,39 +158,8 @@ async def run_pipeline(
     # Cap articles per category before summarization to keep digest concise
     max_per_cat = config.get("web", {}).get("max_articles_per_category", 25)
     max_per_author = config.get("collection", {}).get("max_per_author", 3)
-    
-    grouped = {}
-    for a in deduped:
-        grouped.setdefault(a.category, []).append(a)
 
-    curated_articles = []
-    for cat, items in grouped.items():
-        # Group by source to ensure diversity
-        by_source = {}
-        for item in items:
-            by_source.setdefault(item.source, []).append(item)
-            
-        for src_items in by_source.values():
-            src_items.sort(key=lambda x: x.engagement_score, reverse=True)
-            
-        cat_curated = []
-        author_counts = {}
-        while by_source and len(cat_curated) < max_per_cat:
-            for src in list(by_source.keys()):
-                if len(cat_curated) >= max_per_cat:
-                    break
-                if by_source[src]:
-                    candidate = by_source[src].pop(0)
-                    auth_key = candidate.author or candidate.source_detail or "unknown"
-                    if author_counts.get(auth_key, 0) < max_per_author:
-                        author_counts[auth_key] = author_counts.get(auth_key, 0) + 1
-                        cat_curated.append(candidate)
-                else:
-                    del by_source[src]
-                    
-        # Sort the final curated mix by engagement score for nice rendering
-        cat_curated.sort(key=lambda x: x.engagement_score, reverse=True)
-        curated_articles.extend(cat_curated)
+    curated_articles = curate_articles(deduped, max_per_cat, max_per_author)
 
     _save_intermediate("4_curated", curated_articles)
 
@@ -298,7 +268,9 @@ def _print_digest_preview(digest: Digest) -> None:
             media = {"video": "🎬", "podcast": "🎙️", "article": "📰"}.get(
                 a.media_type, "📰"
             )
+            rel_str = f" [rel:{a.relevance}]" if a.relevance else ""
             score_str = f" [{a.engagement_score}⬆]" if a.engagement_score else ""
+            score_str = f"{rel_str}{score_str}"
             src = f" ({a.source_detail})" if a.source_detail else ""
             duration = f" [{a.duration_display}]" if a.duration_display else ""
             lines.append(f"  {i}. {media} {a.title[:100]}{score_str}{src}{duration}")

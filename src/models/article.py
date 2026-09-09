@@ -40,6 +40,7 @@ class Article(BaseModel):
     source: Source
     category: str = "uncategorized"
     score: int = 0
+    relevance: int = 0  # LLM-assigned persona relevance (1-10), independent of engagement
     author: Optional[str] = None
     timestamp: Optional[datetime] = None
     raw_content: Optional[str] = None
@@ -80,6 +81,11 @@ class Article(BaseModel):
         return total
 
     @property
+    def rank_score(self) -> tuple[int, int]:
+        """Sort key for curation/display: persona relevance first, engagement as tiebreaker."""
+        return (self.relevance, self.engagement_score)
+
+    @property
     def duration_display(self) -> str | None:
         """Human-readable duration for podcasts/videos."""
         if not self.duration_seconds:
@@ -106,9 +112,9 @@ class Digest(BaseModel):
         grouped: dict[str, list[Article]] = {}
         for article in self.articles:
             grouped.setdefault(article.category, []).append(article)
-        # Sort each category by engagement score descending
+        # Sort each category by relevance first, engagement as tiebreaker
         for cat in grouped:
-            grouped[cat].sort(key=lambda a: a.engagement_score, reverse=True)
+            grouped[cat].sort(key=lambda a: a.rank_score, reverse=True)
         return grouped
 
     @property

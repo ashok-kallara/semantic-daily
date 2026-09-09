@@ -15,20 +15,24 @@ log = get_logger(__name__)
 
 
 
-SYSTEM_MSG_QUERY = """You are an expert AI configuration tool. 
+SYSTEM_MSG_QUERY = """You are an expert AI configuration tool.
 Given a user's 'Persona' and 'Interests', generate highly targeted search queries, keywords, and handles to fetch relevant news and articles.
 Consider specific subreddits, exact GitHub usernames, and YouTube channels if applicable.
 
 Please output exactly a JSON object in this format (no markdown, no extra text):
 {
   "exa": ["neural web search query 1", "neural web search query 2"],
-  "twitter": ["keyword1", "keyword2"],
   "reddit": ["subreddit1", "subreddit2"],
   "youtube": ["youtube search query 1", "youtube search query 2"],
   "categories": ["🚀 Category 1", "🧠 Category 2", "... (generate exactly 10 broad categories covering the topics)"]
 }
 
 Make sure keywords and queries are highly specific to the given Persona and Interests."""
+
+# Bucket for evaluator output that doesn't match any active category (e.g. a
+# malformed/garbled response) — kept distinct from any real category so
+# mismatches are visible instead of silently distorting a real bucket's count.
+UNCATEGORIZED = "❓ Uncategorized"
 
 
 class PersonaProcessor:
@@ -40,11 +44,15 @@ class PersonaProcessor:
         self.user_cfg = config.get("user", {})
         self.persona = self.user_cfg.get("persona", "")
         self.interests = self.user_cfg.get("interests", [])
-        self.active_categories = [
-            "🚀 Product Launches", "🧠 Research & Papers", "💼 Business & Strategy", 
-            "🛠️ Tools & Dev", "🤖 AI Agents", "📈 Hardware", "🛡️ Safety & Policy", 
+        # If the user pins their own categories in config, they stay stable
+        # across runs instead of being reinvented by the LLM every time.
+        self.pinned_categories: list[str] = list(self.user_cfg.get("categories") or [])
+        default_categories = [
+            "🚀 Product Launches", "🧠 Research & Papers", "💼 Business & Strategy",
+            "🛠️ Tools & Dev", "🤖 AI Agents", "📈 Hardware", "🛡️ Safety & Policy",
             "🔮 Ecosystem & Funding", "✨ General Updates", "🔥 Best Takes"
         ]
+        self.active_categories = self.pinned_categories[:10] or default_categories
 
     @property
     def is_enabled(self) -> bool:
@@ -70,28 +78,38 @@ class PersonaProcessor:
                 response_clean = match.group(0)
             
             data = json.loads(response_clean)
-            
-            # Apply to config (Supplemental appending)
-            self.active_categories = data.get("categories", self.active_categories)
-            if not isinstance(self.active_categories, list) or len(self.active_categories) == 0:
-                self.active_categories = ["✨ General Updates"]
-            # Enforce max 10 categories
-            self.active_categories = self.active_categories[:10]
-            log.info("persona.categories_generated", categories=self.active_categories)
-            
+
+            if self.pinned_categories:
+                # User has pinned a stable taxonomy — don't let the LLM override it.
+                log.info("persona.categories_pinned", categories=self.active_categories)
+            else:
+                self.active_categories = data.get("categories", self.active_categories)
+                if not isinstance(self.active_categories, list) or len(self.active_categories) == 0:
+                    self.active_categories = ["✨ General Updates"]
+                # Enforce max 10 categories
+                self.active_categories = self.active_categories[:10]
+                log.info("persona.categories_generated", categories=self.active_categories)
+
             sources = full_config.setdefault("sources", {})
-            if "exa" in data and isinstance(data["exa"], list):
+            # Persona queries REPLACE the static config queries (which are
+            # documented as fallbacks for when no persona is configured) so
+            # targeted search isn't diluted by generic defaults.
+            if "exa" in data and isinstance(data["exa"], list) and data["exa"]:
                 cfg = sources.setdefault("exa", {})
-                cfg["queries"] = list(set(cfg.get("queries", []) + data["exa"]))
-            if "twitter" in data and isinstance(data["twitter"], list):
-                cfg = sources.setdefault("apify", {})
-                cfg["twitter_keywords"] = list(set(cfg.get("twitter_keywords", []) + data["twitter"]))
-            if "reddit" in data and isinstance(data["reddit"], list):
-                cfg = sources.setdefault("apify", {})
-                cfg["reddit_subreddits"] = list(set(cfg.get("reddit_subreddits", []) + data["reddit"]))
-            if "youtube" in data and isinstance(data["youtube"], list):
+                cfg["queries"] = data["exa"]
+            if "youtube" in data and isinstance(data["youtube"], list) and data["youtube"]:
                 cfg = sources.setdefault("youtube", {})
-                cfg["queries"] = list(set(cfg.get("queries", []) + data["youtube"]))
+                cfg["queries"] = data["youtube"]
+            # Reddit's configured subreddit list is user-curated (not a
+            # generic fallback), so persona suggestions are merged in rather
+            # than replacing it. This is the collector Reddit actually reads
+            # from — persona-generated Reddit targeting had no effect prior
+            # to this fix since it was written to an unused "apify" config key.
+            if "reddit" in data and isinstance(data["reddit"], list) and data["reddit"]:
+                cfg = sources.setdefault("reddit", {})
+                cfg["subreddits"] = list(
+                    dict.fromkeys(cfg.get("subreddits", []) + data["reddit"])
+                )
 
             log.info("persona.queries_generated_successfully", keys=list(data.keys()))
         except Exception as e:
@@ -166,13 +184,25 @@ class PersonaProcessor:
                         raw_cat = score_data.get("category", "✨ General Updates")
                         
                         valid_cats = self.active_categories
-                        cat = raw_cat if raw_cat in valid_cats else (valid_cats[-1] if valid_cats else "✨ General Updates")
-                        
+                        if raw_cat in valid_cats:
+                            cat = raw_cat
+                        else:
+                            cat = UNCATEGORIZED
+                            log.debug(
+                                "persona.category_fallback",
+                                raw_category=raw_cat,
+                                valid_categories=valid_cats,
+                            )
+
                         if 0 <= idx < len(batch):
                             article = batch[idx]
                             # Discard heavily irrelevant articles
                             if rel >= 5:
-                                article.score = max(article.score, rel) # embed the relevance score
+                                # Keep relevance separate from the source's own
+                                # engagement metric (Reddit upvotes, HN points,
+                                # etc.) — conflating them let raw popularity
+                                # silently outrank actual persona relevance.
+                                article.relevance = max(article.relevance, rel)
                                 article.category = cat
                                 
                                 # Add a custom tag if it's very witty to be used during summarization
